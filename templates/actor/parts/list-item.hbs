@@ -1,0 +1,30 @@
+<li class="item flexrow" data-item-uuid="{{item.uuid}}" data-uuid="{{item.uuid}}">
+    <div class="item-name">
+        <div class="item-image">
+            <a data-action="itemUse">
+                <img src="{{item.img}}" title="{{item.name}}">
+            </a>
+        </div>
+        <div>{{item.name}}</div>
+    </div>
+    <div class="item-quantity">
+        <button data-action="itemQuantity" data-value="-1">
+            <i class="fa-solid fa-minus"></i>
+        </button>
+        <div class="item-count">{{item.system.quantity}}x</div>
+        <button type="button" data-action="itemQuantity" data-value="1">
+            <i class="fa-solid fa-plus"></i>
+        </button>
+    </div>
+    <div class="item-controls">
+        <a class="item-control" data-action="edit" title="{{localize 'DOCUMENT.Update' type=Item}}">
+            <i class="fas fa-edit"></i>
+        </a>
+
+        {{#if isEditMode}}
+            <a class="item-control" data-action="delete" title="{{localize 'DOCUMENT.Delete' type=Item}}">
+                <i class="fas fa-trash"></i>
+            </a>
+        {{/if}}
+    </div>
+</li>

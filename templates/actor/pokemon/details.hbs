@@ -1,0 +1,40 @@
+<div class="pta-tab">
+    <div class="flexrow flex-gap-m">
+        <div>
+            {{toFieldGroup schema 'shiny' value=system.shiny}}
+            {{toFieldGroup schema 'size' value=system.size}}
+            {{toFieldGroup schema 'weight' value=system.weight}}
+        </div>
+        <div>
+            {{toFieldGroup schema 'gender' value=system.gender}}
+            {{toFieldGroup schema 'nature' value=system.nature}}
+            {{toFieldGroup schema 'species' value=system.species}}
+        </div>
+    </div>
+    <div class="flexcol flex-gap-s">
+        <div class="description collapsible">
+            <div class="flexrow" data-action="collapse">
+                <a style="flex: 0; margin: 0 5px"><i class="fa-solid fa-caret-down"></i></a>
+                <label>Description</label>
+            </div>
+            <div class="collapsible-content">
+                <div class="wrapper">
+                    {{formInput description.field value=description.value enriched=description.enriched name='system.description' toggled=true}}
+                </div>
+            </div>
+        </div>
+        {{#if (isGM)}}
+            <div class="description collapsible collapsed">
+                <div class="flexrow" data-action="collapse">
+                    <a style="flex: 0; margin: 0 5px"><i class="fa-solid fa-caret-down"></i></a>
+                    <label>GM Notes</label>
+                </div>
+                <div class="collapsible-content">
+                    <div class="wrapper">
+                        {{formInput gmNotes.field value=gmNotes.value enriched=gmNotes.enriched name='system.gmNotes' toggled=true}}
+                    </div>
+                </div>
+            </div>
+        {{/if}}
+    </div>
+</div>

@@ -1,0 +1,948 @@
+/* Import utilities */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Quicksand:wght@300..700&display=swap");
+:root {
+  --pta-c-type-normal: #A8A77A;
+  --pta-c-type-fire: #EE8130;
+  --pta-c-type-water: #6390F0;
+  --pta-c-type-electric: #F7D02C;
+  --pta-c-type-grass: #7AC74C;
+  --pta-c-type-ice: #96D9D6;
+  --pta-c-type-fighting: #C22E28;
+  --pta-c-type-poison: #A33EA1;
+  --pta-c-type-ground: #E2BF65;
+  --pta-c-type-flying: #A98FF3;
+  --pta-c-type-psychic: #F95587;
+  --pta-c-type-bug: #A6B91A;
+  --pta-c-type-rock: #B6A136;
+  --pta-c-type-ghost: #735797;
+  --pta-c-type-dragon: #6F35FC;
+  --pta-c-type-dark: #705746;
+  --pta-c-type-steel: #B7B7CE;
+  --pta-c-type-fairy: #D685AD;
+  --pta-c-hp-red: red;
+  --pta-c-hp-yellow: yellow;
+  --pta-c-hp-green: green;
+  --pta-c-stat-atk: rgb(255, 120, 120);
+  --pta-c-stat-def: rgb(255, 255, 143);
+  --pta-c-stat-satk: rgb(131, 255, 255);
+  --pta-c-stat-sdef: rgb(129, 255, 129);
+  --pta-c-stat-spd: rgb(196, 107, 255);
+}
+
+:root {
+  --pta-scale-px: 8px;
+}
+
+:root {
+  --pta-scale-px: 8px;
+  --pta-scale-em: 1em;
+  --pta-scale-rem: 1rem;
+}
+
+.pta-xs {
+  --pta-scale-px: 4px;
+  --pta-scale-em: 0.6em;
+  --pta-scale-rem: 0.6rem;
+}
+
+.pta-s {
+  --pta-scale-px: 8px;
+  --pta-scale-em: 0.8em;
+  --pta-scale-rem: 0.8rem;
+}
+
+.pta-m {
+  --pta-scale-px: 12px;
+  --pta-scale-em: 1em;
+  --pta-scale-rem: 1rem;
+}
+
+.pta-l {
+  --pta-scale-px: 16px;
+  --pta-scale-em: 1.5em;
+  --pta-scale-rem: 1.5rem;
+}
+
+.pta-xl {
+  --pta-scale-px: 20px;
+  --pta-scale-em: 2em;
+  --pta-scale-rem: 2rem;
+}
+
+/* || ------------------------------ Font scaling ------------------------------- */
+.pta-font-xs {
+  --pta-scale-em: 0.6em;
+  --pta-scale-rem: 0.6rem;
+}
+
+.pta-font-s {
+  --pta-scale-em: 0.8em;
+  --pta-scale-rem: 0.8rem;
+}
+
+.pta-font-m {
+  --pta-scale-em: 1em;
+  --pta-scale-rem: 1rem;
+}
+
+.pta-font-l {
+  --pta-scale-em: 1.5em;
+  --pta-scale-rem: 1.5rem;
+}
+
+.pta-font-xl {
+  --pta-scale-em: 2em;
+  --pta-scale-rem: 2rem;
+}
+
+/* || ------------------------------ Pixel scaling ----------------------------- */
+.pta-px-xs {
+  --pta-scale-px: 4px;
+}
+
+.pta-px-s {
+  --pta-scale-px: 8px;
+}
+
+.pta-px-m {
+  --pta-scale-px: 12px;
+}
+
+.pta-px-l {
+  --pta-scale-px: 16px;
+}
+
+.pta-px-xl {
+  --pta-scale-px: 20px;
+}
+
+/* Global styles */
+.rollable:hover, .rollable:focus {
+  color: #000;
+  text-shadow: 0 0 10px red;
+  cursor: pointer;
+}
+
+[data-action] {
+  cursor: pointer;
+}
+[data-action] * {
+  cursor: inherit;
+}
+
+.nodisplay {
+  display: none;
+}
+.nodisplay * {
+  display: none;
+}
+
+.obliterated {
+  display: none !important;
+}
+.obliterated * {
+  display: none !important;
+}
+
+.grid,
+.grid-2col {
+  display: grid;
+  grid-column: span 2/span 2;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 10px 0;
+  padding: 0;
+}
+
+.grid-3col {
+  grid-column: span 3/span 3;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-4col {
+  grid-column: span 4/span 4;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-5col {
+  grid-column: span 5/span 5;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.grid-6col {
+  grid-column: span 6/span 6;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.grid-7col {
+  grid-column: span 7/span 7;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.grid-8col {
+  grid-column: span 8/span 8;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+
+.grid-9col {
+  grid-column: span 9/span 9;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+}
+
+.grid-10col {
+  grid-column: span 10/span 10;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+}
+
+.grid-11col {
+  grid-column: span 11/span 11;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+}
+
+.grid-12col {
+  grid-column: span 12/span 12;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.grid-start-2 {
+  grid-column-start: 2;
+}
+
+.grid-start-3 {
+  grid-column-start: 3;
+}
+
+.grid-start-4 {
+  grid-column-start: 4;
+}
+
+.grid-start-5 {
+  grid-column-start: 5;
+}
+
+.grid-start-6 {
+  grid-column-start: 6;
+}
+
+.grid-start-7 {
+  grid-column-start: 7;
+}
+
+.grid-start-8 {
+  grid-column-start: 8;
+}
+
+.grid-start-9 {
+  grid-column-start: 9;
+}
+
+.grid-start-10 {
+  grid-column-start: 10;
+}
+
+.grid-start-11 {
+  grid-column-start: 11;
+}
+
+.grid-start-12 {
+  grid-column-start: 12;
+}
+
+.grid-span-2 {
+  grid-column-end: span 2;
+}
+
+.grid-span-3 {
+  grid-column-end: span 3;
+}
+
+.grid-span-4 {
+  grid-column-end: span 4;
+}
+
+.grid-span-5 {
+  grid-column-end: span 5;
+}
+
+.grid-span-6 {
+  grid-column-end: span 6;
+}
+
+.grid-span-7 {
+  grid-column-end: span 7;
+}
+
+.grid-span-8 {
+  grid-column-end: span 8;
+}
+
+.grid-span-9 {
+  grid-column-end: span 9;
+}
+
+.grid-span-10 {
+  grid-column-end: span 10;
+}
+
+.grid-span-11 {
+  grid-column-end: span 11;
+}
+
+.grid-span-12 {
+  grid-column-end: span 12;
+}
+
+.pta .flex-group-center,
+.pta .flex-group-start,
+.pta .flex-group-end {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.pta .flex-group-start {
+  justify-content: flex-start;
+  text-align: left;
+}
+.pta .flex-group-end {
+  justify-content: flex-end;
+  text-align: right;
+}
+.pta .flexshrink {
+  flex: 0;
+}
+.pta .flex-between {
+  justify-content: space-between;
+}
+.pta .flexlarge {
+  flex: 2;
+}
+.pta .flex-align-start {
+  align-items: flex-start;
+  text-align: left;
+}
+.pta .flex-align-end {
+  align-items: flex-end;
+  text-align: right;
+}
+.pta .flex-align-center {
+  align-items: center;
+  text-align: center;
+}
+.pta .flex-gap-s {
+  gap: 4px;
+}
+.pta .flex-gap-m {
+  gap: 8px;
+}
+.pta .flex-gap-l {
+  gap: 12px;
+}
+.pta .flex-overflow {
+  flex-wrap: wrap;
+}
+
+/* Components */
+/* Import utilities */
+.item-form {
+  font-family: "Roboto", sans-serif;
+}
+
+.sheet-header {
+  flex: 0 auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+.sheet-header .profile-img {
+  flex: 0 0 100px;
+  height: 100px;
+  margin-right: 10px;
+}
+.sheet-header .header-fields {
+  flex: 1;
+}
+.sheet-header h1.charname {
+  height: 50px;
+  padding: 0px;
+  margin: 5px 0;
+  border-bottom: 0;
+}
+.sheet-header h1.charname input {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.sheet-tabs {
+  flex: 0;
+}
+
+.sheet-body,
+.sheet-body .tab,
+.sheet-body .tab .editor {
+  height: 100%;
+}
+
+.description {
+  padding: 5px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+.description label {
+  text-align: center;
+  font-size: 18px;
+  flex: 3;
+  border-bottom: 1px solid gold;
+}
+.description a {
+  flex: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-nowrap {
+  text-wrap: nowrap;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: row;
+}
+.form-group > label,
+.form-group span.label {
+  flex: 1;
+}
+.form-group .form-fields {
+  flex: 2;
+}
+.form-group:hover > label,
+.form-group:hover span.label {
+  color: var(--color);
+}
+
+.resource-label {
+  font-weight: bold;
+}
+
+/* Import utilities */
+.items-header {
+  height: 28px;
+  margin: 2px 0;
+  padding: 0;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px groove #eeede0;
+  font-weight: bold;
+}
+.items-header > * {
+  font-size: 14px;
+  text-align: center;
+}
+.items-header .item-name {
+  font-weight: bold;
+  padding-left: 5px;
+  text-align: left;
+  display: flex;
+}
+
+ol.items-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+ol.items-list .item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+ol.items-list .item-name {
+  flex: 2;
+  margin: 0;
+  overflow: hidden;
+  font-size: 13px;
+  text-align: left;
+  align-items: center;
+  display: flex;
+}
+ol.items-list .item-name h3,
+ol.items-list .item-name h4 {
+  margin: 0;
+  white-space: nowrap;
+}
+ol.items-list .item-controls {
+  display: flex;
+  flex: 0 0 100px;
+  justify-content: flex-end;
+}
+ol.items-list .item-controls a {
+  font-size: 12px;
+  text-align: center;
+  margin: 0 6px;
+}
+ol.items-list .item {
+  align-items: center;
+  padding: 0 2px;
+  border-bottom: 1px solid #c9c7b8;
+}
+ol.items-list .item:last-child {
+  border-bottom: none;
+}
+ol.items-list .item .item-name .item-image {
+  flex: 0 0 30px;
+  height: 30px;
+  background-size: 30px;
+  border: none;
+  margin-right: 5px;
+}
+ol.items-list .item .item-quantity {
+  display: flex;
+  flex-direction: row;
+  flex: 0;
+}
+ol.items-list .item .item-quantity .item-count {
+  text-align: center;
+  min-width: 3em;
+  flex: 1;
+}
+ol.items-list .item .item-quantity > * {
+  flex: 0;
+}
+ol.items-list .item .item-quantity button {
+  padding: 2px;
+}
+ol.items-list .item .item-quantity i {
+  margin: 0;
+}
+ol.items-list .item-prop {
+  text-align: center;
+  border-left: 1px solid #c9c7b8;
+  border-right: 1px solid #c9c7b8;
+  font-size: 12px;
+}
+ol.items-list .items-header {
+  height: 28px;
+  margin: 2px 0;
+  padding: 0;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px groove #eeede0;
+  font-weight: bold;
+}
+ol.items-list .items-header > * {
+  font-size: 12px;
+  text-align: center;
+}
+ol.items-list .items-header .item-name {
+  padding-left: 5px;
+  text-align: left;
+}
+
+.item-formula {
+  flex: 0 0 200px;
+  padding: 0 8px;
+}
+
+.effects .item .effect-source,
+.effects .item .effect-duration,
+.effects .item .effect-controls {
+  text-align: center;
+  border-left: 1px solid #c9c7b8;
+  border-right: 1px solid #c9c7b8;
+  font-size: 12px;
+}
+.effects .item .effect-controls {
+  border: none;
+}
+
+/* Import utilities */
+/* Classes for creating pokemon type boxs and their effects */
+ol.pta-pokemon-team {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+ol.pta-pokemon-team .pta-pokemon {
+  --angle: 110deg;
+  --scale: 60%;
+  background-color: var(--color-cool-4);
+  margin-bottom: 5px;
+  position: relative;
+  width: 225px;
+  height: 75px;
+  box-sizing: border-box;
+  padding: var(--pta-scale-px);
+  display: flex;
+  flex-direction: row;
+  --corner: 1em;
+  clip-path: polygon(var(--corner) 0%, calc(100% - var(--corner)) 0%, 100% var(--corner), 100% calc(100% - var(--corner)), calc(100% - var(--corner)) 100%, var(--corner) 100%, 0% calc(100% - var(--corner)), 0% var(--corner));
+}
+ol.pta-pokemon-team .pta-pokemon .portrait {
+  flex: 0 0;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 100%;
+  aspect-ratio: 1;
+}
+ol.pta-pokemon-team .pta-pokemon .portrait img {
+  border: 0;
+}
+ol.pta-pokemon-team .pta-pokemon .details {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  text-align: center;
+}
+ol.pta-pokemon-team .pta-pokemon .details > * {
+  flex: 1;
+  width: 100%;
+}
+ol.pta-pokemon-team .pta-pokemon .details .nickname {
+  text-align: left;
+  font-weight: bold;
+  font-size: calc(var(--pta-scale-em) * 0.8);
+}
+ol.pta-pokemon-team .pta-pokemon .details .health {
+  flex: 0;
+}
+
+.type-tag {
+  padding: var(--pta-scale-px);
+  border-radius: var(--pta-scale-px);
+  border: 2px solid;
+  width: fit-content;
+  text-align: center;
+}
+.type-tag.normal {
+  border-color: var(--pta-c-type-normal);
+}
+.type-tag.fire {
+  border-color: var(--pta-c-type-fire);
+}
+.type-tag.water {
+  border-color: var(--pta-c-type-water);
+}
+.type-tag.electric {
+  border-color: var(--pta-c-type-electric);
+}
+.type-tag.grass {
+  border-color: var(--pta-c-type-grass);
+}
+.type-tag.ice {
+  border-color: var(--pta-c-type-ice);
+}
+.type-tag.fighting {
+  border-color: var(--pta-c-type-fighting);
+}
+.type-tag.poison {
+  border-color: var(--pta-c-type-poison);
+}
+.type-tag.ground {
+  border-color: var(--pta-c-type-ground);
+}
+.type-tag.flying {
+  border-color: var(--pta-c-type-flying);
+}
+.type-tag.psychic {
+  border-color: var(--pta-c-type-psychic);
+}
+.type-tag.bug {
+  border-color: var(--pta-c-type-bug);
+}
+.type-tag.rock {
+  border-color: var(--pta-c-type-rock);
+}
+.type-tag.ghost {
+  border-color: var(--pta-c-type-ghost);
+}
+.type-tag.dragon {
+  border-color: var(--pta-c-type-dragon);
+}
+.type-tag.dark {
+  border-color: var(--pta-c-type-dark);
+}
+.type-tag.steel {
+  border-color: var(--pta-c-type-steel);
+}
+.type-tag.fairy {
+  border-color: var(--pta-c-type-fairy);
+}
+
+.pta-pc-layout-grid {
+  display: flex;
+  flex: 0 1;
+  gap: var(--pta-scale-px);
+  flex-wrap: wrap;
+}
+.pta-pc-layout-grid .pta-grid-item {
+  height: calc(var(--pta-scale-px) * 10);
+  flex: 0 0 calc(var(--pta-scale-px) * 10);
+  border: 1px solid rgb(174, 174, 174);
+  border-radius: 5px;
+  transition: flex 0.2s ease-in-out;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  overflow: hidden;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  transition: all 0.2s;
+  background-color: rgba(255, 255, 255, 0);
+}
+.pta-pc-layout-grid .pta-grid-item:hover {
+  border-color: white;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+.pta-pc-layout-grid .pta-grid-item .wrapper {
+  min-width: calc(var(--pta-scale-px) * 10);
+  min-height: calc(var(--pta-scale-px) * 10);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.pta-pc-layout-grid .pta-grid-item > .controls {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.pta-pc-layout-grid .pta-grid-item > .controls .item-control {
+  flex: 1;
+}
+.pta-pc-layout-grid .pta-grid-item label {
+  opacity: 0;
+  transition: opacity 0.3s;
+  text-align: center;
+  background-color: grey;
+}
+.pta-pc-layout-grid .pta-grid-item.selected {
+  flex: 0 0 calc(var(--pta-scale-px) * 13);
+}
+.pta-pc-layout-grid .pta-grid-item :hover {
+  cursor: pointer;
+}
+.pta-pc-layout-grid .pta-grid-item :hover label {
+  opacity: 1;
+}
+
+.pta-grid-item {
+  border: 1px solid rgb(174, 174, 174);
+  border-radius: 5px;
+  transition: flex 0.2s ease-in-out;
+  transition: all 0.2s;
+  background-color: rgba(255, 255, 255, 0);
+}
+.pta-grid-item:hover {
+  border-color: white;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.progress-bar {
+  width: 100%;
+  background-color: black;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+.progress-bar label {
+  background-color: gray;
+  height: 100%;
+  padding: 0 calc(var(--pta-scale-px) / 2);
+  font-size: var(--pta-scale-em);
+  font-weight: bold;
+}
+.progress-bar > .wrapper {
+  flex: 1;
+}
+.progress-bar > .wrapper .bar {
+  min-height: 100%;
+  width: 50%;
+  margin: 1px;
+  /* || Colour options */
+}
+.progress-bar > .wrapper .bar.red {
+  background-color: red;
+}
+.progress-bar > .wrapper .bar.green {
+  background-color: green;
+}
+
+.round {
+  border-radius: var(--pta-scale-px);
+}
+
+/* Import utilities */
+/* || Abilities component*/
+.pta-stats {
+  flex: 1;
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  --stat-border-c: white;
+}
+.pta-stats [data-pta-stat=atk] {
+  --stat-border-c: var(--pta-c-stat-atk) !important;
+}
+.pta-stats [data-pta-stat=def] {
+  --stat-border-c: var(--pta-c-stat-def) !important;
+}
+.pta-stats [data-pta-stat=satk] {
+  --stat-border-c: var(--pta-c-stat-satk) !important;
+}
+.pta-stats [data-pta-stat=sdef] {
+  --stat-border-c: var(--pta-c-stat-sdef) !important;
+}
+.pta-stats [data-pta-stat=spd] {
+  --stat-border-c: var(--pta-c-stat-spd) !important;
+}
+.pta-stats > * {
+  margin-bottom: calc(var(--pta-scale-px));
+  flex: 1;
+}
+.pta-stats .pta-stat-wrap {
+  flex-wrap: none;
+  display: flex;
+  flex: 0;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--pta-scale-px);
+}
+.pta-stats .pta-stat-wrap .pta-score-wrap {
+  flex: 0;
+  margin-right: var(--pta-scale-px);
+}
+.pta-stats .pta-stat-wrap .pta-score {
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex: 0 0 72px;
+  height: 72px;
+  width: 72px;
+  overflow: hidden;
+  text-align: center;
+  border: 2px solid var(--stat-border-c);
+}
+.pta-stats .pta-stat-wrap .pta-score > * {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-self: center;
+  align-self: center;
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+.pta-stats .pta-stat-wrap .pta-skills-wrap {
+  text-align: left;
+  flex: 1;
+  margin-left: var(--pta-scale-px);
+}
+.pta-stats .pta-stat-wrap .pta-skills-wrap .pta-skill {
+  font-size: calc(var(--pta-scale-em) + 0.1em);
+  font-weight: 500;
+  display: flex;
+  flex-direction: row;
+  text-wrap: nowrap;
+}
+.pta-stats .pta-stat-wrap .pta-skills-wrap .pta-skill > * {
+  flex: 1;
+}
+.pta-stats .pta-stat-wrap .pta-skills-wrap .pta-talent {
+  flex: 0;
+  margin-right: calc(var(--pta-scale-em));
+}
+.pta-stats .pta-stat-wrap .pta-skills-wrap .pta-mod {
+  text-align: center;
+  flex: 0 0 2em;
+}
+
+/*
+|| Collapsible items
+
+.collapsible - Repersents a container with collapsible elements inside of it
+.collapsible-content - a container to be shrunk down when the container is collapsed
+.wrapper - the actual content being shrunk down
+*/
+.collapsible .fa-caret-down {
+  transition: all 0.3s ease-in-out;
+}
+.collapsible.collapsed .fa-caret-down {
+  transform: rotate(-90deg);
+}
+.collapsible.collapsed .collapsible-content {
+  grid-template-rows: 0fr;
+}
+.collapsible .collapsible-content {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: all 0.3s ease-in-out;
+}
+.collapsible .collapsible-content > .wrapper {
+  overflow: hidden;
+}
+
+/* Sheet specific styles */
+.pta.sheet.actor header.sheet-header img {
+  min-width: 128px;
+  min-height: 128px;
+  object-fit: cover;
+  object-position: 50% 0%;
+}
+
+/* Styles limited to rpta3 sheets */
+.pta {
+  /* || remote server browser */
+}
+.pta input[type=text] {
+  font-family: "DM Sans", serif;
+  font-size: var(--pta-scale-rem);
+}
+.pta select {
+  font-family: "DM Sans", serif;
+  font-size: var(--pta-scale-rem);
+}
+.pta .tab.active {
+  height: 100%;
+}
+.pta .pta-sheet-body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.pta .pta-tab {
+  height: 100%;
+}
+.pta .pta-tab[data-application-part=features] [data-application-part=abilities] {
+  flex: 0;
+}
+.pta .remote-image-browser .sprite-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 6px;
+  overflow: auto;
+}
+.pta .remote-image-browser .sprite-gallery .sprite-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+}
+.pta .remote-image-browser .sprite-gallery .sprite {
+  object-fit: contain;
+  margin: auto;
+  border: none;
+  image-rendering: pixelated;
+}
+
+/*# sourceMappingURL=rpta3.css.map */
