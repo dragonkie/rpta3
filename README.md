@@ -1,5 +1,5 @@
 # Pokemon Tabletop Adventures VTT System
-![Foundry v12](https://img.shields.io/badge/foundry-v12-green)
+![Foundry v12](https://img.shields.io/badge/foundry-v13-green)
 An adaptation of the Pokémon Tabletop Adventures ruleset as a system for use with FoundryVTT!
 This project is in no way affiliated with, or endorsed by, Foundry Gaming LLC.
 
