@@ -5,23 +5,9 @@ import PtaActorSheet, { PtaTrainerMixin } from "../actor.mjs";
 export default class PtaCharacterSheet extends PtaTrainerMixin(PtaActorSheet) {
     static DEFAULT_OPTIONS = {
         classes: ["character"],
+        position: { width: 600 },
         window: {
             controls: [{
-                icon: 'fas fa-user-circle',
-                label: 'TOKEN.TitlePrototype',
-                action: 'configurePrototypeToken',
-                ownership: 3
-            }, {
-                icon: 'fas fa-image',
-                label: 'SIDEBAR.CharArt',
-                action: 'showPortraitArtwork',
-                ownership: 3
-            }, {
-                icon: 'fas fa-image',
-                label: 'SIDEBAR.TokenArt',
-                action: 'showTokenArtwork',
-                ownership: 3
-            }, {
                 icon: 'fas fa-link',
                 label: '*Link Pokemon*',
                 action: 'pokemonLink',
@@ -51,15 +37,27 @@ export default class PtaCharacterSheet extends PtaTrainerMixin(PtaActorSheet) {
     }
 
     static TABS = {
-        features: { id: "features", group: "primary", label: "PTA.Tab.Features" },
-        inventory: { id: "inventory", group: "primary", label: "PTA.Tab.Inventory" },
-        pokebox: { id: "pokebox", group: "primary", label: "PTA.Tab.Pokemon" },
-        effects: { id: "effects", group: "primary", label: "PTA.Tab.Effects" },
-        details: { id: "details", group: "primary", label: "PTA.Tab.Details" },
+        features: { id: "features", group: "primary", label: "PTA.Tab.Features", icon: "fa-user" },
+        inventory: { id: "inventory", group: "primary", label: "PTA.Tab.Inventory", icon: "fa-backpack" },
+        pokebox: { id: "pokebox", group: "primary", label: "PTA.Tab.Pokemon", icon: "fa-computer" },
+        effects: { id: "effects", group: "primary", label: "PTA.Tab.Effects", icon: "fa-sparkles" },
+        details: { id: "details", group: "primary", label: "PTA.Tab.Details", icon: "fa-book" },
     }
 
     tabGroups = {
         primary: "features"
+    }
+
+    //=======================================================================================
+    //> Rendering
+    //=======================================================================================
+    async _renderFrame(options) {
+        const frame = await super._renderFrame(options);
+
+        frame.appendChild(await this._renderBookmarks(options));
+
+        // send back the final frame
+        return frame;
     }
 
     //=======================================================================================
@@ -71,7 +69,10 @@ export default class PtaCharacterSheet extends PtaTrainerMixin(PtaActorSheet) {
         const context = await super._prepareContext();
 
         context.skills = {};
-        for (const [key, value] of Object.entries(this.document.system.skills)) {
+        for (const [key, value] of Object.entries(this.document.system.skills).sort((a, b) => {
+            let val = a[1].stat.localeCompare(b[1].stat);
+            return val;
+        })) {
             context.skills[key] = value;
             context.skills[key].label = {
                 long: pta.utils.localize(CONFIG.PTA.skills[key]),

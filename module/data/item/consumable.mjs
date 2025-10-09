@@ -1,4 +1,6 @@
 import PtaDialog from "../../applications/dialog.mjs";
+import PtaChatMessage from "../../documents/message.mjs";
+import { PTA } from "../../helpers/config.mjs";
 import ItemData from "../item.mjs";
 
 const {
@@ -207,14 +209,9 @@ export default class ConsumableData extends ItemData {
         // the target user is in the document
         let target_actor = null;
         switch (this.target) {
-            case 'trainer':
-                target_actor = await this._getUserTrainer(event, target);
-                break;
-            case 'pokemon':
-                target_actor = await this._getUserPokemon(event, target);
-                break;
-            case 'all':
-                break;
+            case 'trainer': target_actor = await this._getUserTrainer(event, target); break;
+            case 'pokemon': target_actor = await this._getUserPokemon(event, target); break;
+            case 'all': break;
         }
 
         // if we didn't manage to find a target for automation, simply put the update into the chat
@@ -222,23 +219,36 @@ export default class ConsumableData extends ItemData {
         if (!target_actor || !game.settings.get(pta.id, 'automation')) {
 
         } else if (game.settings.get(game.system.id, 'automation')) { // begin the automation proccess
+            // Converts the target actor into a data object to manipulate
+            // if something fails along the way, we can abandon changes then
             const _uDoc = target_actor.toObject();
-            _uDoc.system.quantity = _uDoc.system.quantity;
 
             try {
                 // verify that the pokemon isn't fainted, or that this item is a revive in that case
                 if (target_actor.system.fainted && !this.effects.revive) throw new Error("This item can't be used on a fainted Pokémon!");
 
+                // Apply user healing if possible
                 this._onHeal(_uDoc);
+
+                // cure status effects, needs a reference to the actor to function
+                // effects are a nested document embed and require an async handler
+                await this._onCure(target_actor);
+
+                // Apply the update to the target
                 await target_actor.update(_uDoc);
                 await this.parent.update({ system: { quantity: this.quantity - 1 } });
 
+                // Re-render the affected actor sheets to reflect any changes
                 target_actor.sheet.render(false);
                 this.parent.sheet.render(false);
+
+                // Generate the chat message
+                const msg = PtaChatMessage.create({ content: `Consumed a ${this.parent.name}` });
             } catch (err) {
                 pta.utils.error(err.message)
             }
         }
+
     }
 
     async _getUserPokemon(event, target) {
@@ -292,8 +302,7 @@ export default class ConsumableData extends ItemData {
     /**
      * Following functions should be passed two data points, the document, and its update data
      * to minimize update calls, and by extension overhead, no update should be called 
-     * in these functions, and modifications should exclusivly be made to the update data
-     * object
+     * in these functions, and modifications should exclusivly be made to cloned document
      */
 
     _onHeal(actor) {
@@ -306,23 +315,20 @@ export default class ConsumableData extends ItemData {
         actor.system.hp.value = Math.min(actor.system.hp.max, actor.system.hp.value);
     }
 
-    async _onCure(doc, data) {
-
-        // loop through and eliminate all status negative status ailments
+    async _onCure(actor) {
+        console.log(actor.effects);
+        // loop through and eliminate all negative status ailments on a pokemon
         if (this.effects.cure == 'all') {
-
+            for (const effect of actor.effects.contents) {
+                const ailments = Object.keys(PTA.ailments)
+                for (const status of effect.statuses) if (ailments.includes(status)) effect.delete();
+            }
         } else {
-
-        }
-
-        for (const effect of pta.config.ailments) {
-            for (const key of Object.keys(pta.config.ailments)) {
-                if (effect.statuses.has(key)) {
-
-                }
+            for (const effect of actor.effects.contents) {
+                // if the effect contains the purged effect, continue on
+                if (effect.statuses.has(this.effects.cure)) effect.delete();
             }
         }
-
     }
 
     _onRestore(doc, data) {

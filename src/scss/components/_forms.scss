@@ -12,6 +12,10 @@
   justify-content: flex-start;
   margin-bottom: 10px;
 
+  img {
+    flex: 0;
+  }
+  
   .profile-img {
     flex: 0 0 100px;
     height: 100px;
@@ -67,6 +71,14 @@
   text-align: center;
 }
 
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
 .text-nowrap {
   text-wrap: nowrap;
 }
@@ -74,7 +86,8 @@
 .form-group {
   display: flex;
   flex-direction: row;
-  
+  align-items: center;
+
   >label,
   span.label {
     flex: 1;
@@ -89,6 +102,13 @@
     >label,
     span.label {
       color: var(--color)
+    }
+  }
+
+  &.stacked {
+    flex-direction: column;
+    label {
+      flex: 0;
     }
   }
 }

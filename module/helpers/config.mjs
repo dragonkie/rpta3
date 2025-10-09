@@ -1,11 +1,5 @@
 import pokeapi from "./pokeapi.mjs";
-import utils from "./utils.mjs";
 export const PTA = {};
-
-export function PtaLoadConfig() {
-  const PTA = {};
-  return config;
-}
 
 /**
  * Load config lists from pokeapi if possible, or default if unable
@@ -93,8 +87,10 @@ PTA.generic = {
   import: 'PTA.Generic.Import',
   nature: 'PTA.Generic.Nature',
   none: 'PTA.Generic.None',
+  origin: 'PTA.Generic.Origin',
   pokemon: 'PTA.Generic.Pokemon',
   primary: 'PTA.Generic.Primary',
+  rank: 'PTA.Generic.Rank',
   secondary: 'PTA.Generic.Secondary',
   shiny: 'PTA.Generic.Shiny',
   size: 'PTA.Generic.Size',
@@ -226,6 +222,7 @@ PTA.skillAbilities = {
   nature: PTA.stats.satk,
   perception: PTA.stats.sdef,
   perform: PTA.stats.sdef,
+  programming: PTA.stats.satk,
   stealth: PTA.stats.spd,
   subterfuge: PTA.stats.spd,
 }
@@ -233,8 +230,8 @@ PTA.skillAbilities = {
 PTA.skills = {};
 PTA.skillsAbbr = {};
 for (const [key, value] of Object.entries(PTA.skillAbilities)) {
-  PTA.skills[key] = `PTA.Skill.${utils.toTitleCase(key)}.long`;
-  PTA.skillsAbbr[key] = `PTA.Skill.${utils.toTitleCase(key)}.abbr`
+  PTA.skills[key] = `PTA.Skill.${key.charAt(0).toUpperCase() + key.slice(1)}.long`;
+  PTA.skillsAbbr[key] = `PTA.Skill.${key.charAt(0).toUpperCase() + key.slice(1)}.abbr`
 }
 
 PTA.skillAttack = { athletics: PTA.stats.atk, };
@@ -248,6 +245,7 @@ PTA.skillSpecialAttack = {
   history: PTA.stats.satk,
   investigation: PTA.stats.satk,
   medicine: PTA.stats.satk,
+  programming: PTA.stats.satk,
   nature: PTA.stats.satk,
 };
 
@@ -295,6 +293,10 @@ PTA.pokemonTypes = {
   rock: 'PTA.Type.Rock',
   steel: 'PTA.Type.Steel',
   water: 'PTA.Type.Water',
+  // Rune update types
+  light: 'PTA.Type.Light',
+  cyber: 'PTA.Type.Cyber',
+  nuclear: 'PTA.Type.Nuclear'
 };
 
 PTA.typeEffectivenessLabels = {
@@ -406,6 +408,21 @@ PTA.typeEffectiveness = {
     half: ['fire', 'water', 'ice', 'steel'],
     immune: []
   },
+  light: {
+    double: ['dark', 'psychic', 'bug', 'ghost'],
+    half: ['cyber', 'fire', 'electric', 'light'],
+    immune: ['ghost'],
+  },
+  cyber: {
+    double: ['fairy', 'fire', 'water', 'fighting', 'steel'],
+    half: ['grass', 'fighting', 'ghost', 'fairy'],
+    immune: ['steel'],
+  },
+  nuclear: {
+    double: ['psychic','water','ground'],
+    half: ['nuclear','water','poison','dragon'],
+    immune: ['fairy'],
+  }
 };
 
 //===================================================================================
@@ -422,6 +439,8 @@ PTA.ailments = {
   sleep: 'PTA.Ailment.Sleep.long',
   stun: 'PTA.Ailment.Stun.long',
   toxic: 'PTA.Ailment.Toxic.long',
+  flinch: 'PTA.Ailment.Flinch.long',
+  irradiated: 'PTA.Ailment.Irradiated.long'
 };
 
 PTA.ailmentsAbbr = {};

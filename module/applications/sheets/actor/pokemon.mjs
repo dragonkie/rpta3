@@ -8,21 +8,6 @@ export default class PtaPokemonSheet extends PtaActorSheet {
     static DEFAULT_OPTIONS = {
         window: {
             controls: [{
-                icon: 'fas fa-user-circle',
-                label: 'TOKEN.TitlePrototype',
-                action: 'configurePrototypeToken',
-                ownership: 3
-            }, {
-                icon: 'fas fa-image',
-                label: 'SIDEBAR.CharArt',
-                action: 'showPortraitArtwork',
-                ownership: 3
-            }, {
-                icon: 'fas fa-image',
-                label: 'SIDEBAR.TokenArt',
-                action: 'showTokenArtwork',
-                ownership: 3
-            }, {
                 icon: 'fas fa-rotate',
                 label: PTA.generic.sync,
                 action: 'syncData',
@@ -55,10 +40,10 @@ export default class PtaPokemonSheet extends PtaActorSheet {
     }
 
     static TABS = {
-        features: { id: "features", group: "primary", label: "PTA.Tab.Features" },
-        effects: { id: "effects", group: "primary", label: "PTA.Tab.Effects" },
-        details: { id: "details", group: "primary", label: "PTA.Tab.Details" },
-        pokedex: { id: "pokedex", group: "primary", label: "PTA.Tab.Pokedex" },
+        features: { id: "features", group: "primary", label: "PTA.Tab.Features", icon: "fa-user" },
+        effects: { id: "effects", group: "primary", label: "PTA.Tab.Effects", icon: "fa-sparkles" },
+        details: { id: "details", group: "primary", label: "PTA.Tab.Details", icon: "fa-book" },
+        pokedex: { id: "pokedex", group: "primary", label: "PTA.Tab.Pokedex", icon: "fa-circle-info" },
     }
 
     tabGroups = {
@@ -95,6 +80,15 @@ export default class PtaPokemonSheet extends PtaActorSheet {
 
         await this.document.update({ system: update_data })
         this.render(false);
+    }
+
+    async _renderFrame(options) {
+        const frame = await super._renderFrame(options);
+
+        frame.appendChild(await this._renderBookmarks(options));
+
+        // send back the final frame
+        return frame;
     }
 
     //============================================================================================================

@@ -109,16 +109,21 @@ export default class PokeballData extends ItemData {
     async use(event, options) {
         if (!this.actor) return void pta.utils.warn("Can't throw a pokeball without a trainer!");
         if (this.quantity <= 0) return void console.warn("You need to ahve one to use one");
-        let rollData = this.getRollData();
+        const rollData = this.getRollData();
 
-        let hitRoll = new Roll(`1d20x + @spd.mod`, rollData, {});
+        const hitRoll = new Roll(`1d20x + @spd.mod`, rollData, {});
         await hitRoll.evaluate();
 
-        let captureRoll = new Roll(`1d100 + (${this.capture.base} + ${this.capture.conditional})`);
+        const captureRoll = new Roll(`1d100 + (${this.capture.base} + ${this.capture.conditional})`);
         await captureRoll.evaluate();
 
         let messageData = {
-            content: '',
+            content: `
+                <b>Accuracy</b>
+                ${await hitRoll.render()}
+                <b>Capture Roll</b>
+                ${await captureRoll.render()}
+            `,
             flavor: `${this.actor.name} threw a ${this.parent.name}!`,
             speaker: ChatMessage.getSpeaker({ actor: this.actor }),
             sound: 'systems/rpta3/assets/sfx/pokeball-throw.mp3',
