@@ -97,12 +97,15 @@ ol.items-list {
     .item-quantity {
       display: flex;
       flex-direction: row;
+      flex-wrap: nowrap;
       flex: 0;
 
       .item-count {
         text-align: center;
         min-width: 3em;
-        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       >* {

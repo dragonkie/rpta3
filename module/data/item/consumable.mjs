@@ -222,8 +222,11 @@ export default class ConsumableData extends ItemData {
             // Converts the target actor into a data object to manipulate
             // if something fails along the way, we can abandon changes then
             const _uDoc = target_actor.toObject();
-
+            const message_data= {content: "", flavor: "", speaker: this.actor};
             try {
+                if (this.actor.uuid == target_actor.uuid) message_data.content += `${this.actor.name} used a ${this.parent.name} on themself!`;
+                else message_data.content += `${this.actor.name} used a ${this.parent.name} on ${target_actor.name}`;
+
                 // verify that the pokemon isn't fainted, or that this item is a revive in that case
                 if (target_actor.system.fainted && !this.effects.revive) throw new Error("This item can't be used on a fainted Pokémon!");
 
@@ -243,7 +246,7 @@ export default class ConsumableData extends ItemData {
                 this.parent.sheet.render(false);
 
                 // Generate the chat message
-                const msg = PtaChatMessage.create({ content: `Consumed a ${this.parent.name}` });
+                const msg = PtaChatMessage.create(message_data);
             } catch (err) {
                 pta.utils.error(err.message)
             }

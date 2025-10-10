@@ -13,6 +13,7 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
             itemEdit: this._onEditItem,
             itemQuantity: this._onChangeItemQuantity,
             itemUse: this._onUseItem,
+            use: this._onUseItem,
             editResistance: this._onEditResistance,
             roll: this._onRoll,
             importMoves: this._onImportMoves,

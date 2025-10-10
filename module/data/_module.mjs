@@ -10,6 +10,7 @@ import ConsumableData from "./item/consumable.mjs";
 import FeatureData from "./item/feature.mjs";
 import MoveData from "./item/move.mjs";
 import PokeballData from "./item/pokeball.mjs";
+import RuneData from "./item/rune.mjs";
 
 export const ActorModels = {
     ActorData,
@@ -27,12 +28,14 @@ export const ActorConfig = {
 export const ItemModels = {
     ItemData,
     FeatureData,
-    ConsumableData
+    ConsumableData,
+    RuneData
 }
 
 export const ItemConfig = {
-    consumable: ConsumableData,
     pokeball: PokeballData,
+    consumable: ConsumableData,
     feature: FeatureData,
-    move: MoveData
+    move: MoveData,
+    rune: RuneData
 }

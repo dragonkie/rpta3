@@ -11,6 +11,7 @@ import PtaMoveSheet from "./sheets/item/move.mjs";
 import PokemonImporter from "./apps/pokemon-importer.mjs";
 import ServerBrowser from "./apps/server-browser.mjs";
 import MoveImporter from "./apps/move-importer.mjs";
+import PtaRuneSheet from "./sheets/item/rune.mjs";
 
 
 
@@ -87,6 +88,12 @@ export default {
                     options: {
                         label: 'TYPES.Item.equipment',
                         types: ['equipment']
+                    }
+                }, {
+                    application: PtaRuneSheet,
+                    options: {
+                        label: 'TYPES.Item.Rune',
+                        types: ['rune']
                     }
                 }
             ]

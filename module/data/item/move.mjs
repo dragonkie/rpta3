@@ -11,6 +11,9 @@ export default class MoveData extends ItemData {
         const isRequired = { required: true, nullable: false };
         const schema = super.defineSchema();
 
+        // Remove unneccessary fields
+        delete schema.quantity;
+
         // is this a physical, special, or effect move
         // moves that deal damage are still classified as physical / effect, such as ember
         const MoveClasses = {};

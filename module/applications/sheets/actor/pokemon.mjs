@@ -29,11 +29,14 @@ export default class PtaPokemonSheet extends PtaActorSheet {
         const p = super.PARTS;
         // Load in the main body
         p.body = { template: 'systems/rpta3/templates/actor/pokemon/body.hbs' };
+
         // Load in the template tabs
         p.features = { template: 'systems/rpta3/templates/actor/pokemon/features.hbs' };
         p.effects = { template: 'systems/rpta3/templates/actor/parts/actor-effects.hbs' };
         p.pokedex = { template: 'systems/rpta3/templates/actor/pokemon/pokedex.hbs' };
-        p.details = { template: 'systems/rpta3/templates/actor/pokemon/details.hbs' }
+        p.details = { template: 'systems/rpta3/templates/actor/pokemon/details.hbs' };
+        p.runes = { template: 'systems/rpta3/templates/actor/pokemon/runes.hbs' };
+
         // Populate the tabs with further parts
         p.abilities = { template: 'systems/rpta3/templates/actor/parts/abilities.hbs' };
         return p;
@@ -44,6 +47,7 @@ export default class PtaPokemonSheet extends PtaActorSheet {
         effects: { id: "effects", group: "primary", label: "PTA.Tab.Effects", icon: "fa-sparkles" },
         details: { id: "details", group: "primary", label: "PTA.Tab.Details", icon: "fa-book" },
         pokedex: { id: "pokedex", group: "primary", label: "PTA.Tab.Pokedex", icon: "fa-circle-info" },
+        runes: {id: "runes", group: "primary", label: "PTA.Tab.Runes", icon: "fa-gem"}
     }
 
     tabGroups = {

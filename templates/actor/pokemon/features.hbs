@@ -21,7 +21,8 @@
             </a>
             {{/if}}
             <a class="item-control fas fa-edit" data-action="itemEdit" title="Edit"></a>
-            {{#if @root.isEditMode}}<a class="item-control fas fa-trash" data-action="itemDelete" title="Update undefined"></a>{{/if}}
+            {{#if @root.isEditMode}}<a class="item-control fas fa-trash" data-action="itemDelete"
+                title="Delete"></a>{{/if}}
         </div>
     </div>
     <div class="collapsible-content" style="width: 100%;">
@@ -50,7 +51,7 @@
         </span>
         <ol class="pta-move-list items-list">
             {{#each items as | item key |}}
-            {{> 'pokemon-move' item=item}}
+            {{#if (eq item.type 'move')}}{{> 'pokemon-move' item=item}}{{/if}}
             {{/each}}
         </ol>
     </div>

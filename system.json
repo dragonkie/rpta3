@@ -39,8 +39,8 @@
             "path": "lang/en.json"
         }
     ],
-    "packs": [ ],
-    "packFolders": [ ],
+    "packs": [],
+    "packFolders": [],
     "socket": true,
     "url": "https://github.com/dragonkie/RPTA3-FVTT",
     "manifest": "https://github.com/dragonkie/RPTA3-FVTT/releases/latest/download/system.json",
@@ -54,16 +54,17 @@
     "secondaryTokenAttribute": "",
     "documentTypes": {
         "Actor": {
-            "character": { },
-            "npc": { },
-            "pokemon": { }
+            "character": {},
+            "npc": {},
+            "pokemon": {}
         },
         "Item": {
-            "equipment": { },
-            "feature": { },
-            "move": { },
-            "pokeball": { },
-            "consumable": { }
+            "pokeball": {},
+            "consumable": {},
+            "feature": {},
+            "move": {},
+            "equipment": {},
+            "rune": {}
         }
     }
 }
