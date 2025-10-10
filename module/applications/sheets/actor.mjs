@@ -13,6 +13,7 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
             itemEdit: this._onEditItem,
             itemQuantity: this._onChangeItemQuantity,
             itemUse: this._onUseItem,
+            itemSort: this._onSortItemMethod,
             use: this._onUseItem,
             editResistance: this._onEditResistance,
             roll: this._onRoll,
@@ -112,6 +113,46 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
             modal: true
         });
         if (confirm) return item.delete();
+    }
+
+    static SORTING_METHODS = {
+        NAME: 1,
+        TYPE: 2,
+    }
+
+    static async _onSortItemMethod(event, target) {
+        var method = this.document.getFlag("world", "item-sorting");
+        if (method != 1) method = 1;
+        else method = 2;
+
+        var updates = [];
+
+        if (method == this.constructor.SORTING_METHODS.NAME) {
+            var sorted = this.document.items.contents.sort((a, b) => {
+                return a.name.localeCompare(b.name);
+            });
+
+            var c = 100;
+            sorted.forEach(item => {
+                updates.push({ _id: item.id, sort: c });
+                c += 100;
+            });
+
+        } else if (method == this.constructor.SORTING_METHODS.TYPE) {
+            var sorted = this.document.items.contents.sort((a, b) => {
+                return a.type.localeCompare(b.type);
+            });
+
+            var c = 100;
+            sorted.forEach(item => {
+                updates.push({ _id: item.id, sort: c });
+                c += 100;
+            });
+        }
+
+        console.log(updates);
+        this.document.setFlag("world", "item-sorting", method);
+        this.document.updateEmbeddedDocuments("Item", updates);
     }
 
     static async _onChangeItemQuantity(event, target) {
@@ -266,8 +307,10 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
         siblings = await Promise.all(Array.from(siblings).map(s => fromUuid(s.dataset.itemUuid)));
         siblings.findSplice(i => i === item);
 
-        let updates = SortingHelpers.performIntegerSort(item, { target: sibling, siblings: siblings, sortKey: "sort" });
+        let updates = foundry.utils.performIntegerSort(item, { target: sibling, siblings: siblings, sortKey: "sort" });
+        console.log(updates);
         updates = updates.map(({ target, update }) => ({ _id: target.id, sort: update.sort }));
+        console.log(updates);
         this.document.updateEmbeddedDocuments("Item", updates);
     }
 }
