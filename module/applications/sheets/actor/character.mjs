@@ -68,18 +68,6 @@ export default class PtaCharacterSheet extends PtaTrainerMixin(PtaActorSheet) {
     async _prepareContext() {
         const context = await super._prepareContext();
 
-        context.skills = {};
-        for (const [key, value] of Object.entries(this.document.system.skills).sort((a, b) => {
-            let val = a[1].stat.localeCompare(b[1].stat);
-            return val;
-        })) {
-            context.skills[key] = value;
-            context.skills[key].label = {
-                long: pta.utils.localize(CONFIG.PTA.skills[key]),
-                abbr: pta.utils.localize(CONFIG.PTA.skillsAbbr[key])
-            }
-        }
-
         context.pokemon = [];
         for (const pkmn of this.document.system.pokemon) {
             const poke = await fromUuid(pkmn.uuid);

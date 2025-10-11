@@ -60,6 +60,18 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
             context.stats[key].field = this.document.system.schema.getField(`stats.${key}`);
         }
 
+        context.skills = {};
+        for (const [key, value] of Object.entries(this.document.system.skills).sort((a, b) => {
+            let val = a[1].stat.localeCompare(b[1].stat);
+            return val;
+        })) {
+            context.skills[key] = value;
+            context.skills[key].label = {
+                long: pta.utils.localize(CONFIG.PTA.skills[key]),
+                abbr: pta.utils.localize(CONFIG.PTA.skillsAbbr[key])
+            }
+        }
+
         context.effects = {
             passive: {
                 label: "PTA.Effect.Passive",

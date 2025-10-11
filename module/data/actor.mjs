@@ -47,6 +47,30 @@ export default class ActorData extends DataModel {
       }), { initial: [], nullable: false });
 
     //====================================================================================
+    //> Skill fields
+    //====================================================================================
+    const _getSkillField = () => {
+      let _field = {};
+      // loop through list of skills
+      for (const [skill, stat] of Object.entries(PTA.skillAbilities)) {
+        // grab the stats that matches this skill
+        for (const [key, value] of Object.entries(PTA.stats)) {
+          if (stat === value) _field[skill] = new SchemaField({
+            talent: new NumberField({ ...requiredInteger, max: 2, min: 0, initial: 0 }),
+            stat: new StringField({ required: true, nullable: false, initial: key }),
+            value: new NumberField({ ...requiredInteger, initial: 0 }),
+            bonus: new NumberField({ ...requiredInteger, initial: 0 })
+          })
+        }
+      }
+      console.log("skill fields", _field);
+      return new SchemaField(_field);
+    }
+
+    console.log(_getSkillField());
+    schema.skills = _getSkillField();
+
+    //====================================================================================
     //> Bonus fields
     //====================================================================================
     schema.bonuses = new SchemaField({
@@ -64,8 +88,21 @@ export default class ActorData extends DataModel {
   prepareDerivedData() {
     super.prepareDerivedData();
 
-    // applys conditions relevant to token statuses
+    // after status modifiers are applied, we can total up the final value of the stats
+    for (const key in this.stats) {
+      this.stats[key].total += (this.stats[key].value + this.stats[key].bonus) * utils.AbilityStage(this.stats[key].boost);
+      this.stats[key].mod = Math.floor(this.stats[key].total / 2);
+    }
 
+    // calculate skill totals
+    for (const key in this.skills) {
+      let skill = this.skills[key];
+      let stat = this.stats[skill.stat];
+      console.log({ v: skill.value, m: stat.mod, t: skill.talent, b: skill.bonus });
+      skill.total = skill.value + stat.mod + Math.floor(skill.talent * 2.5) + skill.bonus;
+    }
+
+    // applys conditions relevant to token statuses
     for (const status of this.parent.statuses) {
       switch (status) {
         case 'burn':
@@ -80,12 +117,6 @@ export default class ActorData extends DataModel {
           break;
         default: break;
       }
-    }
-
-    // after status modifiers are applied, we can total up the final value of the stats
-    for (const key in this.stats) {
-      this.stats[key].total += (this.stats[key].value + this.stats[key].bonus) * utils.AbilityStage(this.stats[key].boost);
-      this.stats[key].mod = Math.floor(this.stats[key].total / 2);
     }
   }
 

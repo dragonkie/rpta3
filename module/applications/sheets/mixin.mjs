@@ -315,11 +315,13 @@ export default function PtaSheetMixin(Base) {
 
         async _onDrop(event) {
             event.preventDefault();
+            if (!this.isEditable) return;
+
+            // Get event data
             const target = event.target;
             const EventData = foundry.applications.ux.TextEditor.getDragEventData(event);
             const { type, uuid } = EventData
 
-            if (!this.isEditable) return;
             const item = await fromUuid(uuid);
 
             // If dropped onto self, perform sorting.

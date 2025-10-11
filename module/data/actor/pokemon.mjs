@@ -72,9 +72,6 @@ export default class PokemonData extends ActorData {
 
     })
     schema.gender = new StringField({ ...isRequired, initial: 'male', label: PTA.generic.gender });
-    schema.skills = new SchemaField({
-
-    })
     schema.shiny = new BooleanField({ ...isRequired, initial: false, label: PTA.generic.shiny });
     schema.contest = new SchemaField({
 

@@ -494,8 +494,9 @@ ol.items-list .item-name h4 {
 }
 ol.items-list .item-controls {
   display: flex;
-  flex: 0 0 100px;
+  flex: 0 1 100px;
   justify-content: flex-end;
+  margin: 0 0.3rem;
 }
 ol.items-list .item-controls a {
   font-size: 12px;
@@ -1108,3 +1109,5 @@ ol.pta-pokemon-team .pta-pokemon .details .health {
   border: none;
   image-rendering: pixelated;
 }
+
+/*# sourceMappingURL=rpta3.css.map */

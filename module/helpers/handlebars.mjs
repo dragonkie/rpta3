@@ -6,6 +6,7 @@ function registerTemplates() {
         `shared/tabs-nav`,
         `shared/tabs-content`,
         // actor partials
+        `actor/parts/actor-skills`,
         `actor/parts/list-item`,
         `actor/parts/trainer-pc-cards`,
         `actor/parts/trainer-pc-grid`,

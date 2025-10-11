@@ -16,25 +16,6 @@ export default class CharacterData extends ActorData {
     schema.rank = new NumberField({ ...requiredInteger, initial: 0, label: PTA.generic.rank });
     schema.origin = new StringField({ initial: "", label: PTA.generic.origin });
 
-    // helper function for defining skills
-    const _getSkillField = () => {
-      let _field = {};
-      // loop through list of skills
-      for (const [skill, stat] of Object.entries(PTA.skillAbilities)) {
-        // grab the stats that matches this skill
-        for (const [key, value] of Object.entries(PTA.stats)) {
-          if (stat === value) _field[skill] = new SchemaField({
-            talent: new NumberField({ ...requiredInteger, max: 2, min: 0, initial: 0 }),
-            stat: new StringField({ required: true, nullable: false, initial: key }),
-            value: new NumberField({ ...requiredInteger, initial: 0 }),
-            bonus: new NumberField({ ...requiredInteger, initial: 0 })
-          })
-        }
-      }
-      return new SchemaField(_field);
-    }
-
-    schema.skills = _getSkillField();
     schema.credits = new NumberField({ ...requiredInteger, initial: 0 });
 
     // list of owned pokemon
@@ -65,11 +46,6 @@ export default class CharacterData extends ActorData {
 
   prepareDerivedData() {
     super.prepareDerivedData();
-    for (const key in this.skills) {
-      let skill = this.skills[key]
-      let stat = this.stats[skill.stat];
-      skill.total = skill.value + stat.mod + Math.floor(skill.talent * 2.5) + skill.bonus;
-    }
 
     this.level = this.class_1.level = this.rank;
 
