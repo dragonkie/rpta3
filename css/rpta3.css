@@ -765,17 +765,31 @@ ol.pta-pokemon-team .pta-pokemon .details .health {
   opacity: 1;
 }
 
-.pta-grid-item {
+.search-results .pta-grid-item {
+  min-height: 100px;
+  min-width: 100px;
+  flex: 0;
   border: 1px solid rgb(174, 174, 174);
   border-radius: 5px;
   transition: flex 0.2s ease-in-out;
   transition: all 0.2s;
   background-color: rgba(255, 255, 255, 0);
 }
-.pta-grid-item:hover {
+.search-results .pta-grid-item:hover {
   border-color: white;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.15);
+}
+
+.pta-selection-list {
+  white-space: nowrap;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+.pta-selection-list .wrapper [data-pokemon] {
+  word-break: keep-all;
+  word-wrap: break-word;
+  flex: 0;
 }
 
 .progress-bar {
@@ -1085,9 +1099,6 @@ ol.pta-pokemon-team .pta-pokemon .details .health {
 }
 .pta .pta-tab[data-application-part=features] [data-application-part=abilities] {
   flex: 0;
-}
-.pta img {
-  image-rendering: pixelated;
 }
 .pta .remote-image-browser .sprite-gallery {
   display: grid;

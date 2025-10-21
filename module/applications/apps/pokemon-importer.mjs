@@ -40,7 +40,7 @@ export default class PokemonImporter extends PtaApplication {
 
     static async _onSelect(event, target) {
         // get the relevant data ready to use
-        const selection_list = this.element.querySelector('.selection-list .wrapper');
+        const selection_list = this.element.querySelector('.pta-selection-list .wrapper');
         const pokemon_name = target.closest('[data-pokemon]').dataset.pokemon;
 
         // add the pokemon to our list of selections
@@ -52,7 +52,6 @@ export default class PokemonImporter extends PtaApplication {
         // add an element to the selection list so theu can be tracked / removed
         let ele = document.createElement('DIV');
         ele.setAttribute('data-pokemon', pokemon.name);
-        ele.setAttribute('style', 'flex: 0');
         selection_list.appendChild(ele);
         ele.innerHTML = `
             <a class="content-link" data-action="remove">${pokemon.name} <i class="fas fa-trash"></i></a>
