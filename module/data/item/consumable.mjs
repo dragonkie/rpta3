@@ -319,7 +319,6 @@ export default class ConsumableData extends ItemData {
     }
 
     async _onCure(actor) {
-        console.log(actor.effects);
         // loop through and eliminate all negative status ailments on a pokemon
         if (this.effects.cure == 'all') {
             for (const effect of actor.effects.contents) {

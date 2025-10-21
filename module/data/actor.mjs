@@ -63,11 +63,9 @@ export default class ActorData extends DataModel {
           })
         }
       }
-      console.log("skill fields", _field);
       return new SchemaField(_field);
     }
 
-    console.log(_getSkillField());
     schema.skills = _getSkillField();
 
     //====================================================================================
@@ -98,7 +96,6 @@ export default class ActorData extends DataModel {
     for (const key in this.skills) {
       let skill = this.skills[key];
       let stat = this.stats[skill.stat];
-      console.log({ v: skill.value, m: stat.mod, t: skill.talent, b: skill.bonus });
       skill.total = skill.value + stat.mod + Math.floor(skill.talent * 2.5) + skill.bonus;
     }
 

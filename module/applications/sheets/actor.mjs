@@ -162,7 +162,6 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
             });
         }
 
-        console.log(updates);
         this.document.setFlag("world", "item-sorting", method);
         this.document.updateEmbeddedDocuments("Item", updates);
     }
@@ -320,9 +319,7 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
         siblings.findSplice(i => i === item);
 
         let updates = foundry.utils.performIntegerSort(item, { target: sibling, siblings: siblings, sortKey: "sort" });
-        console.log(updates);
         updates = updates.map(({ target, update }) => ({ _id: target.id, sort: update.sort }));
-        console.log(updates);
         this.document.updateEmbeddedDocuments("Item", updates);
     }
 }

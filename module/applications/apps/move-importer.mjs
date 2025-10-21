@@ -157,7 +157,6 @@ export default class MoveImporter extends PtaApplication {
 
             // select the right data array to search in
             const sArray = utils.duplicate(PTA.Pokedex.Moves).sort();
-            if (!sArray) return void console.error('didnt find an array');
 
             // prepare the search indexing
             let dist = Math.floor(sArray.length - 1) / 2;
@@ -167,7 +166,7 @@ export default class MoveImporter extends PtaApplication {
 
             //compare the strings and get five results
             while (!done) {
-                if (final) return void console.error('failed to find result');
+                if (final) return void console.warn('failed to find result');
                 // halves the distance the jump can be, if it hits 0 we fucked up and break the loop
                 dist = dist / 2;
                 if (dist <= 0.5) final = true; // if the jump distance makes it to less than one, we try one more time then quit

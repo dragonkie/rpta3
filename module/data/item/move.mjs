@@ -103,7 +103,6 @@ export default class MoveData extends ItemData {
     //> Actions 
     //=====================================================================================================
     async use(event, target, action) {
-        console.log("Move was triggered", [event, target, action]);
         if (action == 'reload') return this._onUseReload(event, target);
         return this._onUseAttack(event, target);
     }
@@ -122,8 +121,6 @@ export default class MoveData extends ItemData {
         const rolldata = this.getRollData();
         if (!rolldata) return void utils.error('PTA.Error.RolldataMissing');
 
-
-        console.log("Roll attack!")
         //============================================================================
         //>-- Roll attack for all targets
         //============================================================================

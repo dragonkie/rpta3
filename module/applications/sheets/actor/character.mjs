@@ -138,7 +138,6 @@ export default class PtaCharacterSheet extends PtaTrainerMixin(PtaActorSheet) {
 
     async _onSummonPokemon(event) {
         console.log('Dropping pokemon');
-        console.log(event);
     }
 
     /**

@@ -17,6 +17,5 @@ export default class RuneData extends ItemData {
     async _onEquip(event, target) {
         await this.parent.update({ system: { equipped: !this.equipped } });
         this.actor.sheet.render(false);
-        console.log("Set rune equipped to:", this.equipped)
     }
 }
