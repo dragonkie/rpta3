@@ -340,13 +340,20 @@ export function PtaTrainerMixin(BaseApplication) {
             const inputs = this.element.querySelectorAll('[data-query]');
 
             const cb = async () => {
-                for (const input of inputs) {
-                    if (input.dataset.query == 'name') {
-                        for (const ele of pokebox.querySelectorAll('[data-pokemon-uuid]')) {
-                            const pokemon = await fromUuid(ele.dataset.pokemonUuid);
-                            if (pokemon.name.toLowerCase().includes(input.value.toLowerCase())) ele.classList.remove('obliterated');
-                            else ele.classList.add('obliterated');
+                for (const ele of pokebox.querySelectorAll('[data-pokemon-uuid]')) {
+                    ele.classList.remove('obliterated');
+                    const pokemon = await fromUuid(ele.dataset.pokemonUuid);
+
+                    for (const input of inputs) {
+                        if (input.dataset.query == 'name') {
+                            let query = input.value.toLowerCase();
+                            if (query == "") continue;
+                            if (!pokemon.name.toLowerCase().startsWith(query) && !pokemon.system.species.toLowerCase().startsWith(query)) ele.classList.add('obliterated');
                         }
+
+                        if (input.dataset.query == 'female' && input.checked && pokemon.system.gender.toLowerCase() != "female") ele.classList.add('obliterated');
+                        if (input.dataset.query == 'male' && input.checked && pokemon.system.gender.toLowerCase() != "male") ele.classList.add('obliterated');
+                        if (input.dataset.query == 'shiny' && !pokemon.system.shiny == input.checked) ele.classList.add('obliterated');
                     }
                 }
             }
