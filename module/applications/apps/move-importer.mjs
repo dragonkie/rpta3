@@ -93,7 +93,7 @@ export default class MoveImporter extends PtaApplication {
         ele.setAttribute('style', 'flex: 0');
         selection_list.appendChild(ele);
         ele.innerHTML = `
-            <a class="content-link" data-action="remove">${move_name} <i class="fas fa-trash"></i></a>
+            <a class="content-link flexrow nowrap" data-action="remove">${move_name} <i class="fas fa-trash"></i></a>
         `;
     }
 
