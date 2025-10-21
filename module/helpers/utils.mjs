@@ -214,6 +214,17 @@ export default class utils {
         );
     }
 
+    static fuzzyMatch(str, term, ratio) {
+        var string = str.toLowerCase();
+        var compare = term.toLowerCase();
+        var matches = 0;
+        if (string.indexOf(compare) > -1) return true;
+        for (var i = 0; i < compare.length; i++) {
+            string.indexOf(compare[i]) > -1 ? matches += 1 : matches -= 1;
+        }
+        return (matches / str.length >= ratio || term == "")
+    }
+
     static randomNature(options = {}) {
         let _options = {
             use: [],
