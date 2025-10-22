@@ -3,9 +3,9 @@
     {{systemFieldGroup system 'effects.heal.value' label='Healing flat'}}
     {{systemFieldGroup system 'effects.heal.percent' label='Healing percent'}}
     {{systemFieldGroup system 'effects.cure'}}
+    
     {{#unless (eq system.target 'trainer')}}
-    {{systemFieldGroup system 'effects.revive' label='Revive'}}
-    {{systemFieldGroup system 'canHold'}}
-    {{systemFieldGroup system 'flavour'}}
+        {{systemFieldGroup system 'effects.revive' label='Revive'}}
+        {{systemFieldGroup system 'flavour'}}
     {{/unless}}
 </div>
