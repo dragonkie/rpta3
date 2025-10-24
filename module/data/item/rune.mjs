@@ -1,4 +1,5 @@
 import { PTA } from "../../helpers/config.mjs";
+import utils from "../../helpers/utils.mjs";
 import ItemData from "../item.mjs";
 const {
     ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField
@@ -12,12 +13,20 @@ export default class RuneData extends ItemData {
         // is this rune equipped right now
         schema.equipped = new BooleanField({ initial: false, nullable: false });
 
-        // Adds in stat modifiers
-        // adds in stat growth
-        // adds in stat shrink
-        // adds in stat multipliers
+        // add in modifier methods
+        const methods = {};
+        for (const m in PTA.modifierMethods) methods[m] = utils.localize(PTA.modifierMethods[m]);
+
         schema.stats = new SchemaField(Object.keys(CONFIG.PTA.stats).reduce((obj, stat) => {
             obj[stat] = new SchemaField({
+                value: new NumberField({ ...requiredInteger, initial: 0 }),
+                method: new StringField({
+                    required: true,
+                    nullable: false,
+                    initial: 'add',
+                    label: PTA.generic.method,
+                    choices: methods
+                }),
                 mod: new NumberField({ ...requiredInteger, initial: 0 }),
                 grow: new NumberField({ ...requiredInteger, initial: 0 }),
                 shrink: new NumberField({ ...requiredInteger, initial: 0 }),
@@ -31,15 +40,19 @@ export default class RuneData extends ItemData {
         // prep attack modifier data field types
         function OffensiveFields() {
             // add in default options
+            const validator = (value, options) => {
+                if (!Roll.validate(value) && value != "") throw new Error("PTA.Error.InvalidFormulaFormat");
+                else return true;
+            }
             const options = {
-                all: new NumberField({ ...requiredInteger, initial: 0 }),
-                physical: new NumberField({ ...requiredInteger, initial: 0 }),
-                special: new NumberField({ ...requiredInteger, initial: 0 }),
+                all: new StringField({ ...requiredInteger, initial: 0, validate: validator }),
+                physical: new StringField({ ...requiredInteger, initial: 0, validate: validator }),
+                special: new StringField({ ...requiredInteger, initial: 0, validate: validator }),
             };
 
             // add in fields for all the pokemon types
             for (const type in PTA.pokemonTypes) {
-                options[type] = new NumberField({ ...requiredInteger, initial: 0 });
+                options[type] = new StringField({ ...requiredInteger, initial: 0, validate: validator });
             }
 
             return new SchemaField(options);

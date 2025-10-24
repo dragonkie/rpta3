@@ -99,6 +99,7 @@ PTA.generic = {
   type: 'PTA.Generic.Type.long',
   types: 'PTA.Generic.Type.plural',
   weight: 'PTA.Generic.Weight',
+  method: 'PTA.Generic.Method',
 }
 
 PTA.dice = {
@@ -129,6 +130,18 @@ PTA.moveClass = {
   special: 'PTA.Generic.Special',
   physical: 'PTA.Generic.Physical',
   status: 'PTA.Generic.Status'
+}
+
+//======================================================================
+//> Rune stat methods
+//======================================================================
+PTA.modifierMethods = {
+  add: 'PTA.Method.Add',
+  subtract: 'PTA.Method.Subtract',
+  grow: 'PTA.Method.Grow',
+  shrink: 'PTA.Method.Shrink',
+  multiply: 'PTA.Method.Multiply',
+
 }
 
 //======================================================================
@@ -419,8 +432,8 @@ PTA.typeEffectiveness = {
     immune: ['steel'],
   },
   nuclear: {
-    double: ['psychic','water','ground'],
-    half: ['nuclear','water','poison','dragon'],
+    double: ['psychic', 'water', 'ground'],
+    half: ['nuclear', 'water', 'poison', 'dragon'],
     immune: ['fairy'],
   }
 };

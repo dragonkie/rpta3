@@ -154,6 +154,13 @@
       },
       "Weight": "Weight"
     },
+    "Method": {
+      "Add": "Add",
+      "Subtract": "Subtract",
+      "Grow": "Grow",
+      "Shrink": "Shrink",
+      "Multiply": "Multiply"
+    },
     "Nature": {
       "Adamant": "Adamant",
       "Bashful": "Bashful",

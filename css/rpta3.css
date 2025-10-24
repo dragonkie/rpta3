@@ -339,6 +339,12 @@
 .pta .flex-overflow {
   flex-wrap: wrap;
 }
+.pta .flex-wrap {
+  flex-wrap: wrap;
+}
+.pta .flex-nowrap {
+  flex-wrap: nowrap;
+}
 
 /* Components */
 /* Import utilities */
@@ -417,6 +423,8 @@
 
 .text-nowrap {
   text-wrap: nowrap;
+  word-break: keep-all;
+  word-wrap: break-word;
 }
 
 .form-group {
@@ -440,6 +448,13 @@
 }
 .form-group.stacked label {
   flex: 0;
+}
+
+.pta-link-wrap {
+  border-radius: 4px;
+  border: var(--pta-border, 1px solid rgb(159, 132, 117));
+  background: var(--pta-link-bg, rgba(255, 255, 255, 0.1));
+  padding: 0.2rem 0.5rem;
 }
 
 .resource-label {

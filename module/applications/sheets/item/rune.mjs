@@ -20,29 +20,89 @@ export default class PtaRuneSheet extends PtaItemSheet {
         return p;
     }
 
-    static async _onEditAttackFields(event, target) {
-        let content = `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">`;
+    async _prepareContext() {
+        const context = await super._prepareContext();
 
-        for (const key of Object.keys(this.document.system.attack)) {
-            let label = utils.localize(PTA.pokemonTypes[key]) || "MISSING";
-            let value = this.document.system.attack[key];
-
-            let ele = new foundry.data.fields.NumberField({
-                name: key,
-                label: label,
-                initial: value,
-                required: true,
-                blank: false,
-            }).toFormGroup({}, {name: key});
-
-            content += ele.outerHTML;
+        context.fields = {
+            stats: {}
+        };
+        for (const [key, stat] of Object.entries(this.document.system.stats)) {
+            context.fields.stats[key] = {
+                method: `stats.${key}.method`,
+                value: `stats.${key}.value`,
+                label: utils.localize(PTA.stats[key])
+            };
         }
-        content += '</div>';
 
-        let app = await new PtaDialog({
-            window: { title: 'ATTACK MODIFIERS' },
-            id: `Item.${this.document.id}.attack-config`,
-            content: content,
+        return context;
+    }
+
+    static async _onEditAttackFields(event, target) {
+        const context = {
+            path: "system.attack",
+            fields: {}
+        };
+
+        for (const [key, value] of Object.entries(this.document.system.attack)) {
+            let label = utils.localize(PTA.pokemonTypes[key]) || key;
+            context.fields[key] = { label: label, value: value };
+        }
+
+        // render the template
+        return this._configDialogRender(context, { title: "", id: "" });
+    }
+
+    static async _onEditDamageFields(event, target) {
+        const context = {
+            path: "system.damage",
+            fields: {}
+        };
+
+        for (const [key, value] of Object.entries(this.document.system.damage)) {
+            let label = utils.localize(PTA.pokemonTypes[key]) || key;
+            context.fields[key] = { label: label, value: value };
+        }
+
+        // render the template
+        return this._configDialogRender(context, { title: "", id: "" });
+    }
+
+    static async _onEditDodgeFields(event, target) {
+        const context = {
+            path: "system.dodge",
+            fields: {}
+        };
+
+        for (const [key, value] of Object.entries(this.document.system.dodge)) {
+            let label = utils.localize(PTA.pokemonTypes[key]) || key;
+            context.fields[key] = { label: label, value: value };
+        }
+
+        // render the template
+        return this._configDialogRender(context, { title: "", id: "" });
+    }
+
+    static async _onEditDefenceFields(event, target) {
+        const context = {
+            path: "system.defence",
+            fields: {}
+        };
+
+        for (const [key, value] of Object.entries(this.document.system.defence)) {
+            let label = utils.localize(PTA.pokemonTypes[key]) || key;
+            context.fields[key] = { label: label, value: value };
+        }
+
+        // render the template
+        return this._configDialogRender(context, { title: "", id: "" });
+    }
+
+    async _configDialogRender(context, options) {
+        const template = await foundry.applications.handlebars.renderTemplate("systems/rpta3/templates/dialog/rune-combat-fields.hbs", context);
+        const app = await new PtaDialog({
+            window: { title: utils.localize(options.title) },
+            id: options.id,
+            content: template,
             classes: ['pta'],
             buttons: [{
                 action: 'cancel',
@@ -58,25 +118,16 @@ export default class PtaRuneSheet extends PtaItemSheet {
 
                 for (const input of inputs) {
                     let n = input.name;
-                    let v = Number(input.value);
-                    if (v == 0) continue;
+                    let v = input.value;
                     data[n] = v;
                 }
 
-                this.document.update({ system: { attack: data } });
+                this.document.update(data);
             }
         }).render(true);
     }
 
-    static async _onEditDamageFields(event, target) {
-
-    }
-
-    static async _onEditDodgeFields(event, target) {
-
-    }
-
-    static async _onEditDefenceFields(event, target) {
+    static async _onRemoveMod(event, target) {
 
     }
 }

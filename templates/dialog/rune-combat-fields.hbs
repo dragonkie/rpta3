@@ -1,5 +1,17 @@
-<div class="flexcol flex-gap-m">
-    {{#each}}
-
+{{!-- 
+    Context options:
+    {String} path - The system path that holds these fields
+    {Object} fields - The actual datasets to be included
+    {String} fields[key].value - Value of the field
+    {String} fields[key].label - Localized label for the field
+--}}
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;" data-field="{{path}}">
+    {{#each fields as | field key |}}
+        <div class="form-group">
+            <label for="">{{field.label}}</label>
+            <div class="form-fields">
+                <input type="text" name="{{@root.path}}.{{key}}" value="{{field.value}}">
+            </div>
+        </div>
     {{/each}}
 </div>

@@ -1,14 +1,81 @@
 <div class="flexcol flex-gap-m">
-    <div class="flexrow flex-gap-s">
+    {{!-- Stat modifiers --}}
+    <div class="flexrow flex-gap-m">
+        {{#each fields.stats as | field key |}}
+            <div class="flexcol flex-gap-s">
+                {{log this}}
+                <div>{{field.label}}</div>
+                {{systemFieldInput @root.system field.value}}
+                {{systemFieldInput @root.system field.method}}
+            </div>
+        {{/each}}
+    </div>
+
+    {{!-- Attack accuracy modifiers --}}
+    <div class="flexcol flex-gap-s">
         <div><a data-action="editAttack" class="fas fa-cog"></a> Attack:</div>
+        <div class="flexrow flex-wrap flex-gap-s">
+            {{#each system.attack as | value key |}}
+                {{#if (and (not (eq value "")) (not (eq value "0")))}}
+                    <div class="flexrow flex0 text-nowrap flex-nowrap flex-gap-s pta-link-wrap">
+                        {{#if @root.isEditMode}}
+                            <a class="fas fa-trash" data-action="removeMod" data-field="system.attack.{{key}}"></a>
+                        {{/if}}
+                        <div class="text-nowrap">{{key}}: {{value}}</div>
+                    </div>
+                {{/if}}
+            {{/each}}
+        </div>
     </div>
-    <div class="flexrow flex-gap-s">
-        <div><a data-action="editAttack" class="fas fa-cog"></a> Damage:</div>
+
+    {{!-- Attack damage modifiers --}}
+    <div class="flexcol flex-gap-s">
+        <div><a data-action="editDamage" class="fas fa-cog"></a> Damage:</div>
+        <div class="flexrow flex-wrap flex-gap-s">
+            {{#each system.damage as | value key |}}
+                {{#if (and (not (eq value "")) (not (eq value "0")))}}
+                    <div class="flexrow flex0 text-nowrap flex-nowrap flex-gap-s pta-link-wrap">
+                        {{#if @root.isEditMode}}
+                            <a class="fas fa-trash" data-action="removeMod" data-field="system.damage.{{key}}"></a>
+                        {{/if}}
+                        <div class="text-nowrap">{{key}}: {{value}}</div>
+                    </div>
+                {{/if}}
+            {{/each}}
+        </div>
     </div>
-    <div class="flexrow flex-gap-s">
-        <div><a data-action="editAttack" class="fas fa-cog"></a> Dodge:</div>
+
+    {{!-- Dodge chance modifiers --}}
+    <div class="flexcol flex-gap-s">
+        <div><a data-action="editDodge" class="fas fa-cog"></a> Dodge:</div>
+        <div class="flexrow flex-wrap flex-gap-s">
+            {{#each system.dodge as | value key |}}
+                {{#if (and (not (eq value "")) (not (eq value "0")))}}
+                    <div class="flexrow flex0 text-nowrap flex-nowrap flex-gap-s pta-link-wrap">
+                        {{#if @root.isEditMode}}
+                            <a class="fas fa-trash" data-action="removeMod" data-field="system.dodge.{{key}}"></a>
+                        {{/if}}
+                        <div class="text-nowrap">{{key}}: {{value}}</div>
+                    </div>
+                {{/if}}
+            {{/each}}
+        </div>
     </div>
-    <div class="flexrow flex-gap-s">
-        <div><a data-action="editAttack" class="fas fa-cog"></a> Defence:</div>
+
+    {{!-- Damage reduction  modifiers --}}
+    <div class="flexcol flex-gap-s">
+        <div><a data-action="editDefence" class="fas fa-cog"></a> Defence:</div>
+        <div class="flexrow flex-wrap flex-gap-s">
+            {{#each system.defence as | value key |}}
+                {{#if (and (not (eq value "")) (not (eq value "0")))}}
+                    <div class="flexrow flex0 text-nowrap flex-nowrap flex-gap-s pta-link-wrap">
+                        {{#if @root.isEditMode}}
+                            <a class="fas fa-trash" data-action="removeMod" data-field="system.defence.{{key}}"></a>
+                        {{/if}}
+                        <div class="text-nowrap">{{key}}: {{value}}</div>
+                    </div>
+                {{/if}}
+            {{/each}}
+        </div>
     </div>
 </div>
