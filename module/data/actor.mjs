@@ -49,7 +49,7 @@ export default class ActorData extends DataModel {
     //====================================================================================
     //> Skill fields
     //====================================================================================
-    const _getSkillField = () => {
+    const _getSkillFields = () => {
       let _field = {};
       // loop through list of skills
       for (const [skill, stat] of Object.entries(PTA.skillAbilities)) {
@@ -66,13 +66,14 @@ export default class ActorData extends DataModel {
       return new SchemaField(_field);
     }
 
-    schema.skills = _getSkillField();
+    schema.skills = _getSkillFields();
 
     //====================================================================================
     //> Bonus fields
     //====================================================================================
     schema.bonuses = new SchemaField({
       attack: new NumberField({ initial: 0, required: true, nullable: false }),
+      hpMax: new NumberField({initial: 0, ...requiredInteger})
     })
 
     return schema;
@@ -85,6 +86,9 @@ export default class ActorData extends DataModel {
 
   prepareDerivedData() {
     super.prepareDerivedData();
+
+    // calculate max hp
+    this.hp.total = this.hp.max + this.bonuses.hpMax;
 
     // after status modifiers are applied, we can total up the final value of the stats
     for (const key in this.stats) {

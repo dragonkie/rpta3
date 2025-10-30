@@ -130,6 +130,8 @@
       "Eyes": "Eyes",
       "Gender": "Gender",
       "Hair": "Hair",
+      "Health": "Health",
+      "MaxHealth":"Max Health",
       "Height": "Height",
       "Import": "Import",
       "Nature": "Nature",

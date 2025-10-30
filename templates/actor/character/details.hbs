@@ -1,4 +1,4 @@
-<div class="pta-tab pta-tab-content">
+<div class="pta-tab pta-tab-content flexcol flex-gap-m">
     <div class="flexrow flex-gap-m">
         <div class="flexcol flex-gap-m">
             {{systemFieldGroup system 'details.age'}}
@@ -11,16 +11,13 @@
             {{systemFieldGroup system 'details.weight'}}
         </div>
     </div>
-    <div class="flexcol flex-gap-s">
-        {{#collapsible label='Description' collapsed=false cssClass='description'}}
-            {{formInput @root.description.field value=@root.description.value enriched=@root.description.enriched name='system.description' toggled=true}}
+    {{#collapsible label='Description' collapsed=false cssClass='description'}}
+        {{formInput @root.description.field value=@root.description.value enriched=@root.description.enriched name='system.description' toggled=true}}
+    {{/collapsible}}
+
+    {{#if (isGM)}}
+        {{#collapsible label='GM Notes (Private)' collapsed=true cssClass='description'}}
+            {{formInput @root.gmNotes.field value=@root.gmNotes.value enriched=@root.gmNotes.enriched name='system.gmNotes' toggled=true}}
         {{/collapsible}}
-
-        {{#if (isGM)}}
-            {{#collapsible label='GM Notes (Private)' collapsed=true cssClass='description'}}
-                {{formInput @root.gmNotes.field value=@root.gmNotes.value enriched=@root.gmNotes.enriched name='system.gmNotes' toggled=true}}
-            {{/collapsible}}
-        {{/if}}
-
-    </div>
+    {{/if}}
 </div>

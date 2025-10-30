@@ -4,6 +4,7 @@ import { PTA } from "../../../helpers/config.mjs";
 import PtaDialog from "../../dialog.mjs";
 
 export default class PtaRuneSheet extends PtaItemSheet {
+    /** @override */
     static DEFAULT_OPTIONS = {
         classes: ["rune"],
         actions: {
@@ -11,6 +12,7 @@ export default class PtaRuneSheet extends PtaItemSheet {
             editDamage: this._onEditDamageFields,
             editDodge: this._onEditDodgeFields,
             editDefence: this._onEditDefenceFields,
+            removeMod: this._onRemoveModifier,
         }
     }
 
@@ -20,6 +22,7 @@ export default class PtaRuneSheet extends PtaItemSheet {
         return p;
     }
 
+    /** @override */
     async _prepareContext() {
         const context = await super._prepareContext();
 
@@ -127,7 +130,18 @@ export default class PtaRuneSheet extends PtaItemSheet {
         }).render(true);
     }
 
-    static async _onRemoveMod(event, target) {
-
+    /**
+     * Quick delete button to remove a modifier from a rune rather than opening and editing it through its config window
+     * requires the sheet be put into edit mode
+     * @param {Event} event - the triggering event
+     * @param {HTMLElement} target - the event target
+     */
+    static async _onRemoveModifier(event, target) {
+        const data = {};
+        const field = target.closest('[data-field]')?.dataset.field;
+        if (!field) return void console.error("Failked to find field to delete");
+        data[field] = "";
+        await this.document.update(data);
+        this.render(false);
     }
 }

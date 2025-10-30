@@ -35,6 +35,8 @@ export default class RuneData extends ItemData {
             return obj;
         }, {}));
 
+        schema.hp = new NumberField({...requiredInteger, initial: 0, label: "PTA.Generic.MaxHealth"})
+
         schema.move = new NumberField({ ...requiredInteger, initial: 0 });
 
         // prep attack modifier data field types

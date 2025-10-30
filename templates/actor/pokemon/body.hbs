@@ -27,7 +27,11 @@
                         <div class="bar {{#if (lt (divide system.hp.value system.hp.max) 0.33)}}red{{else}}green{{/if}}" style="width: {{multiply 100 (divide system.hp.value system.hp.max)}}%;">
                             <div class="flexrow pta-s">
                                 {{systemFieldInput system 'hp.value'}}/
-                                {{systemFieldInput system 'hp.max'}}
+                                {{#if isEditMode}}
+                                    {{systemFieldInput system 'hp.max'}}
+                                {{else}}
+                                    <div class="text-center">{{system.hp.total}}</div>
+                                {{/if}}
                             </div>
                         </div>
                     </div>

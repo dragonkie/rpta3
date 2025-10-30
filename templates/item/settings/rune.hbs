@@ -1,6 +1,6 @@
 <div class="flexcol flex-gap-m">
     {{!-- Stat modifiers --}}
-    <div class="flexrow flex-gap-m">
+    <div class="flexrow flex-gap-m flex-align-start">
         {{#each fields.stats as | field key |}}
             <div class="flexcol flex-gap-s">
                 {{log this}}
@@ -9,6 +9,9 @@
                 {{systemFieldInput @root.system field.method}}
             </div>
         {{/each}}
+        <div class="flexcol flex-gap-s">
+            {{systemFieldGroup system 'hp' stacked=true classes="flex-gap-s"}}
+        </div>
     </div>
 
     {{!-- Attack accuracy modifiers --}}
