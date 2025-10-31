@@ -1,0 +1,9 @@
+<div class="flexcol">
+    <div>{{localize 'PTA.Dialog.TransferRune'}}</div>
+    <select name="actor-select">
+        {{log this}}
+        {{#each team as | actor |}}
+            <option value="{{actor.uuid}}">{{actor.name}}</option>
+        {{/each}}
+    </select>
+</div>

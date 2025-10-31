@@ -8,7 +8,7 @@ const {
 } = foundry.data.fields;
 
 export default class PokemonData extends ActorData {
-
+  static type = 'pokemon';
   static defineSchema() {
 
     const isRequired = { required: true, nullable: false };

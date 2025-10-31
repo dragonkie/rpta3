@@ -1,5 +1,7 @@
+import PtaDialog from "../../applications/dialog.mjs";
 import { PTA } from "../../helpers/config.mjs";
 import utils from "../../helpers/utils.mjs";
+import PokemonData from "../actor/pokemon.mjs";
 import ItemData from "../item.mjs";
 const {
     ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField
@@ -35,7 +37,7 @@ export default class RuneData extends ItemData {
             return obj;
         }, {}));
 
-        schema.hp = new NumberField({...requiredInteger, initial: 0, label: "PTA.Generic.MaxHealth"})
+        schema.hp = new NumberField({ ...requiredInteger, initial: 0, label: "PTA.Generic.MaxHealth" })
 
         schema.move = new NumberField({ ...requiredInteger, initial: 0 });
 
@@ -70,11 +72,45 @@ export default class RuneData extends ItemData {
     }
 
     async use(event, target, action) {
+        console.log("rune action: ", action);
+        if (action == "give") return await this._onGive(event, target);
         return this._onEquip(event, target);
     }
 
     async _onEquip(event, target) {
         await this.parent.update({ system: { equipped: !this.equipped } });
         this.actor.sheet.render(false);
+    }
+
+    /**
+     * Open up a dialog prompt to gift a rune to an active member of the team
+     * @param {Event} event - the event triggered by the event button being clicked
+     * @param {HTMLElement} target - Element that triggered the event action
+     */
+    async _onGive(event, target) {
+        if (!this.actor) return false;
+
+        if (this.actor.type == PokemonData.type) {
+            // A pokemon will return its rune to it's trainer
+        } else {
+            // Trainers are given the chance to distribute the rune to one of their active pokemon
+            const team = [];
+            for (const actor of this.actor.system.pokemon) {
+                if (actor.active) team.push(actor);
+            }
+
+            let html = await foundry.applications.handlebars.renderTemplate('systems/rpta3/templates/dialog/rune-transfer.hbs', { team: team, name: this.name });
+            const app = new PtaDialog({
+                window: { title: "PTA.Title.TransferRune" },
+                content: html,
+                buttons: [{
+                    label: "Cancel",
+                    action: "cancel"
+                }, {
+                    label: 'Confirm',
+                    action: 'confirm',
+                }]
+            }).render(true);
+        }
     }
 }

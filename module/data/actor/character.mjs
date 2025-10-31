@@ -44,6 +44,8 @@ export default class CharacterData extends ActorData {
     return schema;
   }
 
+  static type = 'character';
+
   prepareDerivedData() {
     super.prepareDerivedData();
 

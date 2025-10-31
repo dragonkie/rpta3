@@ -100,7 +100,12 @@
       "Lifesteal": "{user} drained {target} and is healed [[{drain}]] HP"
     },
     "Dialog": {
-      "FileLocation": "File Location"
+      "FileLocation": "File Location",
+      "TransferRune": "Which pokemon would you like to transfer the rune to?"
+    },
+    "Title": {
+      "TransferRune": "Transfer Rune",
+      "ConfigResist": "Configure Resistances"
     },
     "Effect": {
       "Inactive": "Inactive Effects",
