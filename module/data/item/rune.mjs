@@ -92,6 +92,17 @@ export default class RuneData extends ItemData {
 
         if (this.actor.type == PokemonData.type) {
             // A pokemon will return its rune to it's trainer
+            const trainer = await fromUuid(this.actor.system.trainer);
+            if (!trainer) return false;
+
+            const data = this.parent.toObject();
+            data._id = "";
+            data.system.equipped = false;
+
+            const success = await trainer.createEmbeddedDocuments("Item", [data]);
+            if (!success) return false;
+
+            this.parent.delete();
         } else {
             // Trainers are given the chance to distribute the rune to one of their active pokemon
             const team = [];
@@ -100,7 +111,7 @@ export default class RuneData extends ItemData {
             }
 
             let html = await foundry.applications.handlebars.renderTemplate('systems/rpta3/templates/dialog/rune-transfer.hbs', { team: team, name: this.name });
-            const app = new PtaDialog({
+            const app = await new PtaDialog({
                 window: { title: "PTA.Title.TransferRune" },
                 content: html,
                 buttons: [{
@@ -109,7 +120,22 @@ export default class RuneData extends ItemData {
                 }, {
                     label: 'Confirm',
                     action: 'confirm',
-                }]
+                    callback: async () => {
+                        console.log("transfering the rune");
+                        console.log(app.element)
+                        const reciever = await fromUuid(app.element.querySelector("select").value);
+                        const giver = this.actor;
+                        const data = this.parent.toObject();
+                        data._id = "";
+                        data.system.equipped = false;
+
+                        const success = await reciever.createEmbeddedDocuments("Item", [data]);
+                        if (!success) return false;
+
+                        this.parent.delete();
+                        console.log(data);
+                    }
+                }],
             }).render(true);
         }
     }

@@ -1,3 +1,40 @@
+{{#*inline 'rune-item'}}
+    <li class="item pta-item pta-list-item flexcol collapsible collapsed" data-item-uuid="{{item.uuid}}" data-uuid="{{item.uuid}}">
+        <div class="flexrow">
+            <div class="item-name name">
+                <div class="item-image">
+                    <a data-action="itemUse">
+                        <img src="{{item.img}}" title="{{item.name}}">
+                    </a>
+                </div>
+                <div data-action="collapse">{{item.name}}</div>
+            </div>
+            <div class="item-controls controls">
+                {{#if item.system.equipped}}
+                    <a class="item-control fa-solid fa-diamond" data-action="use"></a>
+                {{else}}
+                    <a class="item-control fa-regular fa-diamond" data-action="use"></a>
+                    <a class="item-control fas fa-arrow-left" data-action="use" data-use="give"></a>
+                {{/if}}
+
+                <a class="item-control fas fa-edit" title="{{localize 'DOCUMENT.Update' type=Item}}" data-action="edit"></a>
+                
+                {{#if @root.isEditMode}}
+                    <a class="item-control fas fa-trash" data-action="delete" title="{{localize 'DOCUMENT.Delete' type=Item}}"></a>
+                {{/if}}
+            </div>
+        </div>
+
+        <div class="collapsible-content" style="width: 100%;">
+            <div class="wrapper flexcol" style="width: 100%;">
+                <div class="text-left" style="width: 100%;">
+                    {{{item.system.description}}}
+                </div>
+            </div>
+        </div>
+    </li>
+{{/inline}}
+
 <div>
     <span class="items-header flexrow">
         <span class="item-name">Active Runes</span>
@@ -6,37 +43,7 @@
     <ol class="pta-move-list items-list">
         {{#each items as | item key |}}
             {{#if (and (eq item.type 'rune') item.system.equipped)}}
-                <li class="item pta-item pta-list-item flexcol collapsible collapsed" data-item-uuid="{{item.uuid}}" data-uuid="{{item.uuid}}">
-                    <div class="flexrow">
-                        <div class="item-name name">
-                            <div class="item-image">
-                                <a data-action="itemUse">
-                                    <img src="{{item.img}}" title="{{item.name}}">
-                                </a>
-                            </div>
-                            <div data-action="collapse">{{item.name}}</div>
-                        </div>
-                        <div class="item-controls controls">
-                            {{#if item.system.equipped}}
-                                <a class="item-control fa-solid fa-diamond" data-action="use"></a>
-                            {{else}}
-                                <a class="item-control fa-regular fa-diamond" data-action="use"></a>
-                            {{/if}}
-                            <a class="item-control fas fa-edit" title="{{localize 'DOCUMENT.Update' type=Item}}" data-action="edit"></a>
-                            {{#if @root.isEditMode}}
-                                <a class="item-control fas fa-trash" data-action="delete" title="{{localize 'DOCUMENT.Delete' type=Item}}"></a>
-                            {{/if}}
-                        </div>
-                    </div>
-
-                    <div class="collapsible-content" style="width: 100%;">
-                        <div class="wrapper flexcol" style="width: 100%;">
-                            <div class="text-left" style="width: 100%;">
-                                {{{item.system.description}}}
-                            </div>
-                        </div>
-                    </div>
-                </li>
+                {{> 'rune-item' item=item}}
             {{/if}}
         {{/each}}
     </ol>
@@ -47,33 +54,7 @@
     <ol class="pta-move-list items-list">
         {{#each items as | item key |}}
             {{#if (and (eq item.type 'rune') (not item.system.equipped))}}
-                <li class="item pta-item pta-list-item flexcol collapsible collapsed" data-item-uuid="{{item.uuid}}" data-uuid="{{item.uuid}}">
-                    <div class="flexrow">
-                        <div class="item-name name">
-                            <div class="item-image">
-                                <a data-action="itemUse">
-                                    <img src="{{item.img}}" title="{{item.name}}">
-                                </a>
-                            </div>
-                            <div data-action="collapse">{{item.name}}</div>
-                        </div>
-                        <div class="item-controls controls">
-                            <a class="item-control fa-regular fa-diamond" data-action="use"></a>
-                            <a class="item-control fas fa-edit" title="{{localize 'DOCUMENT.Update' type=Item}}" data-action="edit"></a>
-                            {{#if @root.isEditMode}}
-                                <a class="item-control fas fa-trash" data-action="delete" title="{{localize 'DOCUMENT.Delete' type=Item}}"></a>
-                            {{/if}}
-                        </div>
-                    </div>
-
-                    <div class="collapsible-content" style="width: 100%;">
-                        <div class="wrapper flexcol" style="width: 100%;">
-                            <div class="text-left" style="width: 100%;">
-                                {{{item.system.description}}}
-                            </div>
-                        </div>
-                    </div>
-                </li>
+                {{> 'rune-item' item=item}}
             {{/if}}
         {{/each}}
     </ol>
