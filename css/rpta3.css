@@ -1114,9 +1114,6 @@ ol.pta-pokemon-team .pta-pokemon .details .health {
   min-height: 300px;
   padding: 2px;
 }
-.pta .pta-tab[data-application-part=features] [data-application-part=abilities] {
-  flex: 0;
-}
 .pta .remote-image-browser .sprite-gallery {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

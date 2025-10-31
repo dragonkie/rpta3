@@ -13,6 +13,7 @@ function registerTemplates() {
         `actor/parts/trainer-pc-list`,
         `actor/parts/trainer-pokemon-box`,
         `actor/parts/trainer-pokemon-team`,
+        `actor/parts/actor-ability-scores`,
     ];
 
     const paths = {};

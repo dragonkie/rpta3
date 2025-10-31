@@ -32,8 +32,6 @@ export default class PtaCharacterSheet extends PtaTrainerMixin(PtaActorSheet) {
         pokebox: { template: "systems/rpta3/templates/actor/character/pokemon.hbs" },
         effects: { template: "systems/rpta3/templates/actor/parts/actor-effects.hbs" },
         details: { template: "systems/rpta3/templates/actor/character/details.hbs" },
-        // components
-        abilities: { template: "systems/rpta3/templates/actor/parts/abilities.hbs" }
     }
 
     static TABS = {
@@ -221,7 +219,7 @@ export default class PtaCharacterSheet extends PtaTrainerMixin(PtaActorSheet) {
         if (skill.talent < 0) skill.talent = 2;
 
         await this.document.update({ [`system.skills.${key}`]: skill });
-        await this.render(false);
+        await this.render({force: false, parts: ['features']}); /**EDITING THIS RANDOM LINE HERE TO TRY AND OPTIMIZE THE LEVEL OF LAYERS BEING EDITED AND PREPARED TO MAKE THIGNS RENDER BETTER AND FASTER */
     }
 
     /**
