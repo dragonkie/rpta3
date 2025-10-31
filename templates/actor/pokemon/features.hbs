@@ -35,17 +35,15 @@
 {{/inline}}
 
 <div class="flexrow flex-align-start">
-        <div class="flex0">{{> 'pta.actor-ability-scores'}}</div>
+    <div class="flex0">{{> 'pta.actor-ability-scores'}}</div>
     <div style="flexcol flex-group-start">
-        <div class="flexrow flex-gap-l">
-            <div> <a data-action="editResistance"><i class="fas fa-cog"></i></a><b> Resistance Overides</b></div>
-            <div><a data-action="importMoves"><i class="fas fa-cog"></i></a><b> Import Moves</b></div>
-        </div>
-        <span class="items-header flexrow">
-            <span class="item-name">Moves</span>
-            <span>Controls</span>
-        </span>
         <ol class="pta-move-list items-list">
+            <span class="items-header flexrow">
+                <span class="item-name">Moves</span>
+                <div class="item-controls">
+                    <a data-action="importMoves" class="item-control fas fa-arrow-down-to-line" title="PTA.Button.ImportMoves"></a>
+                </div>
+            </span>
             {{#each items as | item key |}}
                 {{#if (eq item.type 'move')}}{{> 'pokemon-move' item=item}}{{/if}}
             {{/each}}
