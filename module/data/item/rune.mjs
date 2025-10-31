@@ -71,6 +71,24 @@ export default class RuneData extends ItemData {
         return schema;
     }
 
+    prepareActorData(actorData) {
+        console.log(this)
+        if (!this.equipped) return;
+        console.log('Rune is augmenting actor data');
+        for (const [key, stat] of Object.entries(this.stats)) {
+            switch (stat.method) {
+                case 'add': actorData.stats[key].total += stat.value; break;
+                case 'subtract': actorData.stats[key].total -= stat.value; break;
+                case 'multiply': actorData.stats[key].total *= stat.value; break;
+                case 'grow': actorData.stats[key].total = Math.max(stat.value, actorData.stats[key].total); break;
+                case 'shrink': actorData.stats[key].total = Math.min(actorData.stats[key].total, stat.value); break;
+                default: break;
+            }
+        }
+
+        actorData.hp.total += this.hp;
+    }
+
     async use(event, target, action) {
         console.log("rune action: ", action);
         if (action == "give") return await this._onGive(event, target);
