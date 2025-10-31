@@ -125,7 +125,6 @@ PTA.aoeTypes = {
 //======================================================================
 //> Pokemon moves
 //======================================================================
-
 PTA.moveClass = {
   special: 'PTA.Generic.Special',
   physical: 'PTA.Generic.Physical',
@@ -141,7 +140,6 @@ PTA.modifierMethods = {
   grow: 'PTA.Method.Grow',
   shrink: 'PTA.Method.Shrink',
   multiply: 'PTA.Method.Multiply',
-
 }
 
 //======================================================================

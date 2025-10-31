@@ -73,7 +73,7 @@ export default class ActorData extends DataModel {
     //====================================================================================
     schema.bonuses = new SchemaField({
       attack: new NumberField({ initial: 0, required: true, nullable: false }),
-      hpMax: new NumberField({initial: 0, ...requiredInteger})
+      hpMax: new NumberField({ initial: 0, ...requiredInteger })
     })
 
     return schema;
@@ -118,6 +118,14 @@ export default class ActorData extends DataModel {
           break;
         default: break;
       }
+    }
+
+    //====================================================================================
+    //> Derived fields from runes
+    //====================================================================================
+    const items = this.parent.items;
+    for (const item of items) {
+      item.prepareActorData(this);
     }
   }
 
