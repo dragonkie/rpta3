@@ -105,7 +105,8 @@
     },
     "Title": {
       "TransferRune": "Transfer Rune",
-      "ConfigResist": "Configure Resistances"
+      "ConfigResist": "Configure Resistances",
+      "UseCaptureSphere": "Use Capture Sphere"
     },
     "Effect": {
       "Inactive": "Inactive Effects",
@@ -129,6 +130,7 @@
       "Accuracy": "Accuracy",
       "Age": "Age",
       "All": "All",
+      "Capture": "Capture",
       "Damage": "Damage",
       "Data": "Data",
       "Effect": "Effect",
@@ -136,7 +138,7 @@
       "Gender": "Gender",
       "Hair": "Hair",
       "Health": "Health",
-      "MaxHealth":"Max Health",
+      "MaxHealth": "Max Health",
       "Height": "Height",
       "Import": "Import",
       "Nature": "Nature",
