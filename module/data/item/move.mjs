@@ -107,6 +107,14 @@ export default class MoveData extends ItemData {
         return this._onUseAttack(event, target);
     }
 
+    async _onRollAttack() {
+
+    }
+
+    async _onRollDamage() {
+
+    }
+
     //=====================================================================================================
     //>- Attack 
     //=====================================================================================================
@@ -156,7 +164,7 @@ export default class MoveData extends ItemData {
             let critical = false;
 
             if (r_accuracy.dice.find(a => a.faces == 20).results[0].result >= 20 - this.critical_chance) critical = true;
-            else if (r_accuracy.total < game.settings.get(game.system.id, 'baseAc') + target_stat.total) missed = true;
+            else if (r_accuracy.total < game.settings.get(game.system.id, 'baseAc') + (target_stat.mod * 3)) missed = true;
 
             // attack roll content
             message_data.content += `<p><b>${utils.localize(PTA.generic.accuracy)}</b></p>`
@@ -176,7 +184,14 @@ export default class MoveData extends ItemData {
                 }
             }
 
-            let r_damage = new Roll(damage_formula, rolldata);
+            //========================================================================
+            //>--- RPTA3
+            //========================================================================
+            // subtract flat modifier from other target pokemon if present
+            console.log('reducing damage', target_stat)
+            if (target_stat.mod > 0) damage_formula += `- ${target_stat.mod}`
+
+            const r_damage = new Roll(damage_formula, rolldata);
 
             // get the move effectiveness values
             let effectiveness = { value: 0, percent: 1, immune: false };;
