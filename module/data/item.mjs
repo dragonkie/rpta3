@@ -63,4 +63,13 @@ export default class ItemData extends DataModel {
   prepareActorData(actorData) {
     
   }
+
+  /**
+   * Returns a value derived from whatever an item deems neccesary to break tiebreakers in priority
+   * used when applying modifiers through prepareActorData
+   * @returns {Number}
+   */
+  get importance() {
+    return 0;
+  }
 }

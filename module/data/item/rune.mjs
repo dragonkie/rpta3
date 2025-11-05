@@ -21,25 +21,21 @@ export default class RuneData extends ItemData {
 
         schema.stats = new SchemaField(Object.keys(CONFIG.PTA.stats).reduce((obj, stat) => {
             obj[stat] = new SchemaField({
-                value: new NumberField({ ...requiredInteger, initial: 0 }),
+                value: new NumberField({ required: true, nullable: false, initial: 0 }),
                 method: new StringField({
                     required: true,
                     nullable: false,
                     initial: 'add',
                     label: PTA.generic.method,
                     choices: methods
-                }),
-                mod: new NumberField({ ...requiredInteger, initial: 0 }),
-                grow: new NumberField({ ...requiredInteger, initial: 0 }),
-                shrink: new NumberField({ ...requiredInteger, initial: 0 }),
-                mult: new NumberField({ ...requiredInteger, initial: 0 }),
+                })
             });
             return obj;
         }, {}));
 
         schema.hp = new NumberField({ ...requiredInteger, initial: 0, label: "PTA.Generic.MaxHealth" })
-
         schema.move = new NumberField({ ...requiredInteger, initial: 0 });
+        schema.priority = new NumberField({ ...requiredInteger, initial: 0, label: "PTA.Generic.Priority" });
 
         // prep attack modifier data field types
         function OffensiveFields() {
@@ -69,6 +65,14 @@ export default class RuneData extends ItemData {
         schema.defence = OffensiveFields(); // reduce damage taken
 
         return schema;
+    }
+
+    get importance() {
+        let value = 0;
+        for (const [key, stat] of Object.entries(this.stats)) {
+            value += Math.abs(stat.value);
+        }
+        return value;
     }
 
     prepareActorData(actorData) {
@@ -128,7 +132,7 @@ export default class RuneData extends ItemData {
                 if (actor.active) team.push(actor);
             }
 
-            let html = await foundry.applications.handlebars.renderTemplate('systems/rpta3/templates/dialog/rune-transfer.hbs', { team: team, name: this.name });
+            let html = await foundry.applications.handlebars.renderTemplate(PTA.templates.dialog.runeTransfer, { team: team, name: this.name });
             const app = await new PtaDialog({
                 window: { title: "PTA.Title.TransferRune" },
                 content: html,
