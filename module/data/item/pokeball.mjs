@@ -112,7 +112,8 @@ export default class PokeballData extends ItemData {
 
     async use(event, options) {
         if (!this.actor) return void pta.utils.warn("Can't throw a pokeball without a trainer!");
-        if (this.quantity <= 0) return void console.warn("You need to have one to use one");
+        if (this.quantity <= 0) return void pta.utils.warn("PTA.Warn.MissingItem");
+        
         const rollData = this.getRollData();
 
         var acc = 0;
