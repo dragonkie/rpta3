@@ -1,6 +1,7 @@
 import ItemData from "../item.mjs";
 import PtaDialog from "../../applications/dialog.mjs";
 import utils from "../../helpers/utils.mjs";
+import { PTA } from "../../helpers/config.mjs";
 
 const {
     ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField
@@ -111,23 +112,42 @@ export default class PokeballData extends ItemData {
 
     async use(event, options) {
         if (!this.actor) return void pta.utils.warn("Can't throw a pokeball without a trainer!");
-        if (this.quantity <= 0) return void console.warn("You need to ahve one to use one");
+        if (this.quantity <= 0) return void console.warn("You need to have one to use one");
         const rollData = this.getRollData();
 
         var acc = 0;
         var chn = 0;
         await new Promise(async (resolve, reject) => {
-            const template = await utils.renderTemplate("")
+            const template = await utils.renderTemplate(PTA.templates.dialog.rollCaptureSphere, {});
             const app = new PtaDialog({
                 content: template,
-            }).render(true)
+                buttons: [{
+                    label: "Confirm",
+                    action: "confirm",
+                    callback: () => {
+                        const ele = app.element;
 
+                        var a = ele.querySelector('input[name=accuracy]').value;
+                        var c = ele.querySelector('input[name=capture]').value;
+
+                        if (a != '') acc += Number(a);
+                        if (c != '') chn += Number(c);
+
+                        resolve(true);
+                    }
+                }, {
+                    label: "Cancel",
+                    action: "cancel",
+                    callback: () => reject()
+                }]
+            })
+            await app.render({ force: true });
         })
 
-        const hitRoll = new Roll(`1d20x + @spd.mod`, rollData, {});
+        const hitRoll = new Roll(`1d20x + @spd.mod${acc != 0 ? ` + ${acc}` : ``}`, rollData, {});
         await hitRoll.evaluate();
 
-        const captureRoll = new Roll(`1d100 + (${this.capture.base} + ${this.capture.conditional})`);
+        const captureRoll = new Roll(`1d100 + (${this.capture.base} + ${this.capture.conditional})${chn != 0 ? ` + ${chn}` : ``}`);
         await captureRoll.evaluate();
 
         let messageData = {

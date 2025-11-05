@@ -647,7 +647,8 @@ PTA.templates = {
   dialog: {
     fileServerSelect: templatePath('dialog/file-server-select.hbs'),
     runeCombatFields: templatePath('dialog/rune-combat-fields.hbs'),
-    runeTransfer: templatePath('dialog/rune-transfer.hbs')
+    runeTransfer: templatePath('dialog/rune-transfer.hbs'),
+    rollCaptureSphere: templatePath('dialog/roll-capture-sphere.hbs')
   },
   app: {
     importMoves: templatePath('apps/move-importer.hbs'),
