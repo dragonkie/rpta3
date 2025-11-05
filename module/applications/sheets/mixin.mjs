@@ -1,3 +1,4 @@
+import { PTA } from "../../helpers/config.mjs";
 import utils from "../../helpers/utils.mjs";
 import ServerBrowser from "../apps/server-browser.mjs";
 import PtaDialog from "../dialog.mjs";
@@ -137,7 +138,7 @@ export default function PtaSheetMixin(Base) {
             const selection = await new Promise(async (resolve, reject) => {
                 const app = await new PtaDialog({
                     window: { title: "PTA.Dialog.FileLocation" },
-                    content: await foundry.applications.handlebars.renderTemplate('systems/rpta3/templates/dialog/file-server-selector.hbs'),
+                    content: await foundry.applications.handlebars.renderTemplate(PTA.templates.dialog.fileServerSelect),
                     buttons: [{
                         label: "Cancel",
                         action: "cancel",

@@ -635,3 +635,23 @@ PTA.flavourPreferance = {
     disliked: ["Lonely", "Mild", "Hasty", "Gentle"]
   }
 };
+
+//====================================================================================================
+//> System template paths
+//  A list of paths as well as the context they should be rendered in
+//  Most are used as individuals to render out singular applications
+//====================================================================================================
+
+function templatePath(path) { return `systems/rpta3/templates/${path}` }
+PTA.templates = {
+  dialog: {
+    fileServerSelect: templatePath('dialog/file-server-select.hbs'),
+    runeCombatFields: templatePath('dialog/rune-combat-fields.hbs'),
+    runeTransfer: templatePath('dialog/rune-transfer.hbs')
+  },
+  app: {
+    importMoves: templatePath('apps/move-importer.hbs'),
+    importPokemon: templatePath('apps/pokemon-importer.hbs'),
+    remoteAssetBrowser: templatePath('apps/server-browser.hbs')
+  }
+}

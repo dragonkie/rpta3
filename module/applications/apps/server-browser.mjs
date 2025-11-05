@@ -1,4 +1,5 @@
 import pokeapi from "../../helpers/pokeapi.mjs";
+import { PTA } from "../../helpers/config.mjs";
 import PtaApplication from "../app.mjs";
 
 export default class ServerBrowser extends PtaApplication {
@@ -23,7 +24,7 @@ export default class ServerBrowser extends PtaApplication {
 
     static get PARTS() {
         let p = {};
-        p.main = { template: 'systems/rpta3/templates/apps/server-browser.hbs' }
+        p.main = { template: PTA.templates.app.remoteAssetBrowser }
         return p;
     }
 

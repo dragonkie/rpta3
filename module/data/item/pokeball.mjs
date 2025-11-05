@@ -1,4 +1,7 @@
 import ItemData from "../item.mjs";
+import PtaDialog from "../../applications/dialog.mjs";
+import utils from "../../helpers/utils.mjs";
+
 const {
     ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField
 } = foundry.data.fields;
@@ -110,6 +113,16 @@ export default class PokeballData extends ItemData {
         if (!this.actor) return void pta.utils.warn("Can't throw a pokeball without a trainer!");
         if (this.quantity <= 0) return void console.warn("You need to ahve one to use one");
         const rollData = this.getRollData();
+
+        var acc = 0;
+        var chn = 0;
+        await new Promise(async (resolve, reject) => {
+            const template = await utils.renderTemplate("")
+            const app = new PtaDialog({
+                content: template,
+            }).render(true)
+
+        })
 
         const hitRoll = new Roll(`1d20x + @spd.mod`, rollData, {});
         await hitRoll.evaluate();

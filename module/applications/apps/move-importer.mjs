@@ -29,7 +29,7 @@ export default class MoveImporter extends PtaApplication {
 
     static get PARTS() {
         let p = {};
-        p.main = { template: 'systems/rpta3/templates/apps/move-importer.hbs' }
+        p.main = { template: PTA.templates.app.importMoves }
         return p;
     }
 

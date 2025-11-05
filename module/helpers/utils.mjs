@@ -379,7 +379,7 @@ export default class utils {
     //============================================================
     //> Combat
     //============================================================
-
+    
     static getTargets() {
         const targets = [];
         for (const target of game.user.targets) {
@@ -391,5 +391,12 @@ export default class utils {
         }
         if (targets.length <= 0) return null;
         return targets;
+    }
+    
+    //============================================================
+    //> Dom manipulation
+    //============================================================
+    static async renderTemplate(path, data) {
+        return foundry.applications.handlebars.renderTemplate(path, data);
     }
 }
