@@ -178,6 +178,7 @@ export default class MoveData extends ItemData {
             //========================================================================
             // Add stab damage bonus
             for (const key of Object.keys(attacker.system.types)) {
+                console.log(attacker);
                 if (attacker.system.types[key] == this.type) {
                     damage_formula += '+4';
                     break;
@@ -189,7 +190,9 @@ export default class MoveData extends ItemData {
             //========================================================================
             // subtract flat modifier from other target pokemon if present
             console.log('reducing damage', target_stat)
-            if (target_stat.mod > 0) damage_formula += `- ${target_stat.mod}`
+            if (target_stat.mod > 0) damage_formula += ` - ${target_stat.mod}`
+            console.log(damage_formula);
+
 
             const r_damage = new Roll(damage_formula, rolldata);
 

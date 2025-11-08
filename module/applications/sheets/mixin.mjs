@@ -186,6 +186,7 @@ export default function PtaSheetMixin(Base) {
 
         static _onCollapse(event, target) {
             let ele = target.closest('.collapsible');
+            console.log("Collapsing", ele)
             ele.classList.toggle('collapsed')
         }
 
