@@ -1077,6 +1077,10 @@ ol.pta-pokemon-team .pta-pokemon .details .health {
 .pta.sheet.actor .window-content {
   min-height: 600px;
 }
+.pta.sheet.actor [data-tab=inventory] {
+  max-height: 400px;
+  overflow-y: auto;
+}
 
 .pta-pokebox {
   max-height: 500px;
