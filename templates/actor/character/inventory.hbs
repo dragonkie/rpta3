@@ -5,7 +5,9 @@
                 <ol class="pta-inventory items-list collapsible">
                     <li class="items-header flexrow">
                         <span class="item-name flexrow flex-gap-m">
-                            <a class="fas fa-carret-down" data-action="collapse"></a>
+                            <a class="flexshrink" data-action="collapse">
+                                <i class="fas fa-caret-down"></i>
+                            </a>
                             <span>{{@key}}</span>
                         </span>
                         <span>Controls</span>
@@ -16,7 +18,7 @@
                     <div class="collapsible-content">
                         <div class="wrapper">
                             {{#each this as | item |}}
-                                {{> "pta.list-item" item=item isEditMode=../isEditMode isPlayMode=../isPlayMode}}
+                                {{> "pta.list-item" item=item isEditMode=@root.isEditMode isPlayMode=@root.isPlayMode}}
                             {{/each}}
                         </div>
                     </div>
