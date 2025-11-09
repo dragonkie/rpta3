@@ -87,6 +87,33 @@ export default class ActorData extends DataModel {
   prepareDerivedData() {
     super.prepareDerivedData();
 
+    //====================================================================================
+    //> Derived fields from runes
+    //====================================================================================
+    const itemsList = this.parent.items.contents.sort((a, b) => {
+      const _prioA = a.system.priority;
+      const _prioB = b.system.priority;
+      // if item isnt assigned a priority, it needs to be pushed to the end
+      if (_prioA == undefined || _prioB == undefined) {
+        if (_prioA != undefined && _prioB == undefined) return -1;
+        if (_prioB != undefined && _prioA == undefined) return 1;
+        return 0;
+      }
+
+      // if both items have the same priority derived a level of importance from its factors
+      if (_prioA == _prioB) {
+        const powerA = a.system.importance;
+        const powerB = b.system.importance;
+
+        return powerB - powerA;
+      }
+
+      // if they both have a priority, the higher number should go further ahead
+      return b.system.priority - a.system.priority;
+    });
+
+    for (const item of itemsList) item.prepareActorData(this);
+
     // calculate max hp
     this.hp.total = this.hp.max + this.bonuses.hpMax;
 
@@ -119,33 +146,6 @@ export default class ActorData extends DataModel {
         default: break;
       }
     }
-
-    //====================================================================================
-    //> Derived fields from runes
-    //====================================================================================
-    const itemsList = this.parent.items.contents.sort((a, b) => {
-      const _prioA = a.system.priority;
-      const _prioB = b.system.priority;
-      // if item isnt assigned a priority, it needs to be pushed to the end
-      if (_prioA == undefined || _prioB == undefined) {
-        if (_prioA != undefined && _prioB == undefined) return -1;
-        if (_prioB != undefined && _prioA == undefined) return 1;
-        return 0;
-      }
-
-      // if both items have the same priority derived a level of importance from its factors
-      if (_prioA == _prioB) {
-        const powerA = a.system.importance;
-        const powerB = b.system.importance;
-
-        return powerB - powerA;
-      }
-
-      // if they both have a priority, the higher number should go further ahead
-      return b.system.priority - a.system.priority;
-    });
-
-    for (const item of itemsList) item.prepareActorData(this);
   }
 
   getRollData() {
