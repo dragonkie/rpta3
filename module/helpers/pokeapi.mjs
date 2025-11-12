@@ -124,7 +124,7 @@ export default class pokeapi {
             return a.level - b.level;
         })
 
-        // converts list of moves into RPTA3 stat passives where possible
+        // converts list of moves into PTA3 stat passives where possible
         // Make sure to filter out unavailable options before calculation
         let m = [];
         for (const n of pokemon.moves) if (n.method == 'level-up') m.push(n.name);

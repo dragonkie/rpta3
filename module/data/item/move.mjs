@@ -178,7 +178,6 @@ export default class MoveData extends ItemData {
             //========================================================================
             // Add stab damage bonus
             for (const key of Object.keys(attacker.system.types)) {
-                console.log(attacker);
                 if (attacker.system.types[key] == this.type) {
                     damage_formula += '+4';
                     break;

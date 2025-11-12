@@ -88,8 +88,10 @@ export default class ActorData extends DataModel {
     super.prepareDerivedData();
 
     //====================================================================================
-    //> Derived fields from runes
+    //> Prepare derived values from item based modifiers
     //====================================================================================
+    
+    // sort items by their priority, then their importance
     const itemsList = this.parent.items.contents.sort((a, b) => {
       const _prioA = a.system.priority;
       const _prioB = b.system.priority;

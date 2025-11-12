@@ -92,3 +92,4 @@ assets/
 
 *.lock
 package*
+*.bak

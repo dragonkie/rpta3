@@ -84,6 +84,8 @@ PTA.generic = {
   gender: 'PTA.Generic.Gender',
   hair: 'PTA.Generic.Hair',
   height: 'PTA.Generic.Height',
+  honour: 'PTA.Generic.Honour',
+  honours: 'PTA.Generic.Honours',
   import: 'PTA.Generic.Import',
   nature: 'PTA.Generic.Nature',
   none: 'PTA.Generic.None',
