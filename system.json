@@ -21,7 +21,7 @@
             "thumbnail": "systems/rpta3/assets/anvil-impact.png"
         }
     ],
-    "version": "1.3.3",
+    "version": "1.4.0",
     "compatibility": {
         "minimum": "13",
         "verified": "13.350"
