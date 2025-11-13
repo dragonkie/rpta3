@@ -74,8 +74,8 @@ PTA.loadPokedex = async (force = false) => {
 //===================================================================================
 
 PTA.generic = {
-  age: 'PTA.Generic.Age',
   accuracy: 'PTA.Generic.Accuracy',
+  age: 'PTA.Generic.Age',
   attack: 'PTA.Generic.Attack',
   damage: 'PTA.Generic.Damage',
   data: 'PTA.Generic.Data',
@@ -87,6 +87,7 @@ PTA.generic = {
   honour: 'PTA.Generic.Honour',
   honours: 'PTA.Generic.Honours',
   import: 'PTA.Generic.Import',
+  method: 'PTA.Generic.Method',
   nature: 'PTA.Generic.Nature',
   none: 'PTA.Generic.None',
   origin: 'PTA.Generic.Origin',
@@ -101,7 +102,6 @@ PTA.generic = {
   type: 'PTA.Generic.Type.long',
   types: 'PTA.Generic.Type.plural',
   weight: 'PTA.Generic.Weight',
-  method: 'PTA.Generic.Method',
 }
 
 PTA.dice = {
@@ -134,7 +134,7 @@ PTA.moveClass = {
 }
 
 //======================================================================
-//> Rune stat methods
+//> Stat methods
 //======================================================================
 PTA.modifierMethods = {
   add: 'PTA.Method.Add',
@@ -656,5 +656,8 @@ PTA.templates = {
     importMoves: templatePath('apps/move-importer.hbs'),
     importPokemon: templatePath('apps/pokemon-importer.hbs'),
     remoteAssetBrowser: templatePath('apps/server-browser.hbs')
+  },
+  sheet: {
+
   }
 }
