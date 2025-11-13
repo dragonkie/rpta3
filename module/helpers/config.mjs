@@ -647,7 +647,7 @@ PTA.flavourPreferance = {
 function templatePath(path) { return `systems/rpta3/templates/${path}` }
 PTA.templates = {
   dialog: {
-    fileServerSelect: templatePath('dialog/file-server-select.hbs'),
+    fileServerSelect: templatePath('dialog/file-server-selector.hbs'),
     runeCombatFields: templatePath('dialog/rune-combat-fields.hbs'),
     runeTransfer: templatePath('dialog/rune-transfer.hbs'),
     rollCaptureSphere: templatePath('dialog/roll-capture-sphere.hbs')
