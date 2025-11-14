@@ -55,6 +55,7 @@ export default class PtaItem extends Item {
   }
 
   prepareActorData(actorData) {
+    console.log('PrepareActorData from item:', this);
     return this.system.prepareActorData(actorData);
   }
 }

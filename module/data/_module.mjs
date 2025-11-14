@@ -7,6 +7,7 @@ import PokemonData from "./actor/pokemon.mjs";
 // Export Items
 import ItemData from "./item.mjs";
 import ConsumableData from "./item/consumable.mjs";
+import EquipmentData from "./item/equipment.mjs";
 import FeatureData from "./item/feature.mjs";
 import MoveData from "./item/move.mjs";
 import PokeballData from "./item/pokeball.mjs";
@@ -29,7 +30,10 @@ export const ItemModels = {
     ItemData,
     FeatureData,
     ConsumableData,
-    RuneData
+    RuneData,
+    MoveData,
+    EquipmentData,
+    PokeballData
 }
 
 export const ItemConfig = {
@@ -37,5 +41,6 @@ export const ItemConfig = {
     consumable: ConsumableData,
     feature: FeatureData,
     move: MoveData,
-    rune: RuneData
+    rune: RuneData,
+    equipment: EquipmentData
 }
