@@ -12,6 +12,7 @@ export default class PtaRuneSheet extends PtaItemSheet {
             editDamage: this._onEditDamageFields,
             editDodge: this._onEditDodgeFields,
             editDefence: this._onEditDefenceFields,
+            editResist: this._onEditResistanceFields,
             removeMod: this._onRemoveModifier,
         }
     }
@@ -52,7 +53,7 @@ export default class PtaRuneSheet extends PtaItemSheet {
         }
 
         // render the template
-        return this._configDialogRender(context, { title: "", id: "" });
+        return this._configDialogRender(context, { title: "PTA.Dialog.ConfigAttack", id: "" });
     }
 
     static async _onEditDamageFields(event, target) {
@@ -67,7 +68,7 @@ export default class PtaRuneSheet extends PtaItemSheet {
         }
 
         // render the template
-        return this._configDialogRender(context, { title: "", id: "" });
+        return this._configDialogRender(context, { title: "PTA.Dialog.ConfigDamage", id: "" });
     }
 
     static async _onEditDodgeFields(event, target) {
@@ -82,7 +83,7 @@ export default class PtaRuneSheet extends PtaItemSheet {
         }
 
         // render the template
-        return this._configDialogRender(context, { title: "", id: "" });
+        return this._configDialogRender(context, { title: "PTA.Dialog.ConfigDodge", id: "" });
     }
 
     static async _onEditDefenceFields(event, target) {
@@ -97,9 +98,14 @@ export default class PtaRuneSheet extends PtaItemSheet {
         }
 
         // render the template
-        return this._configDialogRender(context, { title: "", id: "" });
+        return this._configDialogRender(context, { title: "PTA.Dialog.ConfigDefence", id: "" });
     }
 
+    /**
+     * Renders the generic config dialog used for most data arrays
+     * @param {Object} context 
+     * @param {Object} options 
+     */
     async _configDialogRender(context, options) {
         const template = await foundry.applications.handlebars.renderTemplate(PTA.templates.dialog.runeCombatFields, context);
         const app = await new PtaDialog({
@@ -128,6 +134,69 @@ export default class PtaRuneSheet extends PtaItemSheet {
                 this.document.update(data);
             }
         }).render(true);
+    }
+
+    /**
+     * Renders dialog popup for the resistance override configuration
+     * only saves values other than "none" afterwards
+     * @param {Event} event 
+     * @param {HTMLElement} target 
+     */
+    static async _onEditResistanceFields(event, target) {
+        const context = {
+            config: PTA,
+            path: "system.resistance_override",
+            fields: {}
+        };
+
+        //Get a list from pokemon types
+        for (const [key, value] of Object.entries(PTA.pokemonTypes)) {
+            const label = utils.localize(value);
+
+            // check if this value exists in the system overrides
+            let v = 'none';
+            let arr = this.document.system.resistance_override
+
+            for (const entry of arr) {
+                if (entry.type == key) v = entry.value;
+            }
+
+            // save the value
+            context.fields[key] = { label: label, value: v };
+        }
+
+        const template = await utils.renderTemplate(PTA.templates.dialog.configResistanceOverride, context);
+
+        let app = await new PtaDialog({
+            window: { title: 'PTA.Title.ConfigResist' },
+            id: `Actor.${this.document.id}.resist-config`,
+            content: template,
+            classes: ['pta'],
+            buttons: [{
+                action: 'cancel',
+                label: 'Cancel'
+            }, {
+                action: 'confirm',
+                label: 'Confirm'
+            }],
+            submit: result => {
+                if (result != 'confirm') return;
+                const list = [];
+                let inputs = app.element.querySelectorAll('[data-type]');
+
+                for (const input of inputs) {
+                    let t = input.dataset.type;
+                    let v = input.querySelector('select').value;
+                    if (v == PTA.resistanceKeys.none) continue;
+                    list.push({ type: t, value: v });
+                }
+                console.log('updating rune resistances', list)
+                console.log(inputs)
+                this.document.update({ system: { resistance_override: list } });
+            }
+        }).render(true);
+
+        console.log('resist config context', context);
     }
 
     /**
