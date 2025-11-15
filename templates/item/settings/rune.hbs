@@ -19,6 +19,21 @@
         </div>
     </div>
 
+    {{!-- Resistance overrides --}}
+    <div class="flexcol flex-gap-s">
+        <div><a data-action="editResist" class="fas fa-cog"></a> Resistance Overrides:</div>
+        <div class="flexrow flex-wrap flex-gap-s">
+            {{#each system.resistance_override as | field |}}
+                <div class="flexrow flex0 text-nowrap flex-nowrap flex-gap-s pta-link-wrap">
+                    {{#if @root.isEditMode}}
+                        <a class="fas fa-trash" data-action="removeResist" data-field="{{field.type}}"></a>
+                    {{/if}}
+                    <div class="text-nowrap">{{field.type}}: {{field.value}}</div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+
     {{!-- Attack accuracy modifiers --}}
     <div class="flexcol flex-gap-s">
         <div><a data-action="editAttack" class="fas fa-cog"></a> Attack:</div>
