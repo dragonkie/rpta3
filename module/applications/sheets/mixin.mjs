@@ -367,7 +367,7 @@ export default function PtaSheetMixin(Base) {
                 }
                 return this._collapsedElements;
             }
-            return null;
+            return [];
         }
 
         _getCollapsedElements() {
