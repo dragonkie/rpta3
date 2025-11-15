@@ -64,6 +64,26 @@ export default class RuneData extends ItemData {
         schema.dodge = OffensiveFields(); // chance to not hit
         schema.defence = OffensiveFields(); // reduce damage taken
 
+        schema.resistance_override = new ArrayField(
+            new SchemaField({
+                value: new StringField({
+                    initial: 'none', blank: false, required: true, nullable: false, choices: () => {
+                        let options = { none: PTA.generic.none, ...PTA.typeEffectivenessValues };
+                        for (const key of Object.keys(options)) options[key] = utils.localize(options[key]);
+                        return options;
+                    }
+                }),
+                type: new StringField({
+                    initial: 'normal', blank: false, required: true, nullable: false, choices: () => {
+                        let options = { ...PTA.pokemonTypes };
+                        for (const key of Object.keys(options)) options[key] = utils.localize(options[key]);
+                        return options;
+                    }
+                }),
+            }),
+            { initial: [], nullable: false }
+        );
+
         return schema;
     }
 
