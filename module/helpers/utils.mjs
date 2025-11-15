@@ -205,6 +205,25 @@ export default class utils {
         } catch (err) {
             return void this.error('recieved invalid move data to parse', err)
         }
+
+        
+    }
+
+    static HonourLevel(num) {
+        num += 1;
+        let level = 1;
+        let cost = 1;
+        let count = 0;
+        while (num > cost) {
+            num -= cost;
+            level += 1;
+            count += 1;
+            if (count >= 3) {
+                count = 0;
+                cost = Math.min(cost + 1, 5);
+            }
+        }
+        return level;
     }
 
     static toTitleCase(str) {
