@@ -109,7 +109,6 @@ export default class RuneData extends ItemData {
                 default: break;
             }
         }
-
         actorData.hp.total += this.hp;
     }
 

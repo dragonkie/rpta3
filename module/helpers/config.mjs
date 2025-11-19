@@ -440,17 +440,17 @@ PTA.typeEffectiveness = {
     immune: []
   },
   light: {
-    double: ['dark', 'psychic', 'bug', 'ghost'],
+    double: ['psychic', 'grass', 'poison', 'dark'],
     half: ['cyber', 'fire', 'electric', 'light'],
     immune: ['ghost'],
   },
   cyber: {
-    double: ['fairy', 'fire', 'water', 'fighting', 'steel'],
+    double: ['dragon', 'normal', 'electric', 'psychic', 'bug'],
     half: ['grass', 'fighting', 'ghost', 'fairy'],
     immune: ['steel'],
   },
   nuclear: {
-    double: ['psychic', 'water', 'ground'],
+    double: ['ghost', 'normal', 'fire', 'grass', 'ice'],
     half: ['nuclear', 'water', 'poison', 'dragon'],
     immune: ['fairy'],
   }
