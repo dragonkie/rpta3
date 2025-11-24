@@ -34,9 +34,41 @@
     {{/if}}
 {{/inline}}
 
-<div class="flexrow flex-align-start">
+<div class="flexrow flex-align-start flex-gap-m">
     <div class="flex0">{{> 'pta.actor-ability-scores'}}</div>
-    <div style="flexcol flex-group-start">
+    <div class="flexcol flex-group-start flex-gap-m">
+        {{!-- Armour class list for the pokemon --}}
+        <div class="flexrow pta-ac flex-gap-m">
+
+            <div class="form-group stacked">
+                <label>AC: {{localize "PTA.Ac.Physical"}}</label>
+                <div class="form-inputs">
+                    <input type="number" disabled="disabled" value="{{multiply system.stats.def.mod 3}}">
+                </div>
+            </div>
+
+            <div class="form-group stacked">
+                <label>AC: {{localize "PTA.Ac.Special"}}</label>
+                <div class="form-inputs">
+                    <input type="number" disabled="disabled" value="{{multiply system.stats.sdef.mod 3}}">
+                </div>
+            </div>
+
+            <div class="form-group stacked">
+                <label>AC: {{localize "PTA.Ac.Status"}}</label>
+                <div class="form-inputs">
+                    <input type="number" disabled="disabled" value="{{multiply system.stats.spd.mod 3}}">
+                </div>
+            </div>
+
+            <div class="form-group stacked">
+                <label>{{localize "PTA.Generic.Movement"}}</label>
+                <div class="form-inputs">
+                    <input type="number" disabled="disabled" value="{{multiply system.stats.spd.total 5}}">
+                </div>
+            </div>
+        </div>
+
         <ol class="pta-move-list items-list">
             <span class="items-header flexrow">
                 <span class="item-name">Moves</span>
