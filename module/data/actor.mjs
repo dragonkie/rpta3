@@ -97,8 +97,6 @@ export default class ActorData extends DataModel {
     super.prepareBaseData();
     for (const key in this.stats) this.stats[key].total = 0;
     this.hp.total = this.hp.max;
-
-
   }
 
   prepareDerivedData() {
