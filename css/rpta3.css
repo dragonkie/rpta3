@@ -1096,7 +1096,7 @@ ol.pta-pokemon-team .pta-pokemon .details .health {
   flex: 1;
 }
 
-/* Styles limited to rpta3 sheets */
+/* Styles limited to pta3 sheets */
 .pta input[type=text] {
   font-family: "DM Sans", serif;
   font-size: var(--pta-scale-rem);
