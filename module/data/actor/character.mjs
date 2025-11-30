@@ -12,9 +12,9 @@ export default class CharacterData extends ActorData {
     const requiredInteger = { required: true, nullable: false, integer: true };
     const schema = super.defineSchema();
 
-    schema.honours = new NumberField({ ...requiredInteger, initial: 0, min: 0 });
-    schema.rank = new NumberField({ ...requiredInteger, initial: 0, label: PTA.generic.rank });
+    schema.honours = new NumberField({ ...requiredInteger, initial: 0, min: 0, label: PTA.generic.honours });
     schema.origin = new StringField({ initial: "", label: PTA.generic.origin });
+    schema.rank = new NumberField({ ...requiredInteger, initial: 0, label: PTA.generic.rank });
 
     schema.credits = new NumberField({ ...requiredInteger, initial: 0 });
 
