@@ -84,6 +84,14 @@ export default class MoveData extends ItemData {
         return schema;
     }
 
+    static migrateData(source) {
+        // fixs data typing issue
+        if (!Object.keys(PTA.ailments).includes(source.system?.ailment?.type)) {
+            source.system.ailment.type = "none";
+        }
+        return super.migratedata(source);
+    }
+
     get isRanged() { return this.range > 5 };
 
     getRollData() {
