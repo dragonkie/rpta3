@@ -89,7 +89,11 @@ lerna-debug.log
 Thumbs.db
 
 assets/
-
-*.lock
-package*
 *.bak
+
+# Pack logging files
+LOG*
+LOCK*
+*.old
+CURRENT*MANIFEST*
+.lock
