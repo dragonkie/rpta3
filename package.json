@@ -1,0 +1,22 @@
+{
+  "name": "rpta3",
+  "version": "1.0.1",
+  "description": "System packager for rpta3",
+  "scripts": {
+    "build": "sass src/scss/rpta3.scss css/rpta3.css --style=expanded --no-source-map",
+    "watch": "sass src/scss/rpta3.scss css/rpta3.css --style=expanded --source-map --watch",
+    "prepack": "del \"../_packages/rpta3.zip\"",
+    "pack": "\"E:/Software/7-Zip/7z.exe\" a -tzip ../_packages/rpta3.zip -x!src/ -x!*.md -x!*.git* -x!*.lock"
+  },
+  "browserslist": [
+    "last 3 versions"
+  ],
+  "author": "Dragonkie",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "help": "^3.0.2",
+    "install": "^0.13.0",
+    "sass": "^1.53.0"
+  }
+}
