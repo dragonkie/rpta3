@@ -86,10 +86,10 @@ export default class MoveData extends ItemData {
 
     static migrateData(source) {
         // fixs data typing issue
-        if (!Object.keys(PTA.ailments).includes(source.system?.ailment?.type)) {
-            source.system.ailment.type = "none";
-        }
-        return super.migratedata(source);
+        console.log(Object.keys(PTA.ailments));
+        if (!source?.ailment?.type || !Object.keys(PTA.ailments).includes(source.ailment.type)) source.ailment = { type: "none", chance: 0 };
+
+        return super.migrateData(source);
     }
 
     get isRanged() { return this.range > 5 };
