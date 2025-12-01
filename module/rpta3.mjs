@@ -67,12 +67,12 @@ Hooks.once('init', function () {
 
     for (const sheet of applications.sheets.actor.config) {
         if (!sheet.application) continue;
-        foundry.documents.collections.Actors.registerSheet('rpta3', sheet.application, sheet.options);
+        foundry.documents.collections.Actors.registerSheet(game.system.id, sheet.application, sheet.options);
     }
 
     for (const sheet of applications.sheets.item.config) {
         if (!sheet.application) continue;
-        foundry.documents.collections.Items.registerSheet('rpta3', sheet.application, sheet.options);
+        foundry.documents.collections.Items.registerSheet(game.system.id, sheet.application, sheet.options);
     }
 
     /* -------------------------------------------- */
