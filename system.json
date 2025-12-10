@@ -1,7 +1,7 @@
 {
     "id": "rpta3",
     "title": "Pokemon Tabletop Adventures - Runes",
-    "description": "Variation of PTA3 using the rune system!",
+    "description": "A variation of PTA3 using the rune system!",
     "authors": [
         {
             "name": "Ásta"
@@ -21,7 +21,7 @@
             "thumbnail": "systems/rpta3/assets/anvil-impact.png"
         }
     ],
-    "version": "1.5.1",
+    "version": "1.5.2",
     "compatibility": {
         "minimum": "13",
         "verified": "13.350"
