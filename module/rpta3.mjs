@@ -46,7 +46,7 @@ Hooks.once('init', function () {
      * @type {String}
      */
     CONFIG.Combat.initiative = {
-        formula: '@speed',
+        formula: '(@speed)d6 + (@speed * 0.1)',
         decimals: 2,
     };
 
