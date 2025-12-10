@@ -156,7 +156,7 @@ export default class MoveData extends ItemData {
             let target_stat = {};
             if (this.class == 'physical') target_stat = target.actor.system.stats.def;
             if (this.class == 'special') target_stat = target.actor.system.stats.sdef;
-            if (this.class == 'effect') target_stat = target.actor.system.stats.spd;
+            if (this.class == 'status') target_stat = target.actor.system.stats.spd;
 
             const message_config = { ...rolldata, user: attacker.name, move: this.parent.name, target: target.token.name };
             const message_data = { content: '', speaker: null }
@@ -176,6 +176,8 @@ export default class MoveData extends ItemData {
 
             let missed = false;
             let critical = false;
+
+            console.log("Rolling moves accuracy", target_stat);
 
             if (r_accuracy.dice.find(a => a.faces == 20).results[0].result >= 20 - this.critical_chance) critical = true;
             else if (r_accuracy.total < game.settings.get(game.system.id, 'baseAc') + (target_stat.mod * 3)) missed = true;
