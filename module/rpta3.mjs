@@ -42,8 +42,9 @@ Hooks.once('init', function () {
     CONFIG.statusEffects = PTA.statusEffects;
 
     /**
+     * RPTA3
+     * rolls 1d6 per speed stat, using base speed stat for tie breaks
      * Set an initiative formula for the system
-     * @type {String}
      */
     CONFIG.Combat.initiative = {
         formula: '(@speed)d6 + (@speed * 0.1)',
