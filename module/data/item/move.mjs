@@ -88,6 +88,7 @@ export default class MoveData extends ItemData {
         // fixs data typing issue
         console.log(Object.keys(PTA.ailments));
         if (!source?.ailment?.type || !Object.keys(PTA.ailments).includes(source.ailment.type)) source.ailment = { type: "none", chance: 0 };
+        if (!source?.class || !Object.keys(PTA.moveClass).includes(source.class)) source.class = Object.keys(PTA.moveClass)[0];
 
         return super.migrateData(source);
     }
