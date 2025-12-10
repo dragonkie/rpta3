@@ -177,8 +177,6 @@ export default class MoveData extends ItemData {
             let missed = false;
             let critical = false;
 
-            console.log("Rolling moves accuracy", target_stat);
-
             if (r_accuracy.dice.find(a => a.faces == 20).results[0].result >= 20 - this.critical_chance) critical = true;
             else if (r_accuracy.total < game.settings.get(game.system.id, 'baseAc') + (target_stat.mod * 3)) missed = true;
 
@@ -251,10 +249,13 @@ export default class MoveData extends ItemData {
 
                 message_data.content += await r_damage.render();
 
-                // Lifesteal value
+                //==================================================================================================
+                //>--- Lifesteal application
+                //==================================================================================================
                 if (this.drain > 0) {
                     message_config.drain = Math.floor(r_damage.total * (this.drain / 100));
                     message_data.content += `<p>${utils.format(PTA.chat.lifesteal, message_config)}</p>`;
+                    await this.actor.update({ system: { hp: { value: Math.min(this.actor.system.hp.value + message_config.drain, this.actor.system.hp.total) } } })
                 }
 
                 //==================================================================================================
