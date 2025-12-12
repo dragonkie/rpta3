@@ -1,5 +1,6 @@
 import pokeapi from "./pokeapi.mjs";
 export const PTA = {};
+PTA.SystemId = 'rpta3';
 
 /**
  * Load config lists from pokeapi if possible, or default if unable
@@ -506,7 +507,7 @@ PTA.statusEffects = [];
 for (const [key, value] of Object.entries(PTA.statuses)) {
   PTA.statusEffects.push({
     id: key,
-    img: `systems/rpta3/assets/icons/status-${key}.svg`,
+    img: `systems/${PTA.SystemId}/assets/icons/status-${key}.svg`,
     name: value
   })
 }
@@ -680,7 +681,7 @@ PTA.flavourPreferance = {
 //  Most are used as individuals to render out singular applications
 //====================================================================================================
 
-function templatePath(path) { return `systems/rpta3/templates/${path}` }
+function templatePath(path) { return `systems/${PTA.SystemId}/templates/${path}` }
 PTA.templates = {
   path: templatePath(''),
   dialog: {

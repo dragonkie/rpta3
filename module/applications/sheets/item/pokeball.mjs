@@ -7,7 +7,7 @@ export default class PtaPokeballSheet extends PtaItemSheet {
 
     static get PARTS() {
         let p = super.PARTS;
-        p.settings = { template: "systems/rpta3/templates/item/settings/pokeball.hbs" };
+        p.settings = { template: `${this.TEMPLATE_PATH}/item/settings/pokeball.hbs` };
         return p;
     }
 }

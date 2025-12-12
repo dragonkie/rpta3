@@ -54,9 +54,9 @@
     "secondaryTokenAttribute": "",
     "documentTypes": {
         "Actor": {
-            "character": {},
-            "npc": {},
-            "pokemon": {}
+            "character": { },
+            "npc": { },
+            "pokemon": { }
         },
         "Item": {
             "pokeball": {},
