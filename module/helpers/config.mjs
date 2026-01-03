@@ -454,7 +454,7 @@ PTA.typeEffectiveness = {
   },
   cyber: {
     double: ['dragon', 'normal', 'electric', 'psychic', 'bug'],
-    half: ['grass', 'fighting', 'ghost', 'fairy'],
+    half: ['grass', 'fighting', 'fairy'],
     immune: ['steel'],
   },
   nuclear: {

@@ -125,7 +125,7 @@ async function createItemMacro(data, slot) {
     const item = await Item.fromDropData(data);
 
     // Create the macro command using the uuid.
-    const command = `game.rpta3.rollItemMacro("${data.uuid}");`;
+    const command = `game.${pta.id}.rollItemMacro("${data.uuid}");`;
     let macro = game.macros.find(
         (m) => m.name === item.name && m.command === command
     );
@@ -135,7 +135,7 @@ async function createItemMacro(data, slot) {
             type: 'script',
             img: item.img,
             command: command,
-            flags: { 'rpta3.itemMacro': true },
+            flags: { [`${pta.id}.itemMacro`]: true },
         });
     }
     game.user.assignHotbarMacro(macro, slot);

@@ -27,10 +27,10 @@
         "verified": "13.350"
     },
     "esmodules": [
-        "module/rpta3.mjs"
+        "module/pta3.mjs"
     ],
     "styles": [
-        "css/rpta3.css"
+        "css/pta3.css"
     ],
     "languages": [
         {

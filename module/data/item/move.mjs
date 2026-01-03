@@ -18,7 +18,7 @@ export default class MoveData extends ItemData {
         // moves that deal damage are still classified as physical / effect, such as ember
         const MoveClasses = {};
         for (const a in PTA.moveClass) MoveClasses[a] = pta.utils.localize(PTA.moveClass[a]);
-        schema.category= new StringField({
+        schema.category = new StringField({
             ...isRequired,
             blank: false,
             choices: { ...MoveClasses },
@@ -85,10 +85,11 @@ export default class MoveData extends ItemData {
     }
 
     static migrateData(source) {
-        // fixs data typing issue
-        console.log(Object.keys(PTA.ailments));
-        if (!source?.ailment?.type || !Object.keys(PTA.ailments).includes(source.ailment.type)) source.ailment = { type: "none", chance: 0 };
-        if (!source?.category|| !Object.keys(PTA.moveClass).includes(source.class)) source.category= Object.keys(PTA.moveClass)[0];
+        // Corrects status ailment issues
+        if (source.ailment && !Object.keys(PTA.ailments).includes(source.ailment.type)) source.ailment = { type: null, chance: 0 };
+
+        // corrects category issues
+        if (source.category && !Object.keys(PTA.moveClass).includes(source.category)) source.category = Object.keys(PTA.moveClass)[0];
 
         return super.migrateData(source);
     }
@@ -155,9 +156,9 @@ export default class MoveData extends ItemData {
             let damage_formula = this.damage.formula;
 
             let target_stat = {};
-            if (this.category== 'physical') target_stat = target.actor.system.stats.def;
-            if (this.category== 'special') target_stat = target.actor.system.stats.sdef;
-            if (this.category== 'status') target_stat = target.actor.system.stats.spd;
+            if (this.category == 'physical') target_stat = target.actor.system.stats.def;
+            if (this.category == 'special') target_stat = target.actor.system.stats.sdef;
+            if (this.category == 'status') target_stat = target.actor.system.stats.spd;
 
             const message_config = { ...rolldata, user: attacker.name, move: this.parent.name, target: target.token.name };
             const message_data = { content: '', speaker: null }
