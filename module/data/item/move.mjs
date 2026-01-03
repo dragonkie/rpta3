@@ -66,8 +66,10 @@ export default class MoveData extends ItemData {
         for (const a in PTA.ailments) AilmentChoices[a] = utils.localize(PTA.ailments[a]);
         schema.ailment = new SchemaField({
             type: new StringField({
-                initial: 'none',
-                choices: { ...AilmentChoices, none: PTA.generic.none },
+                blank: true,
+                initial: null,
+                nullable: true,
+                choices: AilmentChoices,
                 label: PTA.generic.ailment
             }),
             chance: new NumberField({ initial: 0, label: PTA.generic.chance })
@@ -99,11 +101,11 @@ export default class MoveData extends ItemData {
     getRollData() {
         const data = super.getRollData();
         let stat_key = 'atk'
-        switch (this.class) {
+        switch (this.category) {
             case 'special':
                 stat_key = 'satk';
                 break;
-            case 'effect':
+            case 'status':
                 stat_key = 'spd'
                 break;
         }

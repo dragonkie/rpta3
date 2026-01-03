@@ -21,10 +21,10 @@
             "thumbnail": "systems/rpta3/assets/anvil-impact.png"
         }
     ],
-    "version": "1.5.3",
+    "version": "1.5.4",
     "compatibility": {
         "minimum": "13",
-        "verified": "13.350"
+        "verified": "13.351"
     },
     "esmodules": [
         "module/pta3.mjs"
