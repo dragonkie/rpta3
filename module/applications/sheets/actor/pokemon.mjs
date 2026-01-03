@@ -36,7 +36,8 @@ export default class PtaPokemonSheet extends PtaActorSheet {
         p.effects = { template: `${this.TEMPLATE_PATH}/actor/parts/actor-effects.hbs` };
         p.pokedex = { template: `${this.TEMPLATE_PATH}/actor/pokemon/pokedex.hbs` };
         p.details = { template: `${this.TEMPLATE_PATH}/actor/pokemon/details.hbs` };
-        
+        p.runes = { template: `${this.TEMPLATE_PATH}/actor/pokemon/runes.hbs` };
+
         return p;
     }
 
