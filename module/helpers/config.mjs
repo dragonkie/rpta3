@@ -409,7 +409,7 @@ PTA.typeEffectiveness = {
     immune: []
   },
   ground: {
-    double: ['water', 'grass', 'ice'],
+    double: ['water', 'grass', 'ice', 'light'],
     half: ['poison', 'rock'],
     immune: ['electric']
   },
