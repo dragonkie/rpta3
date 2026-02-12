@@ -39,7 +39,7 @@ export default class ActorData extends DataModel {
       secondary: new StringField({ ...isRequired, initial: 'none', label: PTA.generic.secondary, choices: { ...TypeChoices, none: pta.utils.localize(PTA.generic.none) } }),
     }, { label: PTA.generic.types })
 
-    // manually set a pokemons resistance to a certain element
+    // manually set a characters resistance to a certain element
     schema.resistance_override = new ArrayField(
       new SchemaField({
         value: new StringField({
@@ -180,4 +180,5 @@ export default class ActorData extends DataModel {
   get fainted() { return this.isFainted };
   get isDead() { return this.isFainted };
   get isAlive() { return !this.isFainted };
+  get getTypes() { return [this.types.primary, this.types.secondary] }
 }

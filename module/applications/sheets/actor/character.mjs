@@ -1,3 +1,4 @@
+import { PTA } from "../../../helpers/config.mjs";
 import utils from "../../../helpers/utils.mjs";
 import PtaDialog from "../../dialog.mjs";
 import PtaActorSheet, { PtaTrainerMixin } from "../actor.mjs";
@@ -28,7 +29,7 @@ export default class PtaCharacterSheet extends PtaTrainerMixin(PtaActorSheet) {
         // Tab bodies
         features: { template: `${this.TEMPLATE_PATH}/actor/character/features.hbs` },
         inventory: { template: `${this.TEMPLATE_PATH}/actor/character/inventory.hbs` },
-        pokebox: { template: `${this.TEMPLATE_PATH}/actor/character/pokemon.hbs` },
+        pokebox: { template: `${this.TEMPLATE_PATH}/actor/character/pokemon.hbs`, scrollable: ["div.pta-pokebox-entries"] },
         effects: { template: `${this.TEMPLATE_PATH}/actor/parts/actor-effects.hbs` },
         details: { template: `${this.TEMPLATE_PATH}/actor/character/details.hbs` },
     }
@@ -57,7 +58,7 @@ export default class PtaCharacterSheet extends PtaTrainerMixin(PtaActorSheet) {
         return frame;
     }
 
-    //=======================================================================================
+    //======================================================================================= 
     //> Data preperation
     //=======================================================================================
 
@@ -214,7 +215,7 @@ export default class PtaCharacterSheet extends PtaTrainerMixin(PtaActorSheet) {
 
     /**
      * 
-     * @param {*} uuid 
+     * @param {String} uuid - foundry unique identifier for this specific actor
      * @param {Boolean|Undefined} state - Force the pokemon to be in a specific state
      * @returns 
      */
@@ -258,7 +259,7 @@ export default class PtaCharacterSheet extends PtaTrainerMixin(PtaActorSheet) {
         try {
             if (!event.shiftKey) {
                 let confirm = await PtaDialog.confirm({
-                    title: 'PTA.Dialog.ReleasePokemon.title',
+                    title: PTA.windowTitle.releaseCreature,
                     content: `
                     <p>PTA.Dialog.ReleasePokemon.content</p>
                     <p>Are you sure you would like to release <b>${pokemon.name}</b>?</p>`

@@ -39,6 +39,16 @@ export default class PokemonData extends ActorData {
       }
     });
 
+    schema.eggTypes = new ArrayField(new StringField({
+      initial: "",
+      blank: true,
+      choices: () => {
+        let data = {};
+        for (const egg in PTA.eggTypes) data[egg] = utils.localize(PTA.eggTypes[egg]);
+        return data;
+      }
+    }), { initial: [] })
+
     schema.species = new StringField({ initial: "", label: PTA.generic.species })
 
     schema.size = new StringField({
@@ -70,11 +80,10 @@ export default class PokemonData extends ActorData {
 
     });
 
+    schema.loyalty = new NumberField({ initial: 0, label: PTA.generic.loyalty });
     schema.gender = new StringField({ ...isRequired, initial: 'male', label: PTA.generic.gender });
     schema.shiny = new BooleanField({ ...isRequired, initial: false, label: PTA.generic.shiny });
-    schema.contest = new SchemaField({
-
-    });
+    schema.contest = new SchemaField({});
 
     // Holds the base API ref that this pokemon is generated from
     schema.api_ref = new ObjectField({ initial: {} });

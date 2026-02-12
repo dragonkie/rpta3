@@ -4,7 +4,7 @@
     - Detailed
     - Grid
 --}}
-<div class="flexcol pta-pokebox" style="flex: 2; height: 100%">
+<div class="flex flexcol pta-pokebox">
     {{!-- Box header --}}
     <div class="collapsible collapsed pta-pokebox-header">
         <div class="flexrow items-header">
@@ -21,11 +21,16 @@
         <div class="pta-trainer-pc-search collapsible-content flex-gap-s">
             <div class="wrapper">
                 <div class="flexcol flex-gap-s">
-                    <input data-query="name" type="text" placeholder="name search here">
+                    <input data-query="name" type="text" placeholder="{{localize 'PTA.Generic.Name'}} / {{localize 'PTA.Generic.Species'}}">
+                    <input data-query="type" type="text" placeholder="{{localize 'PTA.Generic.Type'}}">
+                    <div class="pta-tooltip">
+                        <input data-query="tag" type="text" placeholder="tags">
+                        <div class="pta-tooltip-content"></div>
+                    </div>
                     <div class="flexrow flex-gap-m">
-                        <div>Shiny <input data-query="shiny" type="checkbox"></div>
-                        <div>Male <input data-query="male" type="checkbox"></div>
-                        <div>Female <input data-query="female" type="checkbox"></div>
+                        <div>{{localize 'PTA.Generic.Shiny'}} <input data-query="shiny" type="checkbox"></div>
+                        <div>{{localize 'PTA.Generic.Male'}} <input data-query="male" type="checkbox"></div>
+                        <div>{{localize 'PTA.Generic.Female'}} <input data-query="female" type="checkbox"></div>
                     </div>
                 </div>
             </div>

@@ -84,6 +84,7 @@ PTA.generic = {
   data: 'PTA.Generic.Data',
   description: 'PTA.Generic.Description',
   eyes: 'PTA.Generic.Eyes',
+  export: 'PTA.Generic.Export',
   gender: 'PTA.Generic.Gender',
   hair: 'PTA.Generic.Hair',
   height: 'PTA.Generic.Height',
@@ -102,10 +103,11 @@ PTA.generic = {
   size: 'PTA.Generic.Size',
   species: 'PTA.Generic.Species',
   sync: 'PTA.Generic.Sync.long',
-  type: 'PTA.Generic.Type.long',
-  types: 'PTA.Generic.Type.plural',
+  type: 'PTA.Generic.Type',
+  types: 'PTA.Generic.Types',
   weight: 'PTA.Generic.Weight',
   category: 'PTA.Generic.Category',
+  loyalty: 'PTA.Generic.Loyalty'
 }
 
 PTA.dice = {
@@ -286,9 +288,8 @@ PTA.skillSpeed = {
 };
 
 PTA.genders = {
-  male: 'PTA.Gender.Male',
-  female: 'PTA.Gender.Female',
-  none: PTA.generic.none
+  male: 'PTA.Generic.Male',
+  female: 'PTA.Generic.Female',
 }
 
 //===================================================================================
@@ -463,6 +464,23 @@ PTA.typeEffectiveness = {
     immune: ['fairy'],
   }
 };
+
+PTA.eggTypes = {
+  water1: 'PTA.EggType.Water1',
+  water2: 'PTA.EggType.Water2',
+  water3: 'PTA.EggType.Water3',
+  monster: 'PTA.EggType.Monster',
+  bug: 'PTA.EggType.Bug',
+  flying: 'PTA.EggType.Flying',
+  ground: 'PTA.EggType.Ground',
+  fairy: 'PTA.EggType.Fairy',
+  plant: 'PTA.EggType.Plant',
+  humanoid: 'PTA.EggType.Humanoid',
+  mineral: 'PTA.EggType.Mineral',
+  indeterminate: 'PTA.EggType.Unknown',
+  ditto: 'PTA.EggType.Ditto',
+  dragon: 'PTA.EggType.Dragon',
+}
 
 //===================================================================================
 //> Status Ailments
@@ -690,13 +708,28 @@ PTA.templates = {
     runeTransfer: templatePath('dialog/rune-transfer.hbs'),
     rollCaptureSphere: templatePath('dialog/roll-capture-sphere.hbs'),
     configResistanceOverride: templatePath('dialog/config-resistance-override.hbs'),
+    configEggGroups: templatePath('dialog/config-egg-groups.hbs'),
   },
   app: {
     importMoves: templatePath('apps/move-importer.hbs'),
     importPokemon: templatePath('apps/pokemon-importer.hbs'),
-    remoteAssetBrowser: templatePath('apps/server-browser.hbs')
+    remoteAssetBrowser: templatePath('apps/server-browser.hbs'),
+    compendiumBrowser: templatePath('apps/compendium-browser.hbs')
   },
   sheet: {
 
   }
+}
+
+PTA.windowTitle = {
+  compendiumBrowser: 'PTA.Title.CompendiumBrowser',
+  creatureImporter: 'PTA.Title.CreatureImporter',
+  moveImporter: 'PTA.Title.MoveImporter',
+  serverBrowser: 'PTA.Title.ServerBrowser',
+  configResist: 'PTA.Title.ConfigResist',
+  configEggGroups: 'PTA.Title.ConfigEggGroups',
+  fileServer: 'PTA.Title.FileServer',
+  releaseCreature: 'PTA.Title.ReleaseCreature',
+  selectCreature: 'PTA.Title.SelectCreature',
+  useItem: 'PTA.Title.UseItem'
 }

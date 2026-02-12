@@ -1,10 +1,5 @@
 {
   "PTA": {
-    "Ac": {
-      "Status": "Status",
-      "Physical": "Physical",
-      "Special": "Special"
-    },
     "Ability": {
       "Atk": {
         "abbr": "atk",
@@ -26,6 +21,11 @@
         "abbr": "spd",
         "long": "Speed"
       }
+    },
+    "Ac": {
+      "Physical": "Physical",
+      "Special": "Special",
+      "Status": "Status"
     },
     "Ailment": {
       "Burn": {
@@ -77,9 +77,6 @@
         "long": "Toxic"
       }
     },
-    "App": {
-      "ServerBrowser": "Remote Server Browser"
-    },
     "Button": {
       "ImportMove": "Import Move",
       "ImportPokemon": "Import Pokémon",
@@ -105,7 +102,6 @@
       "Lifesteal": "{user} drained {target} and is healed [[{drain}]] HP"
     },
     "Dialog": {
-      "FileLocation": "File Location",
       "TransferRune": "Which pokemon would you like to transfer the rune to?"
     },
     "Effect": {
@@ -127,9 +123,11 @@
       "Sweet": "Sweet"
     },
     "Generic": {
+      "Male": "Male",
+      "Female": "Female",
       "Accuracy": "Accuracy",
-      "Ailment": "Ailment",
       "Age": "Age",
+      "Ailment": "Ailment",
       "All": "All",
       "Capture": "Capture",
       "Category": "Category",
@@ -138,7 +136,7 @@
       "Default": "Default",
       "Double": "Double",
       "Effect": "Effect",
-      "Movement": "Movement",
+      "Export": "Export",
       "Eyes": "Eyes",
       "Gender": "Gender",
       "Hair": "Hair",
@@ -149,7 +147,10 @@
       "Honours": "Honours",
       "Immune": "Immune",
       "Import": "Import",
+      "Loyalty": "Loyalty",
       "MaxHealth": "Max Health",
+      "Movement": "Movement",
+      "Name": "Name",
       "Nature": "Nature",
       "None": "None",
       "Normal": "Normal",
@@ -169,10 +170,8 @@
         "long": "Synchronize"
       },
       "Trainer": "Trainer",
-      "Type": {
-        "long": "Type",
-        "plural": "Types"
-      },
+      "Type": "Type",
+      "Types": "Types",
       "Weight": "Weight"
     },
     "Method": {
@@ -307,8 +306,16 @@
     },
     "Title": {
       "ConfigResist": "Configure Resistances",
+      "FileServer": "File Server",
+      "ReleaseCreature": "Release Pokémon",
+      "SelectCreature": "Select Pokémon",
+      "ServerBrowser": "Remote Server Browser",
       "TransferRune": "Transfer Rune",
-      "UseCaptureSphere": "Use Capture Sphere"
+      "CompendiumBrowser": "Compendium Browser",
+      "UseCaptureSphere": "Use Capture Sphere",
+      "UseItem": "Use Item",
+      "MoveImporter": "Import moves",
+      "CreatureImporter": "Import Pokémon"
     },
     "Type": {
       "Bug": "Bug",

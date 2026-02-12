@@ -18,13 +18,31 @@ export default class PtaApplication extends HandlebarsApplicationMixin(Applicati
             closeOnSubmit: true,
         },
         actions: {
-            copyToClipboard: this._onCopyToClipboard
+            copyToClipboard: this._onCopyToClipboard,
+            collapse: this._onCollapse
         }
     }
 
     static get PARTS() {
         return {}
     };
+
+    tabGroups = {};
+
+    static TABS = {};
+
+    _getTabs() {
+        return Object.values(this.constructor.TABS).reduce((acc, v) => {
+            const isActive = this.tabGroups[v.group] === v.id;
+            acc[v.id] = {
+                ...v,
+                active: isActive,
+                cssClass: isActive ? "item active" : "item",
+                tabCssClass: isActive ? "tab active" : "tab"
+            };
+            return acc;
+        }, {});
+    }
 
     async _prepareContext(options) { return {} };
     //==========================================================================================
@@ -40,6 +58,15 @@ export default class PtaApplication extends HandlebarsApplicationMixin(Applicati
         if (!ele) return;
         if (ele.dataset.copy) navigator.clipboard.writeText(ele.dataset.copy);
         else if (ele.value) navigator.clipboard.writeText(ele.value);
+    }
+
+    static _onCollapse(event, target) {
+        // toggle the collapsed state
+        const ele = target.closest('.collapsible');
+        ele.classList.toggle('collapsed');
+
+        // add the transition class temporarily
+        ele.classList.add('animating');
     }
 
     //==========================================================================================

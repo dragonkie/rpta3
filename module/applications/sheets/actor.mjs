@@ -31,7 +31,7 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
     };
 
     tabGroups = {
-        primary: "traits"
+        
     };
 
     //====================================================================================================
@@ -250,7 +250,7 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
         content += '</div>';
 
         let app = await new PtaDialog({
-            window: { title: 'PTA.Title.ConfigResist' },
+            window: { title: PTA.windowTitle.configResist },
             id: `Actor.${this.document.id}.resist-config`,
             content: content,
             classes: ['pta'],
@@ -350,36 +350,105 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
 //===================================================================================================
 export function PtaTrainerMixin(BaseApplication) {
     return class TrainerSheet extends BaseApplication {
-        _onRender(context, options) {
-            let r = super._onRender(context, options);
-            if (!this.isEditable) return;
+        _pcSearchQuery = {}
 
+        async _performSearchQuery() {
             // Set up pokebox search bar functionality
             const pokebox = this.element.querySelector('.pta-pokebox-entries');
             const searchElement = this.element.querySelector('.pta-trainer-pc-search');
-            const inputs = this.element.querySelectorAll('[data-query]');
+            const inputs = searchElement.querySelectorAll('[data-query]');
 
-            const cb = async () => {
-                for (const ele of pokebox.querySelectorAll('[data-pokemon-uuid]')) {
-                    ele.classList.remove('obliterated');
-                    const pokemon = await fromUuid(ele.dataset.pokemonUuid);
+            for (const ele of pokebox.querySelectorAll('[data-pokemon-uuid]')) {
+                ele.classList.remove('obliterated');
+                const pokemon = await fromUuid(ele.dataset.pokemonUuid);
 
-                    for (const input of inputs) {
-                        if (input.dataset.query == 'name') {
-                            let query = input.value.toLowerCase();
-                            if (query == "") continue;
-                            if (!pokemon.name.toLowerCase().startsWith(query) && !pokemon.system.species.toLowerCase().startsWith(query)) ele.classList.add('obliterated');
+                for (const input of inputs) {
+                    if (input.dataset.query == 'name') {
+                        const query = input?.value?.toLowerCase();
+                        if (!query || query == "") continue;
+                        if (!pokemon.name.toLowerCase().startsWith(query) && !pokemon.system.species.toLowerCase().startsWith(query)) ele.classList.add('obliterated');
+                    }
+
+                    if (input.dataset.query == 'type') {
+                        const queries = input?.value?.toLowerCase().replaceAll(",", " ").split(" ");
+                        const types = pokemon.system.getTypes;
+
+                        for (const query of queries) {
+                            if (!pokemon.system.types.primary.startsWith(query) && !pokemon.system.types.secondary.startsWith(query)) ele.classList.add('obliterated');
                         }
+                    }
 
-                        if (input.dataset.query == 'female' && input.checked && pokemon.system.gender.toLowerCase() != "female") ele.classList.add('obliterated');
-                        if (input.dataset.query == 'male' && input.checked && pokemon.system.gender.toLowerCase() != "male") ele.classList.add('obliterated');
-                        if (input.dataset.query == 'shiny' && !pokemon.system.shiny == input.checked) ele.classList.add('obliterated');
+                    if (input.dataset.query == 'female' && input.checked && pokemon.system.gender.toLowerCase() != "female") ele.classList.add('obliterated');
+                    if (input.dataset.query == 'male' && input.checked && pokemon.system.gender.toLowerCase() != "male") ele.classList.add('obliterated');
+                    if (input.dataset.query == 'shiny' && !pokemon.system.shiny == input.checked) ele.classList.add('obliterated');
+                }
+            }
+        }
+
+        _setupSearchQuery() {
+            // Set up pokebox search bar functionality
+            const pokebox = this.element.querySelector('.pta-pokebox-entries');
+            const searchElement = this.element.querySelector('.pta-trainer-pc-search');
+            const inputs = searchElement.querySelectorAll('[data-query]');
+
+            // attach the new listeners
+            for (const input of inputs) input.addEventListener('input', this._performSearchQuery.bind(this));
+        }
+
+        _saveSearchQuery() {
+            if (!this.rendered) return;
+            const search = this.element.querySelector('.pta-trainer-pc-search');
+            if (!search) return false;
+
+            for (const ele of search.querySelectorAll('[data-query]')) {
+                if (ele.type == 'checkbox') this._pcSearchQuery[ele.dataset.query] = ele.checked;
+                else this._pcSearchQuery[ele.dataset.query] = ele.value;
+            }
+        }
+
+        _loadSearchQuery() {
+            const search = this.element.querySelector('.pta-trainer-pc-search');
+            if (!search) return false;
+
+            for (const ele of search.querySelectorAll('[data-query]')) {
+                for (const [key, value] of Object.entries(this._pcSearchQuery)) {
+                    if (ele.dataset.query == key) {
+                        if (ele.type == 'checkbox') ele.checked = value;
+                        else ele.value = value;
                     }
                 }
             }
+        }
 
-            for (const input of inputs) input.addEventListener('input', cb);
+        _resetSearchQuery() {
+            this._pcSearchQuery = {};
+            const search = this.element.querySelector('.pta-trainer-pc-search');
+            if (!search) return false;
+
+            for (const ele of search.querySelectorAll('[data-query]')) {
+                if (ele.type == 'checkbox') ele.checked = false;
+                else ele.value = "";
+            }
+        }
+
+        //=========================================================================================
+        //>- Render function overrides
+        //=========================================================================================
+        _onRender(context, options) {
+            let r = super._onRender(context, options);
+            this._setupSearchQuery();
+            this._loadSearchQuery();
+            this._performSearchQuery();
             return r;
+        }
+
+        async _preRender(context, options) {
+            this._saveSearchQuery();
+            return super._preRender(context, options);
+        }
+
+        async _preClose(options) {
+            this._saveSearchQuery();
         }
     }
 }

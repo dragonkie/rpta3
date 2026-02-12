@@ -17,11 +17,18 @@ export default class PtaPokemonSheet extends PtaActorSheet {
                 label: PTA.generic.import,
                 action: 'importData',
                 ownership: 3
+            }, {
+                icon: 'fas fa-upload',
+                label: PTA.generic.export,
+                action: 'exportData',
+                ownership: 3
             }]
         },
         actions: {
             importData: this._onImportData,
-            syncData: this._onSyncData
+            exportData: this._onExportData,
+            syncData: this._onSyncData,
+            editEggGroups: this._onEditEggGroups,
         }
     }
 
@@ -61,6 +68,30 @@ export default class PtaPokemonSheet extends PtaActorSheet {
         let pokemon = await utils.importPokemonData({ all: true });
     }
 
+    /**
+     * 
+     */
+    static _onExportData() {
+        // function for creating a downloadable element to store the data
+        function download(content, fileName, contentType) {
+            const a = document.createElement("a");
+            const file = new Blob([content], { type: contentType });
+            a.href = URL.createObjectURL(file);
+            a.download = fileName;
+            a.click();
+        }
+
+        // gather and prepare needed actor data
+        const doc = this.document;
+        const data = doc.toObject();
+        var json = JSON.stringify(data);
+
+        // filter out uneccessary fields
+        json = json.replaceAll(/,"_stats":{(.*?)}/gm, "");
+
+        download(json, `${doc.name}.json`, 'text/plain');
+    }
+
     static async _onSyncData() {
         // get the pokemons name / species, check against our downlaoded pokedex
         let search = this.document.system.species.toLowerCase().replace(' ', '-');
@@ -84,6 +115,71 @@ export default class PtaPokemonSheet extends PtaActorSheet {
 
         await this.document.update({ system: update_data })
         this.render(false);
+    }
+
+    static async _onEditEggGroups() {
+        const context = {};
+        context.fields = {}
+        context.actor = this.document;
+        context.system = context.actor.system;
+
+        // outline base values for the fields
+        for (const [key, value] of Object.entries(PTA.eggTypes)) {
+            context.fields[key] = {
+                label: utils.localize(value),
+                active: false,
+                element: null
+            }
+        }
+
+        // check the lsit and activate any that require it
+        for (const egg of context.system.eggTypes) context.fields[egg].active = true;
+
+        // generate the inputs in the fields
+        for (const [key, value] of Object.entries(context.fields)) {
+            value.element = new foundry.data.fields.BooleanField({
+                name: key,
+                label: value.label,
+                initial: value.active,
+            }).toFormGroup();
+
+            value.element.setAttribute('data-egg', key);
+
+            value.element = value.element.outerHTML;
+        }
+
+        console.log('egg config context', context)
+
+
+        const appContent = await utils.renderTemplate(PTA.templates.dialog.configEggGroups, context);
+        const app = await new PtaDialog({
+            window: {
+                title: PTA.windowTitle.configEggGroups
+            },
+            id: `Actor.${this.document.id}.egg-config`,
+            content: appContent,
+            buttons: [{
+                action: 'cancel',
+                label: 'Cancel'
+            }, {
+                action: 'confirm',
+                label: 'Confirm'
+            }],
+            submit: (result) => {
+                if (result != 'confirm') return;
+
+                const list = [];
+                const inputs = app.element.querySelectorAll('[data-egg]');
+
+                for (const input of inputs) {
+                    let egg = input.dataset.egg;
+                    let active = input.querySelector('input').checked;
+                    if (active) list.push(egg);
+                }
+
+                this.document.update({ system: { eggTypes: list } })
+            }
+        }).render(true);
     }
 
     async _renderFrame(options) {

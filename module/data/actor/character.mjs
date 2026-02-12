@@ -1,12 +1,12 @@
 import { PTA } from "../../helpers/config.mjs";
 import utils from "../../helpers/utils.mjs";
-import ActorData from "../actor.mjs";
+import TrainerData from "./trainer.mjs";
 
 const {
   ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField, ObjectField
 } = foundry.data.fields;
 
-export default class CharacterData extends ActorData {
+export default class CharacterData extends TrainerData {
 
   static defineSchema() {
     const requiredInteger = { required: true, nullable: false, integer: true };
@@ -15,7 +15,6 @@ export default class CharacterData extends ActorData {
     schema.honours = new NumberField({ ...requiredInteger, initial: 0, min: 0, label: PTA.generic.honours });
     schema.origin = new StringField({ initial: "", label: PTA.generic.origin });
     schema.rank = new NumberField({ ...requiredInteger, initial: 0, label: PTA.generic.rank });
-
     schema.credits = new NumberField({ ...requiredInteger, initial: 0 });
 
     // list of owned pokemon
@@ -41,6 +40,11 @@ export default class CharacterData extends ActorData {
       eyes: new StringField({ label: PTA.generic.eyes, initial: '' })
     })
 
+    //===================================================================================
+    //> Pokemon player specific options
+    //===================================================================================
+    schema.isPokemon = new BooleanField({ initial: false, nullable: false, required: true });
+
     return schema;
   }
 
@@ -48,7 +52,8 @@ export default class CharacterData extends ActorData {
 
   prepareDerivedData() {
     super.prepareDerivedData();
-
+    
+    // RPTA3 customization
     this.level = this.class_1.level = this.rank;
 
     this.class_2.level = this.class_1.level >= 3 ? this.class_1.level - 2 : 0;
