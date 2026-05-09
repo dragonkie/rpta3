@@ -25,13 +25,13 @@ export default class PtaCharacterSheet extends PtaTrainerMixin(PtaActorSheet) {
     }
 
     static PARTS = {
-        body: { template: `${this.TEMPLATE_PATH}/actor/character/body.hbs` },
+        body: { template: `${this.TEMPLATE_PATH}/actor/character/body.hbs`, scrollable: [".pta-tab-content", ".tab", ".tab.active"] },
         // Tab bodies
-        features: { template: `${this.TEMPLATE_PATH}/actor/character/features.hbs` },
-        inventory: { template: `${this.TEMPLATE_PATH}/actor/character/inventory.hbs` },
+        features: { template: `${this.TEMPLATE_PATH}/actor/character/features.hbs`, scrollable: [".pta-tab-content"] },
+        inventory: { template: `${this.TEMPLATE_PATH}/actor/character/inventory.hbs`, scrollable: [".pta-tab-content"] },
         pokebox: { template: `${this.TEMPLATE_PATH}/actor/character/pokemon.hbs`, scrollable: ["div.pta-pokebox-entries"] },
-        effects: { template: `${this.TEMPLATE_PATH}/actor/parts/actor-effects.hbs` },
-        details: { template: `${this.TEMPLATE_PATH}/actor/character/details.hbs` },
+        effects: { template: `${this.TEMPLATE_PATH}/actor/parts/actor-effects.hbs`, scrollable: [".pta-tab-content"] },
+        details: { template: `${this.TEMPLATE_PATH}/actor/character/details.hbs`, scrollable: [".pta-tab-content"] },
     }
 
     static TABS = {

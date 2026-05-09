@@ -28,7 +28,7 @@ import pokeapi from './helpers/pokeapi.mjs';
 /* -------------------------------------------- */
 
 Hooks.once('init', function () {
-    //CONFIG.debug.hooks = true;
+    // CONFIG.debug.hooks = true;
 
     // Add utility classes to the global game object so that they're more easily
     // accessible in global contexts.

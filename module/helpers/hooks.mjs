@@ -86,6 +86,51 @@ export default function registerHooks() {
         } catch (err) {
             console.error('Failed to append compendium browser header in actor directory', err);
         }
-            */
+        */
     });
+
+    //==========================================================================================================
+    //> Developer links
+    //==========================================================================================================
+    Hooks.on('renderSettings', async (settings, html, context, options) => {
+        try {
+            const section = document.createElement('section');
+            section.classList.add('flexcol');
+
+            // create the divider header
+            const divider = document.createElement('h4');
+            divider.classList.add('divider');
+            divider.textContent = 'System Developers';
+
+            // System github
+            const git = document.createElement('a');
+            git.href = 'https://github.com/dragonkie/PTA3-FVTT';
+            git.classList.add('button');
+            git.innerHTML = `<i class="fa-brands fa-github"></i> Github`;
+
+            // Developers patreon
+            const patreon = document.createElement('a');
+            patreon.href = 'https://www.patreon.com/cw/AstasArmoury';
+            patreon.classList.add('button');
+            patreon.innerHTML = `<i class="fa-brands fa-patreon"></i> Patreon`;
+
+            // Ko-fi link
+            const kofi = document.createElement('a');
+            kofi.href = 'https://ko-fi.com/dragonkie';
+            kofi.classList.add('button');
+            kofi.innerHTML = `<i class="fas fa-coffee"></i> Ko-Fi`;
+
+            // add everything together
+            section.appendChild(divider);
+            section.appendChild(git);
+            section.appendChild(kofi);
+            section.appendChild(patreon);
+
+            // append it to the settings tab
+            html.appendChild(section);
+        } catch (err) {
+            console.error('Failed to append developer support links');
+        }
+    })
+
 }

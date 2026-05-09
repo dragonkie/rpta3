@@ -7,6 +7,7 @@ import PtaNpcSheet from "./sheets/actor/npc.mjs";
 import PtaPokeballSheet from "./sheets/item/pokeball.mjs";
 import PtaConsumableSheet from "./sheets/item/consumable.mjs";
 import PtaMoveSheet from "./sheets/item/move.mjs";
+import PtaEquipmentSheet from "./sheets/item/equipment.mjs";
 
 import PokemonImporter from "./apps/pokemon-importer.mjs";
 import ServerBrowser from "./apps/server-browser.mjs";
@@ -85,7 +86,7 @@ export default {
                         types: ['feature']
                     }
                 }, {
-                    application: null,
+                    application: PtaEquipmentSheet,
                     options: {
                         label: 'TYPES.Item.equipment',
                         types: ['equipment']

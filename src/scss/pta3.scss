@@ -53,10 +53,17 @@
         height: 100%;
         width: 100%;
         min-height: 300px;
+        max-height: 600px;
         padding: 2px;
 
         &.pta-pokemon-tab {
             min-height: 525px;
+        }
+
+        .pta-tab-content {
+            height: 100%;
+            width: 100%;
+            overflow-y: auto;
         }
     }
 

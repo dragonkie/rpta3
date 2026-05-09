@@ -397,7 +397,7 @@
 
 .description {
   padding: 5px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: #302831;
   border-radius: 10px;
 }
 .description label {
@@ -604,11 +604,11 @@ ol.items-list .items-header .item-name {
   border: none;
 }
 
-prose-mirror.inactive .editor-container {
+.pta prose-mirror.inactive .editor-container {
   background: var(--color-cool-4);
   border-radius: 4px;
 }
-prose-mirror.active .editor-container {
+.pta prose-mirror.active .editor-container {
   background: var(--color-cool-4);
   border-radius: 4px;
   min-height: 200px;
@@ -1090,8 +1090,8 @@ ol.pta-pokemon-team .pta-pokemon .details .health {
   min-height: 600px;
 }
 .pta.sheet.actor .window-content [data-tab=inventory] {
-  max-height: 400px;
-  overflow-y: auto;
+  max-height: 500px;
+  height: 500px;
 }
 
 .pta-pokebox {
@@ -1128,10 +1128,16 @@ ol.pta-pokemon-team .pta-pokemon .details .health {
   height: 100%;
   width: 100%;
   min-height: 300px;
+  max-height: 600px;
   padding: 2px;
 }
 .pta .pta-tab.pta-pokemon-tab {
   min-height: 525px;
+}
+.pta .pta-tab .pta-tab-content {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
 }
 .pta .remote-image-browser .sprite-gallery {
   display: grid;
@@ -1153,3 +1159,5 @@ ol.pta-pokemon-team .pta-pokemon .details .health {
   border: none;
   image-rendering: pixelated;
 }
+
+/*# sourceMappingURL=pta3.css.map */

@@ -125,14 +125,6 @@ export default class MoveData extends ItemData {
         return this._onUseAttack(event, target);
     }
 
-    async _onRollAttack() {
-
-    }
-
-    async _onRollDamage() {
-
-    }
-
     //=====================================================================================================
     //>- Attack 
     //=====================================================================================================
@@ -175,7 +167,7 @@ export default class MoveData extends ItemData {
             //========================================================================
             //>--- Attack Roll
             //========================================================================
-            let r_accuracy = new Roll('1d20 + @stat.mod + @accuracy', rolldata);
+            const r_accuracy = new Roll('1d20 + @stat.mod + @accuracy', rolldata);
             await r_accuracy.evaluate();
 
             let missed = false;
@@ -194,11 +186,13 @@ export default class MoveData extends ItemData {
             //========================================================================
             //>--- Damage Roll
             //========================================================================
-            // Add stab damage bonus
-            for (const key of Object.keys(attacker.system.types)) {
-                if (attacker.system.types[key] == this.type) {
-                    damage_formula += '+4';
-                    break;
+            if (!missed) {
+                // Add stab damage bonus
+                for (const key of Object.keys(attacker.system.types)) {
+                    if (attacker.system.types[key] == this.type) {
+                        damage_formula += '+4';
+                        break;
+                    }
                 }
             }
 
@@ -209,7 +203,6 @@ export default class MoveData extends ItemData {
             console.log('reducing damage', target_stat)
             if (target_stat.mod > 0) damage_formula += ` - ${target_stat.mod}`
             console.log(damage_formula);
-
 
             const r_damage = new Roll(damage_formula, rolldata);
 
@@ -253,6 +246,7 @@ export default class MoveData extends ItemData {
 
                 message_data.content += await r_damage.render();
 
+
                 //==================================================================================================
                 //>--- Lifesteal application
                 //==================================================================================================
@@ -290,20 +284,24 @@ export default class MoveData extends ItemData {
                 }
             }
 
+
             //======================================================================================================
             //>--- Chat Message
             //======================================================================================================
             message_data.content = await foundry.applications.ux.TextEditor.enrichHTML(message_data.content);
             let message = await r_accuracy.toMessage(message_data, message_config);
-        }
 
-        // if we reach this point, attack was successful so we expend a use
-        if (this.uses.max > 0) this.parent.update({ 'system.uses.value': this.uses.value - 1 });
+
+            // if we reach this point, attack was successful so we expend a use
+            if (this.uses.max > 0) this.parent.update({ 'system.uses.value': this.uses.value - 1 });
+        }
     }
 
     async _onUseReload(event, target) {
         if (this.uses.max > 0 && this.uses.value < this.uses.max) {
             this.parent.update({ system: { uses: { value: this.uses.max } } });
         }
+
     }
 }
+
