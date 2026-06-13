@@ -83,7 +83,7 @@ export default class utils {
                     const app = await new PtaDialog({
                         window: { title: "PTA.Dialog.PokemonImporter" },
                         content: `
-                        <input type="text" class="pokemon-name" placeholder="${this.localize(PTA.Generic.Companion)}">
+                        <input type="text" class="pokemon-name" placeholder="${this.localize(PTA.generic.companion)}">
                         <div class="form-group">
                             <label>Moves</label>
                             <div class="form-fields">

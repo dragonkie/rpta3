@@ -96,7 +96,7 @@ PTA.generic = {
   nature: 'PTA.Generic.Nature',
   none: 'PTA.Generic.None',
   origin: 'PTA.Generic.Origin',
-  pokemon: 'PTA.Generic.Companion',
+  companion: 'PTA.Generic.Companion',
   primary: 'PTA.Generic.Primary',
   rank: 'PTA.Generic.Rank',
   roll: 'PTA.generic.Roll',
@@ -745,4 +745,6 @@ PTA.contextMenu = {
   use: 'PTA.ContextMenu.Use',
   attack: 'PTA.ContextMenu.Attack',
   damage: 'PTA.ContextMenu.Damage',
+  activate: 'PTA.ContextMenu.Activate',
+  deactivate: 'PTA.ContextMenu.Deactivate',
 }

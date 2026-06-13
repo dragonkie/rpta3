@@ -87,6 +87,26 @@ export default class RuneData extends ItemData {
         return schema;
     }
 
+    getMenuActions() {
+        const group = "rune";
+        return [
+            {
+                label: PTA.contextMenu.equip,
+                visible: !this.equipped && this.parent.actor.type != 'character',
+                group: group,
+                icon: "",
+                onClick: () => this.parent.update({ system: { equipped: true } })
+            }, {
+                label: PTA.contextMenu.unequip,
+                visible: this.equipped && this.parent.actor.type != 'character',
+                group: group,
+                icon: "",
+                onClick: () => this.parent.update({ system: { equipped: false } })
+            },
+            ...super.getMenuActions(),
+        ];
+    }
+
     get importance() {
         let value = 0;
         for (const [key, stat] of Object.entries(this.stats)) {
@@ -100,6 +120,7 @@ export default class RuneData extends ItemData {
         if (!this.equipped) return;
         console.log('Rune is augmenting actor data');
         for (const [key, stat] of Object.entries(this.stats)) {
+            if (stat.value != 0) console.log("Applying stat change", { k: key, s: stat, original: actorData.stats[key].total });
             switch (stat.method) {
                 case 'add': actorData.stats[key].total += stat.value; break;
                 case 'subtract': actorData.stats[key].total -= stat.value; break;
@@ -108,8 +129,10 @@ export default class RuneData extends ItemData {
                 case 'shrink': actorData.stats[key].total = Math.min(actorData.stats[key].total, stat.value); break;
                 default: break;
             }
+            if (stat.value != 0) console.log("Finished stat change", { k: key, s: stat, new: actorData.stats[key].total });
         }
-        actorData.hp.total += this.hp;
+        actorData.hp.max += this.hp;
+        console.log({ clone: utils.duplicate(actorData), real: actorData });
     }
 
     async use(event, target, action) {

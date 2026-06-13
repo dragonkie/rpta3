@@ -15,7 +15,6 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
             trainTalent: this._onTrainTalent,
             use: this._onUseItem,
             editResistance: this._onEditResistance,
-            roll: this._onRoll,
             importMoves: this._onImportMoves,
         }
     }
@@ -46,14 +45,13 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
         });
         context.itemTypes = this.document.itemTypes;
         context.editable = this.isEditable && (this._mode === this.constructor.SHEET_MODES.EDIT);
-        context.userSettings = game.user.getFlag(game.system.id, 'settings');
 
         context.stats = {};
         for (const [key, value] of Object.entries(this.document.system.stats)) {
             context.stats[key] = { ...value };
             context.stats[key].label = {
-                long: pta.utils.localize(CONFIG.PTA.stats[key]),
-                abbr: pta.utils.localize(CONFIG.PTA.statsAbbr[key])
+                long: utils.localize(CONFIG.PTA.stats[key]),
+                abbr: utils.localize(CONFIG.PTA.statsAbbr[key])
             }
             context.stats[key].field_path = `system.stats.${key}`;
             context.stats[key].field = this.document.system.schema.getField(`stats.${key}`);
@@ -66,8 +64,8 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
         })) {
             context.skills[key] = value;
             context.skills[key].label = {
-                long: pta.utils.localize(CONFIG.PTA.skills[key]),
-                abbr: pta.utils.localize(CONFIG.PTA.skillsAbbr[key])
+                long: utils.localize(CONFIG.PTA.skills[key]),
+                abbr: utils.localize(CONFIG.PTA.skillsAbbr[key])
             }
         }
 
@@ -100,7 +98,7 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
     //====================================================================================================
     static async _onUseItem(event, target) {
         // Get the item were actually targeting
-        const uuid = target.closest(".item[data-item-uuid]").dataset.itemUuid;
+        const uuid = target.closest("[data-uuid]").dataset.uuid;
         const item = await fromUuid(uuid);
         const action = target.closest("[data-use]")?.dataset.use;
 
@@ -147,7 +145,7 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
     }
 
     static async _onChangeItemQuantity(event, target) {
-        const item = await fromUuid(target.closest('[data-item-uuid]').dataset.itemUuid);
+        const item = await fromUuid(target.closest('[data-uuid]').dataset.uuid);
         if (!item) return void console.error('Couldnt find item to update');
 
         let value = Number(target.dataset.value);
@@ -175,29 +173,6 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
 
         await this.document.update({ [`system.skills.${key}`]: skill });
         await this.render({ force: false, parts: ['features'] }); /**EDITING THIS RANDOM LINE HERE TO TRY AND OPTIMIZE THE LEVEL OF LAYERS BEING EDITED AND PREPARED TO MAKE THIGNS RENDER BETTER AND FASTER */
-    }
-
-    /**
-     * Generic roll event, prompts user to spend legend and confirm the roll formula
-     * @param {Event} event 
-     * @param {HTMLElement} target 
-     */
-    static async _onRoll(event, target) {
-        let formula = target.closest('[data-roll')?.dataset.roll;
-        let msg_content = target.closest('[data-roll-msg]')?.dataset.rollMsg;
-        if (!formula) return void console.error('Couldnt find roll formula');
-
-
-        let rolldata = this.getRollData();
-
-        let roll = new Roll(formula, rolldata);
-        await roll.evaluate();
-
-        let msg_data = {
-            flavor: msg_content,
-            speaker: ChatMessage.getSpeaker({ actor: this.document })
-        }
-        let msg = await roll.toMessage(msg_data);
     }
 
     static async _onEditResistance(event, target) {
@@ -309,15 +284,15 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
     async _onSortItem(item, target) {
         if (item.documentName !== "Item") return;
 
-        const self = target.closest("[data-tab]")?.querySelector(`[data-item-uuid="${item.uuid}"]`);
-        if (!self || !target.closest("[data-item-uuid]")) return;
+        const self = target.closest("[data-tab]")?.querySelector(`[data-uuid="${item.uuid}"]`);
+        if (!self || !target.closest("[data-uuid]")) return;
 
-        let sibling = target.closest("[data-item-uuid]") ?? null;
-        if (sibling?.dataset.itemUuid === item.uuid) return;
-        if (sibling) sibling = await fromUuid(sibling.dataset.itemUuid);
+        let sibling = target.closest("[data-uuid]") ?? null;
+        if (sibling?.dataset.uuid === item.uuid) return;
+        if (sibling) sibling = await fromUuid(sibling.dataset.uuid);
 
-        let siblings = target.closest("[data-tab]").querySelectorAll("[data-item-uuid]");
-        siblings = await Promise.all(Array.from(siblings).map(s => fromUuid(s.dataset.itemUuid)));
+        let siblings = target.closest("[data-tab]").querySelectorAll("[data-uuid]");
+        siblings = await Promise.all(Array.from(siblings).map(s => fromUuid(s.dataset.uuid)));
         siblings.findSplice(i => i === item);
 
         let updates = foundry.utils.performIntegerSort(item, { target: sibling, siblings: siblings, sortKey: "sort" });
@@ -332,51 +307,85 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
 export function PtaTrainerMixin(BaseApplication) {
     return class TrainerSheet extends BaseApplication {
         _pcSearchQuery = {}
+        _itemSearchQuery = "";
 
-        async _performSearchQuery() {
-            // Set up pokebox search bar functionality
-            const pokebox = this.element.querySelector('.pta-pokebox-entries');
-            const searchElement = this.element.querySelector('.pta-trainer-pc-search');
-            const inputs = searchElement.querySelectorAll('[data-query]');
+        /**
+         * Each search is wrapped in an elemented with a [data-search] attribute specifying what search type it is
+         * ex. data-search="items" is used to filter items
+         * 
+         * All inputs inside the search wrapper are applied to elements matching the search tag
+         * A search container can have many different contexts or filters to search throguh
+         * in this system that usually includes a name, type, gender, etc.
+         * 
+         * Searchable elements are indicated with the class [data-searchable] attribute to select which group reveals or hides them
+         * an item entry with data-searchable="item" will be filtered to match those standards
+         * 
+         * All searchable elements need to have, or be contained by am element with, a [data-uuid] attribute
+         * The uuid search allows us to pull up which item is which and access item or creature data
+         * with creature data available the [data-search] group and [data-query] value checks can run
+         * against the internal data model for that document
+         * 
+         * Search data is compared against DOCUMENT data, not the system data model
+         * Adding a search query for system data values means including system in the query,
+         * search inputs without a specified [data-path] compare against document name by default
+         * eg. [data-query="system.hp.value"], [data-query="name"], [data-query="system.type.primary"]
+         * 
+         * ----SEARCHABLE GROUPS----
+         * companion
+         * item
+         * move
+         * feature
+         * 
+         * -------SEARCH TAGS-------
+         * all elemental types
+         * all item document types
+         * item
+         * creature
+         * male
+         * female
+         * shiny
+         */
+        _setupSearchQuery() {
+            // get a list of input elements
+            const containers = this.element.querySelectorAll('[data-search]');
 
-            for (const ele of pokebox.querySelectorAll('[data-pokemon-uuid]')) {
-                ele.classList.remove('obliterated');
-                const pokemon = await fromUuid(ele.dataset.pokemonUuid);
-
-                for (const input of inputs) {
-                    if (input.dataset.query == 'name') {
-                        const query = input?.value?.toLowerCase();
-                        if (!query || query == "") continue;
-                        if (!pokemon.name.toLowerCase().startsWith(query) && !pokemon.system.species.toLowerCase().startsWith(query)) ele.classList.add('obliterated');
-                    }
-
-                    if (input.dataset.query == 'type') {
-                        const queries = input?.value?.toLowerCase().replaceAll(",", " ").split(" ");
-                        const types = pokemon.system.getTypes;
-
-                        for (const query of queries) {
-                            if (!pokemon.system.types.primary.startsWith(query) && !pokemon.system.types.secondary.startsWith(query)) ele.classList.add('obliterated');
-                        }
-                    }
-
-                    if (input.dataset.query == 'female' && input.checked && pokemon.system.gender.toLowerCase() != "female") ele.classList.add('obliterated');
-                    if (input.dataset.query == 'male' && input.checked && pokemon.system.gender.toLowerCase() != "male") ele.classList.add('obliterated');
-                    if (input.dataset.query == 'shiny' && !pokemon.system.shiny == input.checked) ele.classList.add('obliterated');
-                }
+            // convert the elements to actual search queries
+            for (const container of containers) {
+                const inputs = container.querySelectorAll(".pta-search-input");
+                for (const input of inputs) input.addEventListener('input', this._performSearch.bind(this));
             }
         }
 
-        _setupSearchQuery() {
-            // Set up pokebox search bar functionality
-            const pokebox = this.element.querySelector('.pta-pokebox-entries');
-            const searchElement = this.element.querySelector('.pta-trainer-pc-search');
-            const inputs = searchElement.querySelectorAll('[data-query]');
+        /**
+         * Take given search queries and filter searchable items from the sheet
+         * @param {Event} event 
+         */
+        async _performSearch(event) {
+            // Gather filter details and list of targets to search through
+            const target = event.target;
+            const container = event.target.closest('[data-search]');
+            const group = container.dataset.search;
+            const elements = this.element.querySelectorAll(`[data-searchable=${group}]`);
+            const search = utils.sluggify(target.value);
 
-            // attach the new listeners
-            for (const input of inputs) input.addEventListener('input', this._performSearchQuery.bind(this));
+            // remove the obliterate class from all of them
+            for (const e of elements) e.classList.remove("obliterated");
+
+            // check through list against items to hide them
+            for (const ele of elements) {
+
+                // get the item to filter agaisnt
+                const uuid = ele.closest('[data-uuid]').dataset.uuid;
+                const item = await fromUuid(uuid);
+
+                if (!utils.sluggify(item.name).includes(search)) ele.classList.add("obliterated");
+            }
         }
 
+
+
         _saveSearchQuery() {
+            /*
             if (!this.rendered) return;
             const search = this.element.querySelector('.pta-trainer-pc-search');
             if (!search) return false;
@@ -385,9 +394,14 @@ export function PtaTrainerMixin(BaseApplication) {
                 if (ele.type == 'checkbox') this._pcSearchQuery[ele.dataset.query] = ele.checked;
                 else this._pcSearchQuery[ele.dataset.query] = ele.value;
             }
+
+            // save inventory search query
+            this._itemSearchQuery = this.element.querySelector('input.pta-inventory-search').value;
+            */
         }
 
         _loadSearchQuery() {
+            /*
             const search = this.element.querySelector('.pta-trainer-pc-search');
             if (!search) return false;
 
@@ -399,17 +413,9 @@ export function PtaTrainerMixin(BaseApplication) {
                     }
                 }
             }
-        }
 
-        _resetSearchQuery() {
-            this._pcSearchQuery = {};
-            const search = this.element.querySelector('.pta-trainer-pc-search');
-            if (!search) return false;
-
-            for (const ele of search.querySelectorAll('[data-query]')) {
-                if (ele.type == 'checkbox') ele.checked = false;
-                else ele.value = "";
-            }
+            this.element.querySelector('input.pta-inventory-search').value = this._itemSearchQuery;
+            */
         }
 
         //=========================================================================================
@@ -419,7 +425,6 @@ export function PtaTrainerMixin(BaseApplication) {
             let r = super._onRender(context, options);
             this._setupSearchQuery();
             this._loadSearchQuery();
-            this._performSearchQuery();
             return r;
         }
 
