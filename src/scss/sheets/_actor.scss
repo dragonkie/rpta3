@@ -7,29 +7,19 @@
             object-position: 50% 0%;
         }
 
-        margin-bottom: 1rem;
         padding-bottom: 0.5rem;
         border-bottom: 1px solid var(--color-light-5);
     }
 
     .window-content {
-        min-height: 600px;
 
         [data-tab=inventory] {
-            max-height: 500px;
-            height: 500px;
+            overflow-y: auto;
         }
     }
 
 }
 
-.pta-pokebox {
-    max-height: 500px;
-    overflow: hidden;
-
-    .pta-pokebox-entries {
-        box-sizing: border-box;
-        overflow: auto;
-        flex: 1;
-    }
+.pta-inventory {
+    overflow: auto;
 }

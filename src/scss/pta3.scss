@@ -7,6 +7,7 @@
 @use 'global/flex';
 
 /* Components */
+@use 'components/searchbar';
 @use 'components/forms';
 @use 'components/resource';
 @use 'components/items';
@@ -17,12 +18,23 @@
 @use 'components/abilities';
 @use 'components/collapsible';
 @use 'components/bookmarks';
+@use 'components/context-menu';
 
 /* Sheet specific styles */
 @use 'sheets/actor';
 
 /* Styles limited to pta3 sheets */
 .pta {
+    &.sheet {
+
+        ol,
+        ul,
+        li {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+    }
 
     // force our sheets to use the set font instead of foundrys very specific declarations
     input[type=text] {
@@ -53,17 +65,10 @@
         height: 100%;
         width: 100%;
         min-height: 300px;
-        max-height: 600px;
-        padding: 2px;
+        padding: 0.5rem;
 
-        &.pta-pokemon-tab {
+        &.pta-companion-tab {
             min-height: 525px;
-        }
-
-        .pta-tab-content {
-            height: 100%;
-            width: 100%;
-            overflow-y: auto;
         }
     }
 

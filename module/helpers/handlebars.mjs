@@ -1,4 +1,5 @@
 import { PTA } from "./config.mjs";
+import utils from "./utils.mjs";
 
 function registerTemplates() {
     const path = `systems/${game.system.id}/templates`;
@@ -38,6 +39,8 @@ function registerHelpers() {
             else throw new Error("Can't get length of non array value");
         },
         objectIsEmpty: (obj) => Object.keys(obj).length <= 0,
+        objectValue: (obj, key) => obj[key],
+        systemConfig: () => PTA,
         //=======================================================================
         //>  Strings and Text
         //=======================================================================
@@ -142,8 +145,8 @@ function registerHelpers() {
                 name: "",
                 choices: () => {
                     let opt = {};
-                    for (const [k, v] of Object.entries(PTA.pokemonTypes)) opt[k] = pta.utils.localize(v);
-                    if (none) opt.none = pta.utils.localize(PTA.generic.none);
+                    for (const [k, v] of Object.entries(PTA.pokemonTypes)) opt[k] = utils.localize(v);
+                    if (none) opt.none = utils.localize(PTA.generic.none);
                     return opt;
                 }
             });

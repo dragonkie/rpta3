@@ -1,4 +1,6 @@
-// MATH FUNCTIONS STORED IN pta.utils (lerp, curve, easing, etc...)
+import utils from "../helpers/utils.mjs";
+
+// MATH FUNCTIONS STORED IN utils (lerp, curve, easing, etc...)
 export default class PtaAnimationManager {
     async loadPixelSprite(url) {
         // load the asset
@@ -35,7 +37,7 @@ export default class PtaAnimationManager {
             lastUpdate = now;
             accumulator += dt;
 
-            let offset = pta.utils.fastBezier(xStart, yStart, _x, _y, accumulator / _t);
+            let offset = utils.fastBezier(xStart, yStart, _x, _y, accumulator / _t);
 
             asset.x = offset.x;
             asset.y = offset.y;
@@ -58,7 +60,7 @@ export default class PtaAnimationManager {
             lastUpdate = now;
             accumulator += dt;
 
-            let offset = pta.utils.fastBezier(xStart, yStart, _x, _y, accumulator / _t);
+            let offset = utils.fastBezier(xStart, yStart, _x, _y, accumulator / _t);
 
             asset.x = offset.x;
             asset.y = offset.y;

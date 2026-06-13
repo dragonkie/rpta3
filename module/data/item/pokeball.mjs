@@ -110,9 +110,23 @@ export default class PokeballData extends ItemData {
         return schema;
     }
 
+    getMenuActions() {
+        const group = "ball";
+        return [
+            ...super.getMenuActions(),
+            {
+                label: PTA.contextMenu.use,
+                visible: true,
+                group: group,
+                icon: "",
+                onClick: () => this.use()
+            }
+        ];
+    }
+
     async use(event, options) {
-        if (!this.actor) return void pta.utils.warn("Can't throw a pokeball without a trainer!");
-        if (this.quantity <= 0) return void pta.utils.warn("PTA.Warn.MissingItem");
+        if (!this.actor) return void utils.warn("Can't throw a pokeball without a trainer!");
+        if (this.quantity <= 0) return void utils.warn("PTA.Warn.MissingItem");
 
         const rollData = this.getRollData();
 

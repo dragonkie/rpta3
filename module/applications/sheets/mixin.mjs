@@ -1,6 +1,7 @@
 import { PTA } from "../../helpers/config.mjs";
 import utils from "../../helpers/utils.mjs";
 import ServerBrowser from "../apps/server-browser.mjs";
+import PtaContextMenu from "../context-menu.mjs";
 import PtaDialog from "../dialog.mjs";
 
 export default function PtaSheetMixin(Base) {
@@ -9,7 +10,7 @@ export default function PtaSheetMixin(Base) {
 
         static DEFAULT_OPTIONS = {
             classes: ['pta', 'sheet'],
-            window: { resizable: false },
+            window: { resizable: true },
             form: {
                 submitOnChange: true,
                 submitOnClose: true,
@@ -20,6 +21,8 @@ export default function PtaSheetMixin(Base) {
                 delete: this._onDelete,
                 edit: this._onEdit,
                 toggle: this._onToggle,
+                clear: this._onClear,
+                roll: this._onRoll,
 
                 collapse: this._onCollapse,
                 copyToClipboard: this._onCopyToClipboard,
@@ -60,8 +63,8 @@ export default function PtaSheetMixin(Base) {
             context.isEditMode = this.isEditMode;
             context.isPlayMode = this.isPlayMode;
             context.isEditable = this.isEditable;
-
-            context.flags = { ...this.document.flags, ...game.user.flags[game.system.id] }
+            context.flags = this.document.flags;
+            context.userSettings = game.user.getFlag(game.system.id, 'settings');
 
             const enrichmentOptions = { rollData: context.rollData }
             context.gmNotes = {
@@ -116,7 +119,7 @@ export default function PtaSheetMixin(Base) {
 
             let confirmed = true;
             if (!event.shiftKey) confirmed = await PtaDialog.confirm({
-                content: pta.utils.format('PTA.Dialog.Confirm.deleteItem', { name: doc.name }),
+                content: utils.format('PTA.Dialog.Confirm.deleteItem', { name: doc.name }),
                 rejectClose: false,
                 modal: true
             });
@@ -137,6 +140,39 @@ export default function PtaSheetMixin(Base) {
             else doc.sheet.bringToFront(true);
 
             console.log("Rendered sheet", doc)
+        }
+
+        static async _onClear(event, target) {
+            const search = target.closest(".pta-search-container");
+            const input = search.querySelector('.pta-search-input');
+
+            if (input) {
+                input.value = "";
+                input.dispatchEvent(new Event("input"));
+            }
+        }
+
+        /**
+         * Generic roll event, prompts user to spend legend and confirm the roll formula
+         * @param {Event} event 
+         * @param {HTMLElement} target 
+         */
+        static async _onRoll(event, target) {
+            let formula = target.closest('[data-roll')?.dataset.roll;
+            let msg_content = target.closest('[data-roll-msg]')?.dataset.rollMsg;
+            if (!formula) return void console.error('Couldnt find roll formula');
+
+
+            let rolldata = this.getRollData();
+
+            let roll = new Roll(formula, rolldata);
+            await roll.evaluate();
+
+            let msg_data = {
+                flavor: `<b>${msg_content}</b>`,
+                speaker: ChatMessage.getSpeaker({ actor: this.document })
+            }
+            let msg = await roll.toMessage(msg_data);
         }
 
         static async _onEditImage(event, target) {
@@ -371,10 +407,12 @@ export default function PtaSheetMixin(Base) {
                         let s = `${ele.nodeName}`; // classes
 
                         // add elements classes
-                        for (const c of ele.classList) if (c != "collapsed" && c != "active" && c != 'animating') s += `.${c}`;
+                        const cBlacklist = ['collapsed', 'active', 'animating', 'obliterated', 'context'];
+                        for (const c of ele.classList) if (!cBlacklist.includes(c)) s += `.${c}`;
 
                         // add element attributes
-                        for (const a of ele.attributes) if (a.name != 'class' && a.name != 'style') s += `[${a.name}="${a.value}"]`;
+                        const aBlacklist = ['class', 'style']
+                        for (const a of ele.attributes) if (!aBlacklist.includes(a.name)) s += `[${a.name}="${a.value}"]`;
 
                         // add this elements selector to the unique selector
                         selector = s + ' ' + selector;
@@ -400,16 +438,34 @@ export default function PtaSheetMixin(Base) {
             const list = [];
             if (this._collapsedElements.length > 0 && this.rendered) {
                 let c = 0;
-                this._collapsedElements.forEach(({ selector, collapsed }) => {
+                for (const { selector, collapsed } of this._collapsedElements) {
                     const ele = this.element.querySelector(selector);
                     if (!ele) {
+
+                        /* DISABLED DIAGNOSTIC SCRIPT FOR CHECKING PERSISTENCY SELECTORS */
                         console.error('Failed to get element with selector: ', { s: selector });
+
+                        // run diagnostic sequential check element by element to figure out where the chain breaks
+                        const sequence = selector.split(" ");
+                        var e = this.element;
+                        const chain = [e]
+                        for (const s of sequence) {
+                            e = e.querySelector(s);
+                            if (!e) {
+                                console.log("broke on", { s: s });
+                                break;
+                            }
+                            chain.push(e);
+                        }
+                        console.log(chain);
+
+
                         return;
                     }
                     list.push({ ele: ele, sel: selector, collapsed: collapsed })
                     if (collapsed) ele.classList.add('collapsed');
                     else ele.classList.remove('collapsed');
-                })
+                }
             }
 
             return list;
@@ -439,7 +495,7 @@ export default function PtaSheetMixin(Base) {
         _canDragDrop(selector) { return this.isEditable && this.document.isOwner };
 
         async _onDragStart(event) {
-            const uuid = event.currentTarget.closest("[data-uuid]").dataset.itemUuid;
+            const uuid = event.currentTarget.closest("[data-uuid]").dataset.uuid;
             const item = await fromUuid(uuid);
             const data = item.toDragData();
             event.dataTransfer.setData("text/plain", JSON.stringify(data));
@@ -484,8 +540,41 @@ export default function PtaSheetMixin(Base) {
         //> Context Menu
         //============================================================================================
         _setupContextMenu() {
+            const config = {
+                fixed: false,
+                jQuery: false,
+                onClose: () => { },
+                onOpen: async element => {
+                    const uuid = element.closest("[data-uuid]").dataset.uuid;
+                    const document = await fromUuid(uuid);
 
+                    // if this document has custom action list specified
+                    if (document?.system?.getMenuActions) ui.context.menuItems = document.system.getMenuActions();
+
+                    // if not, use default
+                    else ui.context.menuItems = [{
+                        label: "PTA.ContextMenu.Edit",
+                        icon: "<i class='fa-solid fa-fw fa-edit'></i>",
+                        visible: document.isOwner,
+                        onClick: () => document.sheet.render(true),
+                        group: "manage"
+                    }, {
+                        label: "PTA.ContextMenu.Delete",
+                        icon: "<i class='fa-solid fa-fw fa-trash'></i>",
+                        visible: document.isOwner,
+                        onClick: () => document.deleteDialog(),
+                        group: "manage"
+                    }];
+                }
+            }
+
+            // Standard right click menu for all items
+            new PtaContextMenu(this.element, "[data-uuid]", [], config)
+
+            // left click menu option
+            new PtaContextMenu(this.element, '[data-action="menu"]', [], { ...config, eventName: 'click' })
         }
+
 
         _preapreSubmitData(event, form, formData) {
             return super._preapreSubmitData(event, form, formData);

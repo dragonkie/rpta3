@@ -28,15 +28,15 @@ export default class ActorData extends DataModel {
       return obj;
     }, {}));
 
-    //====================================================================================
-    //> Actors typing, even trainers require a typing of normal
-    //====================================================================================
+    //================================================================================================================
+    //> Actors typing, even trainers require a typing of normal for abilities to work right
+    //================================================================================================================
     const TypeChoices = {};
     for (const a in PTA.pokemonTypes) TypeChoices[a] = utils.localize(PTA.pokemonTypes[a]);
 
     schema.types = new SchemaField({
       primary: new StringField({ ...isRequired, initial: 'normal', label: PTA.generic.primary, choices: { ...TypeChoices } }),
-      secondary: new StringField({ ...isRequired, initial: 'none', label: PTA.generic.secondary, choices: { ...TypeChoices, none: pta.utils.localize(PTA.generic.none) } }),
+      secondary: new StringField({ ...isRequired, initial: 'none', label: PTA.generic.secondary, choices: { ...TypeChoices, none: utils.localize(PTA.generic.none) } }),
     }, { label: PTA.generic.types })
 
     // manually set a characters resistance to a certain element
@@ -90,6 +90,7 @@ export default class ActorData extends DataModel {
       hpMax: new NumberField({ initial: 0, ...requiredInteger })
     })
 
+    schema.money = new NumberField({ initial: 0, label: "Money" });
     return schema;
   }
 

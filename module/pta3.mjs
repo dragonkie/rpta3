@@ -7,14 +7,20 @@ globalThis.pta = {
     pokeapi: pokeapi
 }
 
+// import document types
+import PtaActiveEffect from './documents/active-effect.mjs';
 import PtaActor from './documents/actor.mjs';
+import PtaChatMessage from './documents/message.mjs';
 import PtaItem from './documents/item.mjs';
+
 // Import sheet classes.
 import applications from "./applications/_module.mjs";
+
 // Import helper/utility classes and constants.
 import PtaUtils from './helpers/utils.mjs'
 import { PTA } from './helpers/config.mjs';
 import PtaSocketManager from './helpers/socket.mjs';
+
 // Import DataModel classes
 import * as models from './data/_module.mjs';
 import registerPtaHandlebars from './helpers/handlebars.mjs';
@@ -59,6 +65,7 @@ Hooks.once('init', function () {
     // Define custom Document and DataModel classes
     CONFIG.Actor.documentClass = PtaActor;
     CONFIG.Item.documentClass = PtaItem;
+    CONFIG.ActiveEffect.documentClass = PtaActiveEffect;
     CONFIG.Actor.dataModels = models.ActorConfig;
     CONFIG.Item.dataModels = models.ItemConfig;
 
@@ -145,19 +152,19 @@ async function createItemMacro(data, slot) {
 /**
  * Create a Macro from an Item drop.
  * Get an existing item macro if one exists, otherwise create a new one.
- * @param {string} itemUuid
+ * @param {string} uuid
  */
-function rollItemMacro(itemUuid) {
+function rollItemMacro(uuid) {
     // Reconstruct the drop data so that we can load the item.
     const dropData = {
         type: 'Item',
-        uuid: itemUuid,
+        uuid: uuid,
     };
     // Load the item from the uuid.
     Item.fromDropData(dropData).then((item) => {
         // Determine if the item loaded and if it's an owned item.
         if (!item || !item.parent) {
-            const itemName = item?.name ?? itemUuid;
+            const itemName = item?.name ?? uuid;
             return ui.notifications.warn(
                 `Could not find item ${itemName}. You may need to delete and recreate this macro.`
             );

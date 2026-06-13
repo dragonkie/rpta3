@@ -30,3 +30,12 @@
     display: none !important;
   }
 }
+
+button.pta-clear-button {
+  border: 0;
+  background: none;
+  padding: 0 0.2rem;
+  &:focus {
+    outline: 0;
+  }
+}

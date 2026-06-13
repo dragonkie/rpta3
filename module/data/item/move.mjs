@@ -1,6 +1,7 @@
 import ItemData from "../item.mjs";
 import { PTA } from "../../helpers/config.mjs";
 import utils from "../../helpers/utils.mjs";
+import PtaDialog from "../../applications/dialog.mjs";
 
 const {
     ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField
@@ -17,7 +18,7 @@ export default class MoveData extends ItemData {
         // is this a physical, special, or effect move
         // moves that deal damage are still classified as physical / effect, such as ember
         const MoveClasses = {};
-        for (const a in PTA.moveClass) MoveClasses[a] = pta.utils.localize(PTA.moveClass[a]);
+        for (const a in PTA.moveClass) MoveClasses[a] = utils.localize(PTA.moveClass[a]);
         schema.category = new StringField({
             ...isRequired,
             blank: false,
@@ -27,13 +28,13 @@ export default class MoveData extends ItemData {
 
         // Move typing
         const TypeChoices = {};
-        for (const a in PTA.pokemonTypes) TypeChoices[a] = pta.utils.localize(PTA.pokemonTypes[a]);
+        for (const a in PTA.pokemonTypes) TypeChoices[a] = utils.localize(PTA.pokemonTypes[a]);
         schema.type = new StringField({ ...isRequired, initial: 'normal', label: PTA.generic.type, choices: { ...TypeChoices } });
 
         // move damage
         schema.damage = new SchemaField({
             // normal data
-            formula: new StringField({ ...isRequired, blank: false, initial: '2d6 + @atk', validate: (value) => Roll.validate(value), validationError: 'PTA.Error.InvalidFormula' }),
+            formula: new StringField({ ...isRequired, blank: false, initial: '2d6', validate: (value) => Roll.validate(value), validationError: 'PTA.Error.InvalidFormula' }),
         })
 
         schema.range = new NumberField({ initial: 5 })
@@ -96,6 +97,26 @@ export default class MoveData extends ItemData {
         return super.migrateData(source);
     }
 
+    getMenuActions() {
+        const group = "attack";
+        return [
+            ...super.getMenuActions(),
+            {
+                label: PTA.contextMenu.attack,
+                visible: true,
+                group: group,
+                icon: "",
+                callback: () => this._onUseAttack()
+            }, {
+                label: PTA.contextMenu.damage,
+                visible: true,
+                group: group,
+                icon: "",
+                callback: () => this._onUseDamage()
+            }
+        ];
+    }
+
     get isRanged() { return this.range > 5 };
 
     getRollData() {
@@ -117,9 +138,16 @@ export default class MoveData extends ItemData {
         return data;
     }
 
+    get displayDamageFormula() {
+        const data = this.getRollData();
+
+        return formula;
+    }
+
     //=====================================================================================================
     //> Actions 
     //=====================================================================================================
+
     async use(event, target, action) {
         if (action == 'reload') return this._onUseReload(event, target);
         return this._onUseAttack(event, target);
@@ -174,7 +202,7 @@ export default class MoveData extends ItemData {
             let critical = false;
 
             if (r_accuracy.dice.find(a => a.faces == 20).results[0].result >= 20 - this.critical_chance) critical = true;
-            else if (r_accuracy.total < game.settings.get(game.system.id, 'baseAc') + (target_stat.mod * 3)) missed = true;
+            else if (r_accuracy.total < game.settings.get(game.system.id, 'baseAc') + target_stat.mod) missed = true;
 
             // attack roll content
             message_data.content += `<p><b>${utils.localize(PTA.generic.accuracy)}</b></p>`
@@ -245,43 +273,42 @@ export default class MoveData extends ItemData {
                 }
 
                 message_data.content += await r_damage.render();
+            }
 
+            //==================================================================================================
+            //>--- Lifesteal application
+            //==================================================================================================
+            if (this.drain > 0) {
+                message_config.drain = Math.floor(r_damage.total * (this.drain / 100));
+                message_data.content += `<p>${utils.format(PTA.chat.lifesteal, message_config)}</p>`;
+                await this.actor.update({ system: { hp: { value: Math.min(this.actor.system.hp.value + message_config.drain, this.actor.system.hp.total) } } })
+            }
 
-                //==================================================================================================
-                //>--- Lifesteal application
-                //==================================================================================================
-                if (this.drain > 0) {
-                    message_config.drain = Math.floor(r_damage.total * (this.drain / 100));
-                    message_data.content += `<p>${utils.format(PTA.chat.lifesteal, message_config)}</p>`;
-                    await this.actor.update({ system: { hp: { value: Math.min(this.actor.system.hp.value + message_config.drain, this.actor.system.hp.total) } } })
-                }
+            //==================================================================================================
+            //>--- Apply ailments
+            //==================================================================================================
+            if (Object.keys(PTA.ailments).includes(this.ailment.type) && this.ailment.chance > 0) {
+                let applied = false;
 
-                //==================================================================================================
-                //>--- Apply ailments
-                //==================================================================================================
-                if (Object.keys(PTA.ailments).includes(this.ailment.type) && this.ailment.chance > 0) {
-                    let applied = false;
+                // Make the dice roll if needed
+                const r_ailment = new Roll('1d100');
+                await r_ailment.evaluate();
+                if (r_ailment.total <= this.ailment.chance) applied = true;
 
-                    // Make the dice roll if needed
-                    const r_ailment = new Roll('1d100');
-                    await r_ailment.evaluate();
-                    if (r_ailment.total <= this.ailment.chance) applied = true;
-
-                    // compile the message data
-                    message_data.content += `<p><b>${utils.localize(PTA.generic.ailment)}: ${utils.localize(PTA.ailments[this.ailment.type])} ${this.ailment.chance}%</b></p>`
-                    if (applied) {
-                        message_data.content += utils.format(PTA.chat.ailment.success, message_config);
-                        //==========================================================================================
-                        //>--- Apply status effects
-                        //==========================================================================================
-                        if (game.user.isGM || target.actor.isOwner) {
-                            console.log("Applying status effect to target")
-                            await target.actor.toggleStatusEffect(this.ailment.type, { active: true, overlay: false });
-                        }
+                // compile the message data
+                message_data.content += `<p><b>${utils.localize(PTA.generic.ailment)}: ${utils.localize(PTA.ailments[this.ailment.type])} ${this.ailment.chance}%</b></p>`
+                if (applied) {
+                    message_data.content += utils.format(PTA.chat.ailment.success, message_config);
+                    //==========================================================================================
+                    //>--- Apply status effects
+                    //==========================================================================================
+                    if (game.user.isGM || target.actor.isOwner) {
+                        console.log("Applying status effect to target")
+                        await target.actor.toggleStatusEffect(this.ailment.type, { active: true, overlay: false });
                     }
-                    else message_data.content += utils.format(PTA.chat.ailment.failed, message_config);
-                    message_data.content += await r_ailment.render();
                 }
+                else message_data.content += utils.format(PTA.chat.ailment.failed, message_config);
+                message_data.content += await r_ailment.render();
             }
 
 
@@ -291,17 +318,46 @@ export default class MoveData extends ItemData {
             message_data.content = await foundry.applications.ux.TextEditor.enrichHTML(message_data.content);
             let message = await r_accuracy.toMessage(message_data, message_config);
 
-
             // if we reach this point, attack was successful so we expend a use
             if (this.uses.max > 0) this.parent.update({ 'system.uses.value': this.uses.value - 1 });
         }
+    }
+
+    /**
+     * Skips usual attack roll to purely roll for damage dealt
+     * roll prompt inclues optional modifier fields and type effectivness values
+     */
+    async _onUseDamage() {
+
+        // prepare prompt context
+
+        // create the dialog prompt
+        const dialog = new PtaDialog({
+            window: { title: PTA.windowTitle.roll },
+            content: promptContent,
+            buttons: [{
+                label: PTA.generic.cancel,
+                action: 'cancel'
+            }, {
+                label: PTA.generic.roll,
+                action: 'roll'
+            }],
+            close: () => { },
+            actions: {
+                roll: () => { },
+                cancel: () => { }
+            }
+        }).render();
+
+        // make the damage roll
+        const r = new Roll(this.damage.formula, this.getRollData());
+        await r.evaluate();
+        r.toMessage();
     }
 
     async _onUseReload(event, target) {
         if (this.uses.max > 0 && this.uses.value < this.uses.max) {
             this.parent.update({ system: { uses: { value: this.uses.max } } });
         }
-
     }
 }
-

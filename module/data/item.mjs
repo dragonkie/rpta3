@@ -1,3 +1,4 @@
+import { PTA } from "../helpers/config.mjs";
 import DataModel from "./abstract.mjs";
 import ActorData from "./actor.mjs";
 
