@@ -586,6 +586,10 @@ button.pta-clear-button:focus {
   border: none;
 }
 
+#token-hud .status-effects {
+  height: auto;
+}
+
 .pta-effect-list .pta-effect-list-header .pta-effect-name {
   padding-left: 30px;
 }
