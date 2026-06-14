@@ -255,7 +255,7 @@ Behemoth Bash|Ranged(20ft)|Steel|Attack|3/day|3|d10||If the target is Dynamax, G
 Behemoth Blade|" Ranged(20ft)"|Steel|Attack|3/day|3|d10||" If the target is Dynamax, Gigantamax, or Eternamax, Behemoth Blade deals +250 damage."||||3d10|3|" Ranged"|20|||3|d10
 Belch|Ranged(15ft)|Poison|Special|1/day|5|d12||Belch cannot be used unless you’ve eaten within the last minute.||Tough|Appeal|5d12|1|Ranged|15|||5|d12
 Belly Drum|Self|Normal|Effect|3/day||||You lose HP equal to half of your Max HP, then your Attack is +6 for 10 mins. This effect cannot be stacked.||Cute|Get Ready!||3|Self|||||
-Bide|Ranged(25ft burst)|Normal|Effect|1/day||||"Bide is a three-turn move. On the ﬁrst and second turns, do noth- ing. On the third turn, release energy; all characters with-in range take damage equal to twice the damage you took since the ﬁrst turn of Bide. "||Tough|Final Appeal||1|Ranged|25|burst|||
+Bide|Ranged(25ft burst)|Normal|Effect|1/day||||"Bide is a three-turn move. On the first and second turns, do noth- ing. On the third turn, release energy; all characters with-in range take damage equal to twice the damage you took since the first turn of Bide. "||Tough|Final Appeal||1|Ranged|25|burst|||
 Bind|Melee|Normal|Attack|At-Will|1|d4||On hit, the target is bound to you for 1d4 rounds. For each round the target is bound, it takes 1d4 physical damage on its turns.||Tough|Torrential Appeal|1d4|0|Melee||||1|d4
 Bite|Melee|Dark|Attack|At-Will|2|d8||On hit, if you got 18 or higher on Accuracy Check, the target is Stunned.||Tough|Appeal|2d8|0|Melee||||2|d8
 Bitter Blade|Melee|Fire|Attack|1/day|3|d12||On hit, you regain HP equal to half of the damage dealt.||Cool|Good Show!|3d12|1|Melee||||3|d12
