@@ -85,6 +85,30 @@
       "Toxic": {
         "abbr": "tox",
         "long": "Toxic"
+      },
+      "Flinch": {
+        "abbr": "fli",
+        "long": "Flinch"
+      },
+      "Irradiated": {
+        "abbr": "rad",
+        "long": "Irradiated"
+      },
+      "Seeded": {
+        "abbr": "sed",
+        "long": "Seeded"
+      },
+      "Bound": {
+        "abbr": "bnd",
+        "long": "Bound"
+      },
+      "Partner": {
+        "abbr": "frn",
+        "long": "Partner"
+      },
+      "Speedup": {
+        "abbr": "spd",
+        "long": "Speedup"
       }
     },
     "Button": {
@@ -134,7 +158,7 @@
       "Sweet": "Sweet"
     },
     "Generic": {
-      "Ability":"Ability",
+      "Ability": "Ability",
       "Accuracy": "Accuracy",
       "Age": "Age",
       "Ailment": "Ailment",

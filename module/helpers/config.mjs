@@ -361,37 +361,37 @@ PTA.resistanceKeys = {
 
 PTA.typeEffectiveness = {
   bug: {
-    double: ['fire', 'flying', 'rock'],
-    half: ['grass', 'fighting', 'ground'],
+    double: ['fire', 'flying', 'rock', 'light'],
+    half: ['cyber', 'grass', 'fighting', 'ground'],
     immune: []
   },
   dark: {
-    double: ['fighting', 'bug', 'fairy'],
+    double: ['fighting', 'bug', 'fairy', 'light'],
     half: ['ghost', 'dark'],
     immune: ['psychic']
   },
   dragon: {
     double: ['ice', 'dragon', 'fairy'],
     half: ['fire', 'water', 'electric', 'grass'],
-    immune: []
+    immune: ['cyber']
   },
   electric: {
     double: ['ground'],
-    half: ['electric', 'flying', 'steel'],
+    half: ['electric', 'flying', 'steel', 'nuclear'],
     immune: []
   },
   fairy: {
-    double: ['poison', 'steel'],
-    half: ['fighting', 'bug', 'dark'],
+    double: ['poison', 'steel', 'cyber'],
+    half: ['fighting', 'bug', 'dark', 'light'],
     immune: ['dragon']
   },
   fighting: {
-    double: ['flying', 'psychic', 'fairy'],
+    double: ['flying', 'psychic', 'fairy', 'cyber'],
     half: ['bug', 'rock', 'dark'],
     immune: []
   },
   fire: {
-    double: ['water', 'rock', 'ground'],
+    double: ['water', 'rock', 'ground', 'cyber'],
     half: ['fire', 'grass', 'ice', 'bug', 'steel', 'fairy'],
     immune: []
   },
@@ -401,52 +401,52 @@ PTA.typeEffectiveness = {
     immune: ['ground']
   },
   ghost: {
-    double: ['ghost', 'dark'],
+    double: ['ghost', 'dark', 'light'],
     half: ['poison', 'bug'],
     immune: ['normal', 'fighting']
   },
   grass: {
     double: ['fire', 'ice', 'poison', 'flying', 'bug'],
-    half: ['water', 'electric', 'grass', 'ground'],
+    half: ['water', 'electric', 'grass', 'ground', 'light'],
     immune: []
   },
   ground: {
-    double: ['water', 'grass', 'ice', 'light'],
+    double: ['water', 'grass', 'ice', 'nuclear'],
     half: ['poison', 'rock'],
     immune: ['electric']
   },
   ice: {
     double: ['fire', 'fighting', 'rock', 'steel'],
-    half: ['ice'],
-    immune: []
+    half: ['ice', 'cyber'],
+    immune: ['light']
   },
   normal: {
     double: ['fighting'],
-    half: [],
+    half: ['cyber'],
     immune: ['ghost']
   },
   poison: {
     double: ['ground', 'psychic'],
-    half: ['grass', 'fighting', 'poison', 'bug', 'fairy'],
+    half: ['grass', 'fighting', 'poison', 'bug', 'fairy', 'nuclear'],
     immune: []
   },
   psychic: {
-    double: ['bug', 'ghost', 'dark'],
-    half: ['fighting', 'psychic'],
+    double: ['bug', 'ghost', 'dark', 'light', 'nuclear'],
+    half: ['fighting', 'psychic', 'cyber'],
     immune: []
   },
   rock: {
     double: ['water', 'grass', 'fighting', 'ground', 'steel'],
-    half: ['normal', 'fire', 'poison', 'flying'],
+    half: ['normal', 'fire', 'poison', 'flying', 'light'],
     immune: []
   },
   steel: {
-    double: ['fire', 'fighting', 'ground'],
+    double: ['fire', 'fighting', 'ground', 'cyber'],
     half: ['normal', 'grass', 'ice', 'flying', 'psychic', 'bug', 'rock', 'dragon', 'steel', 'fairy'],
     immune: ['poison']
   },
   water: {
-    double: ['electric', 'grass'],
+    double: ['electric', 'grass', 'cyber', 'nuclear'],
     half: ['fire', 'water', 'ice', 'steel'],
     immune: []
   },
@@ -457,7 +457,7 @@ PTA.typeEffectiveness = {
   },
   cyber: {
     double: ['dragon', 'normal', 'electric', 'psychic', 'bug'],
-    half: ['grass', 'fighting', 'fairy'],
+    half: ['grass', 'fighting', 'ghost', 'fairy'],
     immune: ['steel'],
   },
   nuclear: {
@@ -499,7 +499,11 @@ PTA.ailments = {
   stun: 'PTA.Ailment.Stun.long',
   toxic: 'PTA.Ailment.Toxic.long',
   flinch: 'PTA.Ailment.Flinch.long',
-  irradiated: 'PTA.Ailment.Irradiated.long'
+  irradiated: 'PTA.Ailment.Irradiated.long',
+  seeded: 'PTA.Ailment.Seeded.long',
+  bound: 'PTA.Ailment.Bound.long',
+  partner: 'PTA.Ailment.Partner.long',
+  speedup: 'PTA.Ailment.Speedup.long',
 };
 
 PTA.ailmentsAbbr = {};
