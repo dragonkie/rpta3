@@ -94,15 +94,13 @@ export default class ActorData extends DataModel {
     return schema;
   }
 
-  static migrateData(source) {
-    super.migrateData(source);
-    console.log('migrating data', source.hp)
+  static migrateData(source, options) {
     //migrates previous max hp value to the new base value so that the max one can be used 
     //to show total hp on resource bars with tokens
-    source.hp.base = source.hp.max;
+    if (source.hp.max) source.hp.base = source.hp.max;
     delete source.hp.max;
 
-    return source;
+    return super.migrateData(source, options);
   }
 
   prepareBaseData() {
