@@ -37,12 +37,22 @@ export default function registerHooks() {
         /**@type {Element} */
         let ele = element.querySelector('.directory-footer.action-buttons');
 
+        // limited importer tool
         let button = document.createElement('BUTTON');
         button.innerHTML = utils.localize(`PTA.Button.ImportMove`);
         ele.appendChild(button);
 
         button.addEventListener('click', async () => {
             move_importer.render(true);
+        })
+
+        // bulk import everything tool
+        button = document.createElement('BUTTON');
+        button.innerHTML = `Import <b>ALL</b> moves`;
+        ele.appendChild(button);
+
+        button.addEventListener('click', async () => {
+            MoveImporter.importAllMoves();
         })
     })
 
@@ -65,7 +75,7 @@ export default function registerHooks() {
                 pokemon_importer.render(true);
             })
         } catch (err) {
-            console.error('Failed to append PokéApi footer in actor directory', err);
+            console.error('Failed to append PokeApi footer in actor directory', err);
         }
 
         // CURRENTLY DISABLED DUE TO ERRORS
@@ -104,15 +114,9 @@ export default function registerHooks() {
 
             // System github
             const git = document.createElement('a');
-            git.href = 'https://github.com/dragonkie/PTA3-FVTT';
+            git.href = 'https://github.com/dragonkie/rpta3';
             git.classList.add('button');
             git.innerHTML = `<i class="fa-brands fa-github"></i> Github`;
-
-            // Developers patreon
-            const patreon = document.createElement('a');
-            patreon.href = 'https://www.patreon.com/cw/AstasArmoury';
-            patreon.classList.add('button');
-            patreon.innerHTML = `<i class="fa-brands fa-patreon"></i> Patreon`;
 
             // Ko-fi link
             const kofi = document.createElement('a');
