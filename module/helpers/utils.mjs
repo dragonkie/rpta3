@@ -30,7 +30,7 @@ export default class utils {
     static localize(str) { return game.i18n.localize(str); }
     static format(str, data) { return game.i18n.format(str, data); }
     static sluggify(str) {
-        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "-").toLowerCase();
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "-").replace("'", "").toLowerCase();
     }
 
     //============================================================

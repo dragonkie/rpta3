@@ -886,7 +886,7 @@ Smart Strike|Melee|Steel|Attack|3/day|3|d8||You can’t miss targets with less t
 Smelling Salt|Melee|Normal|Attack|3/day|3|d8||If Smelling Salt is used against a Paralyzed target, Smelling Salt deals 5d8 for damage instead, then cures the target of Paralysis. If you choose not to roll damage while using Smelling Salt, you do not need to roll an Accuracy Check.||Clever|Unsettling|3d8|3|Melee||||3|d8
 Smite|Ranged(20ft)|Normal|Special|3/day|3|d8||Smite uses your Defense or Speed modifier during accuracy check and damage. Smite cannot be resisted, nor can a target be immune to it.||||3d8|3|Ranged|20|||3|d8
 Smog|Ranged(5ft)|Poison|Special|At-Will|1|d4||On hit, if you got 13 or higher on Accuracy Check, the target is Poisoned.|Repulsive|Tough|Appeal|1d4|0|Ranged|5|||1|d4
-Smoke Screen|Ranged(10ft)|Normal|Effect|3/day||||Place up to 25 contiguous ft of Smoke Screen Wall. Smoke Screen Wall has not thickness, is 12 ft tall and has the following ability: Attacks that target through or within the wall have -2 during Accuracy Check. This Wall disappears after 2 mins.||Clever|Unsettling||3|Ranged|10||||
+Smokescreen|Ranged(10ft)|Normal|Effect|3/day||||Place up to 25 contiguous ft of Smoke Screen Wall. Smoke Screen Wall has not thickness, is 12 ft tall and has the following ability: Attacks that target through or within the wall have -2 during Accuracy Check. This Wall disappears after 2 mins.||Clever|Unsettling||3|Ranged|10||||
 Snap Trap|Melee|Grass|Attack|3/day|2|d6||On hit, the target is bound to you for 1 min.||Cute|Unsettling|2d6|3|Melee||||2|d6
 Snarl|Melee(5ft burst)|Dark|Special|At-Will|1|d8||On hit, the target’s Special Attack is -1 for 10 mins. This effect cannot be stacked.||Tough|Incentives|1d8|0|Melee|5|burst||1|d8
 Snipe Shot|Ranged(40ft)|Water|Special|3/day|3|d10||Snipe Shot cannot be redirected by passives or any other ability, instead only hitting a target it was directed at.||Cool|Incredible|3d10|3|Ranged|40|||3|d10
@@ -1116,13 +1116,18 @@ Zing Zap|Melee|Electric|Attack|3/day|3|d10||On hit, if you got 18 or higher on A
     console.log(sets);
 
     // gather the moves from the pokeapi reference, everything should be checked against
-    let i = 0;
+    console.log(PTA.Pokedex.Moves);
     for (const move of sets) {
-        i += 1;
-        if (i > 100) break;
         try {
+            if (!PTA.Pokedex.Moves.includes(utils.sluggify(move.name))) {
+                console.log("Invalid name, skipping api call...", utils.sluggify(move.name));
+                continue;
+            }
             const apiData = await pokeapi.move(utils.sluggify(move.name));
-            if (!apiData) continue
+            if (!apiData) {
+                console.log("Failed to retrieve api, skipping...", utils.sluggify(move.name));
+                continue;
+            }
 
             // prepare initial api data pass, needs to be parsed further along
             move.system.api = {
@@ -1135,38 +1140,38 @@ Zing Zap|Melee|Electric|Attack|3/day|3|d10||On hit, if you got 18 or higher on A
                 power: apiData.power,
                 contest_combos: {
                     normal: {
-                        use_before: apiData.contest_combos.normal?.use_before?.map(e => e.name),
-                        use_after: apiData.contest_combos.normal?.use_after?.map(e => e.name)
+                        use_before: apiData.contest_combos?.normal?.use_before?.map(e => e.name),
+                        use_after: apiData.contest_combos?.normal?.use_after?.map(e => e.name)
                     },
                     super: {
-                        use_before: apiData.contest_combos.super?.use_before?.map(e => e.name),
-                        use_after: apiData.contest_combos.super?.use_after?.map(e => e.name)
+                        use_before: apiData.contest_combos?.super?.use_before?.map(e => e.name),
+                        use_after: apiData.contest_combos?.super?.use_after?.map(e => e.name)
                     }
                 },
-                contest_type: apiData.contest_type.name,
+                contest_type: apiData?.contest_type?.name,
                 contest_effect: {
                     appeal: 0,
                     id: 0,
                     jam: 0,
                 },
-                damage_class: apiData.damage_class.name,
+                damage_class: apiData.damage_class?.name,
                 effect_chance: apiData.effect_chance,
                 effect_entries: apiData?.effect_entries.map(e => { return { effect: e.effect, short_effect: e.short_effect, language: e.language.name } }),
                 flavour_text_entries: apiData?.flavor_text_entries?.map(e => { return { flavour_text: e.flavor_text, language: e.language.name, version_group: e.version_group.name } }),
-                generation: apiData.generation.name,
+                generation: apiData.generation?.name,
                 meta: {
-                    ailment: apiData.meta.ailment.name,
-                    ailment_chance: apiData.meta.ailment_chance,
-                    category: apiData.meta.category.name,
-                    crit_rate: apiData.meta.crit_rate,
-                    drain: apiData.meta.drain,
-                    flinch_chance: apiData.meta.flinch_chance,
-                    healing: apiData.meta.healing,
-                    max_hits: apiData.meta.max_hits,
-                    max_turns: apiData.meta.max_turns,
-                    min_hits: apiData.meta.min_hits,
-                    min_turns: apiData.meta.min_turns,
-                    stat_chance: apiData.meta.stat_chance
+                    ailment: apiData.meta?.ailment?.name,
+                    ailment_chance: apiData?.meta?.ailment_chance,
+                    category: apiData.meta?.category.name,
+                    crit_rate: apiData.meta?.crit_rate,
+                    drain: apiData.meta?.drain,
+                    flinch_chance: apiData.meta?.flinch_chance,
+                    healing: apiData.meta?.healing,
+                    max_hits: apiData.meta?.max_hits,
+                    max_turns: apiData.meta?.max_turns,
+                    min_hits: apiData.meta?.min_hits,
+                    min_turns: apiData.meta?.min_turns,
+                    stat_chance: apiData.meta?.stat_chance
                 },
                 names: apiData?.names?.map(e => { return { name: e.name, language: e.language.name } }),
                 stat_changes: apiData?.stat_changes?.map(e => { return { change: e.change, stat: e.stat.name } }),
@@ -1191,8 +1196,8 @@ Zing Zap|Melee|Electric|Attack|3/day|3|d10||On hit, if you got 18 or higher on A
             }
 
             console.log("Api enriched move data", move);
-        } catch {
-
+        } catch (err) {
+            console.error(err);
         }
     }
 
