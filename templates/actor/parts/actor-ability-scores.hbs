@@ -28,9 +28,9 @@ key - the access key for the stat
 {{/inline}}
 
 {{!-- Actual abilities and skills list --}}
-<div class="pta-stats">
+<div class="pta-stats flexrow flex-align-center">
   {{#each stats as | stat key |}}
-    <div class="pta-stat-wrap pta-xs" data-pta-stat="{{key}}">
+    <div class="pta-stat-wrap pta-xs flex flex-align-center" data-pta-stat="{{key}}">
       {{!-- stat score pokeball --}}
       {{> 'stat-pokeball' stat=stat key=key}}
     </div>

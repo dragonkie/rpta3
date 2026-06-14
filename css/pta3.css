@@ -907,7 +907,7 @@ button.pta-clear-button:focus {
   flex: 1;
   flex-wrap: nowrap;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   --stat-border-c: white;
 }
 .pta-stats [data-pta-stat=atk] {
@@ -931,9 +931,10 @@ button.pta-clear-button:focus {
 }
 .pta-stats .pta-stat-wrap {
   display: flex;
-  flex: 0;
+  flex: 1;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
 }
 .pta-stats .pta-stat-wrap .pta-score-wrap {
   flex: 0;
