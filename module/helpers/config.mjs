@@ -109,7 +109,8 @@ PTA.generic = {
   types: 'PTA.Generic.Types',
   weight: 'PTA.Generic.Weight',
   category: 'PTA.Generic.Category',
-  loyalty: 'PTA.Generic.Loyalty'
+  loyalty: 'PTA.Generic.Loyalty',
+  stat: 'PTA.Generic.Stats'
 }
 
 PTA.dice = {

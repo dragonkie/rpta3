@@ -1,4 +1,4 @@
-<div class="pta-tab">
+<div class="pta-tab flexcol flex-gap-l">
     {{!-- RPTA3 Armour class list for the pokemon --}}
     <div class="flexrow pta-ac flex-gap-m">
 
@@ -26,11 +26,11 @@
         <div class="form-group stacked">
             <label>{{localize "PTA.Generic.Movement"}}</label>
             <div class="form-inputs">
-                <input type="number" disabled="disabled" value="{{multiply system.stats.spd.total 5}}">
+                <input type="number" disabled="disabled" value="{{system.moveSpeed}}">
             </div>
         </div>
     </div>
-    
+
     <div class="pta-tab-content flexcol">
         <div class="pta-move-list pta-item-list">
             <span class="pta-item-list-header">

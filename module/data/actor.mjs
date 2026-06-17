@@ -107,6 +107,7 @@ export default class ActorData extends DataModel {
     super.prepareBaseData();
     for (const key in this.stats) this.stats[key].total = this.stats[key].value;
     this.hp.max = this.hp.base;
+    this.moveSpeed = 0;
   }
 
   prepareDerivedData() {
@@ -173,6 +174,9 @@ export default class ActorData extends DataModel {
         default: break;
       }
     }
+
+    // calculates total movement speed
+    this.moveSpeed += this.stats.spd.total * 5;
   }
 
   getRollData() {

@@ -1,3 +1,95 @@
-<div class="flexcol flex-gap-s">
+<div class="pta-tab flexcol flex-gap-l">
+    {{!-- Seperate the types of modifiers by type for clarity here --}}
+    {{#if (gt (arrayLength system.behaviours) 0)}}
+        {{#each system.behaviours as |mod key|}}
 
+        {{/each}}
+    {{/if}}
+
+    {{#if (gt (arrayLength system.attributes) 0)}}
+        <div class="flexcol flex-gap-m" data-ruleset="attributes">
+            <div class="flexrow flex-gap-m">
+                <div class="text-center flex">Attribute Mods</div>
+                <div class="text-center flex">Method</div>
+                <div class="text-center flexlarge">Value</div>
+            </div>
+            {{#each system.attributes as |mod key|}}
+                <div class="flexrow flex-gap-m" data-rule-index="{{key}}">
+                    <select name="system.attributes.{{key}}.attribute">
+                        <option value="hp" {{selected (eq mod.attribute "hp")}}>Max Hp</option>
+                        <option value="moveSpeed" {{selected (eq mod.attribute "moveSpeed")}}>Movement</option>
+                        <option value="evasion" {{selected (eq mod.attribute "evasion")}}>Evasion</option>
+                        <option value="evasionPh" {{selected (eq mod.attribute "evasionPh")}}>Evasion Ph.</option>
+                        <option value="evasionSp" {{selected (eq mod.attribute "evasionSp")}}>Evasion Sp.</option>
+                        <option value="evasionAl" {{selected (eq mod.attribute "evasionAl")}}>Evasion Al.</option>
+                    </select>
+                    <select name="system.attributes.{{key}}.method">
+                        {{#each @root.config.modifierMethods as |method key|}}
+                            <option value="{{key}}" {{selected (eq ../method key)}}>{{localize method}}</option>
+                        {{/each}}
+                    </select>
+                    <input class="flexlarge" type="number" name="system.attributes.{{key}}.value" value="{{mod.value}}">
+                    <button class="flexshrink pta-clear-button" data-action="remove"><i class="fas fa-trash"></i></button>
+                </div>
+            {{/each}}
+        </div>
+    {{/if}}
+
+    {{#if (gt (arrayLength system.stats) 0)}}
+        <div class="flexcol flex-gap-m" data-ruleset="stats">
+            <div class="flexrow flex-gap-m">
+                <div class="text-center flex">Stat Mods</div>
+                <div class="text-center flex">Method</div>
+                <div class="text-center flexlarge">Value</div>
+            </div>
+            {{#each system.stats as |mod key|}}
+                <div class="flexrow flex-gap-m" data-rule-index="{{key}}">
+                    <select name="system.stats.{{key}}.stat">
+                        {{#each @root.config.stats as |stat key|}}
+                            <option value="{{key}}" {{selected (eq key ../stat)}}>{{localize stat}}</option>
+                        {{/each}}
+                    </select>
+                    <select name="system.stats.{{key}}.method">
+                        {{#each @root.config.modifierMethods as |method key|}}
+                            <option value="{{key}}" {{selected (eq ../method key)}}>{{localize method}}</option>
+                        {{/each}}
+                    </select>
+                    <input class="flexlarge" type="number" name="system.stats.{{key}}.value" value="{{mod.value}}">
+                    <button class="flexshrink pta-clear-button" data-action="remove"><i class="fas fa-trash"></i></button>
+                </div>
+            {{/each}}
+        </div>
+    {{/if}}
+
+    {{#if (gt (arrayLength system.skills) 0)}}
+        <div class="flexcol flex-gap-m" data-ruleset="skills">
+            <div class="flexrow flex-gap-m">
+                <div class="text-center flex">Skill Mods</div>
+                <div class="text-center flex">Method</div>
+                <div class="text-center flexlarge">Value</div>
+            </div>
+            {{#each system.skills as |mod key|}}
+
+            {{/each}}
+        </div>
+    {{/if}}
+
+    {{#if (gt (arrayLength system.resistances) 0)}}
+        <div class="flexcol flex-gap-m">
+            <div class="flexrow flex-gap-m">
+                <div class="text-center flex">Resist Mods</div>
+                <div class="text-center flex">Method</div>
+                <div class="text-center flexlarge">Value</div>
+            </div>
+            {{#each system.resistances as |mod key|}}
+
+            {{/each}}
+        </div>
+    {{/if}}
+
+    {{!-- Add button fixed to bottom right corner to add new logic--}}
+
+    <button data-action="createModifier" style="position: fixed; left: 100%; top: 100%; transform: translate(-50px, -50px)">
+        <i class="fas fa-plus"></i>
+    </button>
 </div>
