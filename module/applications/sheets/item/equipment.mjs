@@ -74,7 +74,7 @@ export default class PtaEquipmentSheet extends PtaItemSheet {
         switch (result) {
             case 'attribute': this.document.update({ system: { attributes: [...this.document.system.attributes, { attribute: "hp", value: 0, method: "add" }] } }); break;
             case 'stat': this.document.update({ system: { stats: [...this.document.system.stats, { stat: "atk", value: 0, method: "add" }] } }); break;
-            case 'skill': break;
+            case 'skill': this.document.update({ system: { skills: [...this.document.system.skills, { skill: "acrobatics", value: 0, method: "add" }] } }); break;
             default: break;
         }
     }

@@ -69,7 +69,20 @@
                 <div class="text-center flexlarge">Value</div>
             </div>
             {{#each system.skills as |mod key|}}
-
+                <div class="flexrow flex-gap-m" data-rule-index="{{key}}">
+                    <select name="system.skills.{{key}}.skill">
+                        {{#each @root.config.skills as |skill key|}}
+                            <option value="{{key}}" {{selected (eq key ../skill)}}>{{localize skill}}</option>
+                        {{/each}}
+                    </select>
+                    <select name="system.skills.{{key}}.method">
+                        {{#each @root.config.modifierMethods as |method key|}}
+                            <option value="{{key}}" {{selected (eq ../method key)}}>{{localize method}}</option>
+                        {{/each}}
+                    </select>
+                    <input class="flexlarge" type="text" name="system.skills.{{key}}.value" value="{{mod.value}}">
+                    <button class="flexshrink pta-clear-button" data-action="remove"><i class="fas fa-trash"></i></button>
+                </div>
             {{/each}}
         </div>
     {{/if}}
