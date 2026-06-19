@@ -520,18 +520,31 @@ button.pta-clear-button:focus {
   margin: 0;
   background: linear-gradient(to left, #631f1f, #8e2b2b);
 }
-.pta-item-list .pta-item-list-header .pta-header-detail-groups {
-  margin-right: 40px;
-  text-align: center;
-}
-.pta-item-list .pta-item-list-header .pta-item-list-header-detail {
-  flex: 0 0 70px;
+.pta-item-list .pta-item-list-header .pta-header-name {
+  flex: 2;
+  text-align: left;
+  display: flex;
+  flex-direction: row;
 }
 .pta-item-list .collapsed .pta-item-list-header {
   border-radius: 5px;
 }
 .pta-item-list .pta-item-entries :last-child {
   border-radius: 0 0 5px 5px;
+}
+.pta-item-list .pta-item-name {
+  font-size: 1rem;
+  flex: 2;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.pta-item-list .pta-item-name .pta-item-image {
+  flex: 0 0 30px;
+  height: 30px;
+  background-size: 30px;
+  border: none;
+  margin: 0 0.3rem;
 }
 .pta-item-list .pta-item {
   border-top: 1px solid rgb(224, 242, 255);
@@ -550,30 +563,45 @@ button.pta-clear-button:focus {
   flex-wrap: nowrap;
   flex: 0;
 }
-.pta-item-list .pta-item .pta-item-detail {
-  flex: 0 0 5em;
-  text-wrap: nowrap;
-  text-overflow: hidden;
-}
-.pta-item-list .pta-item .pta-item-name {
-  font-size: 1rem;
-  flex: 2;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.pta-item-list .pta-item .pta-item-name .pta-item-image {
+.pta-item-list .pta-item-controls {
   flex: 0 0 30px;
-  height: 30px;
-  background-size: 30px;
-  border: none;
-  margin: 0 0.3rem;
-}
-.pta-item-list .pta-item .pta-item-controls {
-  flex: 0 0 40px;
   align-items: center;
   justify-items: center;
 }
+
+.pta-item-detail,
+.pta-header-detail {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  text-wrap: nowrap;
+  text-align: center;
+  text-overflow: ellipsis;
+  align-items: center;
+  justify-content: center;
+}
+.pta-item-detail.pta-item-quantity,
+.pta-header-detail.pta-item-quantity {
+  flex: 0 0 90px;
+}
+.pta-item-detail.pta-item-quantity button,
+.pta-header-detail.pta-item-quantity button {
+  flex: 0 0 30px;
+}
+.pta-item-detail.pta-equip-state,
+.pta-header-detail.pta-equip-state {
+  flex: 0 0 90px;
+}
+.pta-item-detail.pta-damage,
+.pta-header-detail.pta-damage {
+  flex: 2 0;
+}
+.pta-item-detail.pta-category, .pta-item-detail.pta-type-tag,
+.pta-header-detail.pta-category,
+.pta-header-detail.pta-type-tag {
+  flex: 1 0;
+}
+
 .effects .item .effect-source,
 .effects .item .effect-duration,
 .effects .item .effect-controls {
@@ -590,7 +618,10 @@ button.pta-clear-button:focus {
   height: auto;
 }
 
-.pta-effect-list .pta-effect-list-header .pta-effect-name {
+.pta-effect-list {
+  box-sizing: border-box;
+}
+.pta-effect-list .pta-effect-list-header .pta-effect-name * {
   padding-left: 30px;
 }
 .pta-effect-list .pta-effect-name {
@@ -613,6 +644,7 @@ button.pta-clear-button:focus {
 .pta-effect-list .pta-effect-controls {
   flex: 0 0 2rem;
 }
+
 .pta prose-mirror.inactive .editor-container {
   background: var(--color-cool-4);
   border-radius: 4px;

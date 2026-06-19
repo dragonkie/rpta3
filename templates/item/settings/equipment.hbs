@@ -1,108 +1,105 @@
 <div class="pta-tab flexcol flex-gap-l">
-    {{!-- Seperate the types of modifiers by type for clarity here --}}
-    {{#if (gt (arrayLength system.behaviours) 0)}}
-        {{#each system.behaviours as |mod key|}}
-
-        {{/each}}
-    {{/if}}
-
-    {{#if (gt (arrayLength system.attributes) 0)}}
-        <div class="flexcol flex-gap-m" data-ruleset="attributes">
-            <div class="flexrow flex-gap-m">
-                <div class="text-center flex">Attribute Mods</div>
-                <div class="text-center flex">Method</div>
-                <div class="text-center flexlarge">Value</div>
-            </div>
-            {{#each system.attributes as |mod key|}}
-                <div class="flexrow flex-gap-m" data-rule-index="{{key}}">
-                    <select name="system.attributes.{{key}}.attribute">
-                        <option value="hp" {{selected (eq mod.attribute "hp")}}>Max Hp</option>
-                        <option value="moveSpeed" {{selected (eq mod.attribute "moveSpeed")}}>Movement</option>
-                        <option value="evasion" {{selected (eq mod.attribute "evasion")}}>Evasion</option>
-                        <option value="evasionPh" {{selected (eq mod.attribute "evasionPh")}}>Evasion Ph.</option>
-                        <option value="evasionSp" {{selected (eq mod.attribute "evasionSp")}}>Evasion Sp.</option>
-                        <option value="evasionAl" {{selected (eq mod.attribute "evasionAl")}}>Evasion Al.</option>
-                    </select>
-                    <select name="system.attributes.{{key}}.method">
-                        {{#each @root.config.modifierMethods as |method key|}}
-                            <option value="{{key}}" {{selected (eq ../method key)}}>{{localize method}}</option>
-                        {{/each}}
-                    </select>
-                    <input class="flexlarge" type="number" name="system.attributes.{{key}}.value" value="{{mod.value}}">
-                    <button class="flexshrink pta-clear-button" data-action="remove"><i class="fas fa-trash"></i></button>
-                </div>
-            {{/each}}
-        </div>
-    {{/if}}
-
-    {{#if (gt (arrayLength system.stats) 0)}}
-        <div class="flexcol flex-gap-m" data-ruleset="stats">
-            <div class="flexrow flex-gap-m">
-                <div class="text-center flex">Stat Mods</div>
-                <div class="text-center flex">Method</div>
-                <div class="text-center flexlarge">Value</div>
-            </div>
-            {{#each system.stats as |mod key|}}
-                <div class="flexrow flex-gap-m" data-rule-index="{{key}}">
-                    <select name="system.stats.{{key}}.stat">
-                        {{#each @root.config.stats as |stat key|}}
-                            <option value="{{key}}" {{selected (eq key ../stat)}}>{{localize stat}}</option>
-                        {{/each}}
-                    </select>
-                    <select name="system.stats.{{key}}.method">
-                        {{#each @root.config.modifierMethods as |method key|}}
-                            <option value="{{key}}" {{selected (eq ../method key)}}>{{localize method}}</option>
-                        {{/each}}
-                    </select>
-                    <input class="flexlarge" type="number" name="system.stats.{{key}}.value" value="{{mod.value}}">
-                    <button class="flexshrink pta-clear-button" data-action="remove"><i class="fas fa-trash"></i></button>
-                </div>
-            {{/each}}
-        </div>
-    {{/if}}
-
-    {{#if (gt (arrayLength system.skills) 0)}}
-        <div class="flexcol flex-gap-m" data-ruleset="skills">
-            <div class="flexrow flex-gap-m">
-                <div class="text-center flex">Skill Mods</div>
-                <div class="text-center flex">Method</div>
-                <div class="text-center flexlarge">Value</div>
-            </div>
-            {{#each system.skills as |mod key|}}
-                <div class="flexrow flex-gap-m" data-rule-index="{{key}}">
-                    <select name="system.skills.{{key}}.skill">
-                        {{#each @root.config.skills as |skill key|}}
-                            <option value="{{key}}" {{selected (eq key ../skill)}}>{{localize skill}}</option>
-                        {{/each}}
-                    </select>
-                    <select name="system.skills.{{key}}.method">
-                        {{#each @root.config.modifierMethods as |method key|}}
-                            <option value="{{key}}" {{selected (eq ../method key)}}>{{localize method}}</option>
-                        {{/each}}
-                    </select>
-                    <input class="flexlarge" type="text" name="system.skills.{{key}}.value" value="{{mod.value}}">
-                    <button class="flexshrink pta-clear-button" data-action="remove"><i class="fas fa-trash"></i></button>
-                </div>
-            {{/each}}
-        </div>
-    {{/if}}
-
-    {{#if (gt (arrayLength system.resistances) 0)}}
-        <div class="flexcol flex-gap-m">
-            <div class="flexrow flex-gap-m">
-                <div class="text-center flex">Resist Mods</div>
-                <div class="text-center flex">Method</div>
-                <div class="text-center flexlarge">Value</div>
-            </div>
-            {{#each system.resistances as |mod key|}}
-
-            {{/each}}
-        </div>
-    {{/if}}
-
-    {{!-- Add button fixed to bottom right corner to add new logic--}}
-
-    <button data-action="createModifier" style="position: fixed; left: 100%; top: 100%; transform: translate(-50px, -50px)">
-        <i class="fas fa-plus"></i>
+  {{!-- Seperate the types of modifiers by type for clarity here --}}
+  <div class="flexrow">
+    <div class="flex"></div>
+    <button class="flexshrink" data-action="createModifier">
+      <i class="fas fa-plus"></i>
     </button>
+  </div>
+  {{log this.system}}
+  {{#if (gt (arrayLength system.behaviours) 0)}}
+    {{#each system.behaviours as |mod key|}}
+
+    {{/each}}
+  {{/if}}
+
+  {{!-- each rule type has its own unique set up! --}}
+  <div class="flexcol flex-gap-m" data-ruleset="attributes">
+    <div class="flexrow flex-gap-m">
+      <div class="text-center flex">Rules</div>
+      <div class="text-center flex">Key</div>
+      <div class="text-center flex">Method</div>
+      <div class="text-center flexlarge">Value</div>
+    </div>
+    {{#each system.rules as |rule key|}}
+      <div class="flexrow flex-gap-m" data-rule-index="{{key}}">
+        <select name="system.rules.{{key}}.type">
+          <option value="stat" {{selected (eq rule.type "stat")}}>Stat</option>
+          <option value="skill" {{selected (eq rule.type "skill")}}>Skill</option>
+          <option value="resist" {{selected (eq rule.type "resist")}}>Resistance</option>
+          <option value="restrict" {{selected (eq rule.type "restrict")}}>Restriction</option>
+        </select>
+
+        {{#if (eq rule.type 'stat')}}
+          <select name="system.rules.{{key}}.keys.stat">
+            <option value="hp" {{selected (eq rule.keys.stat "hp")}}>Max Hp</option>
+            <option value="moveSpeed" {{selected (eq rule.keys.stat "moveSpeed")}}>Movement</option>
+            <option value="evasion" {{selected (eq rule.keys.stat "evasion")}}>Evasion</option>
+            <option value="evasionPh" {{selected (eq rule.keys.stat "evasionPh")}}>Evasion Ph.</option>
+            <option value="evasionSp" {{selected (eq rule.keys.stat "evasionSp")}}>Evasion Sp.</option>
+            <option value="evasionAl" {{selected (eq rule.keys.stat "evasionAl")}}>Evasion Al.</option>
+
+            {{#each @root.config.stats as |stat key|}}
+              <option value="{{key}}" {{selected (eq ../rule.keys.stat key)}}>{{localize stat}}</option>
+            {{/each}}
+          </select>
+        {{/if}}
+
+        {{#if (eq rule.type 'skill')}}
+          <select name="system.rules.{{key}}.keys.skill">
+            {{#each @root.config.skills as |skill key|}}
+              <option value="{{key}}" {{selected (eq ../rule.keys.skill key)}}>{{localize skill}}</option>
+            {{/each}}
+          </select>
+        {{/if}}
+
+        <select name="system.rules.{{key}}.method">
+          {{#each @root.config.modifierMethods as |method key|}}
+            <option value="{{key}}" {{selected (eq ../method key)}}>{{localize method}}</option>
+          {{/each}}
+        </select>
+
+        <input class="flexlarge" type="number" name="system.rules.{{key}}.value" value="{{rule.value}}">
+        <button class="flexshrink pta-clear-button" data-action="remove"><i class="fas fa-trash"></i></button>
+      </div>
+    {{/each}}
+  </div>
+
+  <div class="pta-effect-list pta-item-list">
+    <div class="pta-effect-list-header pta-item-list-header flexrow" data-effect-type="{{section.type}}" data-parent-id="{{@root.actor.id}}">
+      <div class="pta-effect-name">
+        <div>{{localize 'DOCUMENT.ActiveEffects'}}</div>
+      </div>
+      <div class="pta-effect-source">{{localize "PTA.Effect.Source"}}</div>
+      <div class="pta-effect-duration">{{localize "PTA.Effect.Duration"}}</div>
+      <button class="pta-effect-controls pta-clear-button" data-action="effectCreate" title="{{localize 'DOCUMENT.Create' type=" Effect"}}">
+        <i class="fas fa-plus"></i>
+      </button>
+    </div>
+    <ol class="pta-item-entries">
+      {{#each effects.contents as |effect key|}}
+        <li class="pta-item pta-effect flexcol collapsible collapsed" data-uuid="{{effect.uuid}}">
+          <div class="flexrow">
+            {{!-- Item name and image --}}
+            <div class="pta-effect-name flexrow" data-action="collapse">
+              <div class="pta-effect-image"><img src="{{effect.img}}" width="30" height="30" /></div>
+              <div>{{effect.name}}</div>
+            </div>
+            <div class="pta-effect-source">{{effect.sourceName}}</div>
+            <div class="pta-effect-duration">{{effect.duration.label}}</div>
+            <div class="pta-effect-controls flexrow">
+              <button class="pta-clear-button" data-action="menu"><i class="fas fa-ellipsis-vertical"></i></button>
+            </div>
+          </div>
+          <div class="collapsible-content" data-action="collapse">
+            <div class="wrapper">
+              <div class="flexcol">
+                {{{effect.description}}}
+              </div>
+            </div>
+          </div>
+        </li>
+      {{/each}}
+    </ol>
+  </div>
 </div>

@@ -41,10 +41,7 @@
 
     {{!-- List of companion in the trainers box --}}
     <div class="pta-pc-entries">
-        {{#if (eq userSettings.pcLayout 1)}}
-            {{> 'pta.trainer-pc-grid'}}
-        {{else}}
-            {{> 'pta.trainer-pc-list'}}
-        {{/if}}
+        {{> 'pta.trainer-pc-grid'}}
+        {{> 'pta.trainer-pc-list'}}
     </div>
 </div>
