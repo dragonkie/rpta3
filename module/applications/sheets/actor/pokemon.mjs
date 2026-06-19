@@ -32,20 +32,14 @@ export default class PtaPokemonSheet extends PtaActorSheet {
         }
     }
 
-    static get PARTS() {
-        const p = super.PARTS;
-        // Load in the main body
-        p.body = { template: `${this.TEMPLATE_PATH}/actor/pokemon/body.hbs` };
-
-        // Load in the template tabs
-        p.features = { template: `${this.TEMPLATE_PATH}/actor/pokemon/features.hbs` };
-        p.combat = { template: `${this.TEMPLATE_PATH}/actor/pokemon/combat.hbs` };
-        p.effects = { template: `${this.TEMPLATE_PATH}/actor/parts/actor-effects.hbs` };
-        p.pokedex = { template: `${this.TEMPLATE_PATH}/actor/pokemon/pokedex.hbs` };
-        p.details = { template: `${this.TEMPLATE_PATH}/actor/pokemon/details.hbs` };
-        p.runes = { template: `${this.TEMPLATE_PATH}/actor/pokemon/runes.hbs` };
-
-        return p;
+    static PARTS = {
+        body: { template: `${this.TEMPLATE_PATH}/actor/pokemon/body.hbs` },
+        features: { template: `${this.TEMPLATE_PATH}/actor/pokemon/features.hbs` },
+        combat: { template: `${this.TEMPLATE_PATH}/actor/shared/combat.hbs` },
+        effects: { template: `${this.TEMPLATE_PATH}/actor/parts/actor-effects.hbs` },
+        pokedex: { template: `${this.TEMPLATE_PATH}/actor/pokemon/pokedex.hbs` },
+        details: { template: `${this.TEMPLATE_PATH}/actor/pokemon/details.hbs` },
+        runes: { template: `${this.TEMPLATE_PATH}/actor/pokemon/runes.hbs` },
     }
 
     static TABS = {

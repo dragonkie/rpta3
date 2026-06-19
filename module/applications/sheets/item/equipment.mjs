@@ -19,77 +19,37 @@ export default class PtaEquipmentSheet extends PtaItemSheet {
     }
 
     static async _onCreateRule() {
-        const result = await new Promise((resolve, reject) => {
-            new PtaDialog({
-                render: true,
-                window: { title: "PTA.windowTitle.AddRule" },
-                id: `Item.${this.document.id}.add-ruleset`,
-                classes: ['pta3'],
-                buttons: [{
-                    action: 'create',
-                    label: 'Create'
-                }],
-                submit: (result, dialog) => {
-                    resolve(dialog.element.querySelector('input:checked').value);
-                },
-                content: `
-                    <div class="flexcol flex-gap-m">
-                        <p>Select a ruleset</p>
-
-                        <div class="flexrow">
-                            <input style="min-height: 1em; flex: 0" type="radio" name="type" value="behaviour">
-                            <label>Behaviour</label>
-                        </div>
-
-                        <div class="flexrow">
-                            <input style="min-height: 1em; flex: 0" type="radio" name="type" value="attribute">
-                            <label>Attribute</label>
-                        </div>
-
-                        <div class="flexrow">
-                            <input style="min-height: 1em; flex: 0" type="radio" name="type" value="stat">
-                            <label>Stat</label>
-                        </div>
-
-                        <div class="flexrow">
-                            <input style="min-height: 1em; flex: 0" type="radio" name="type" value="skill">
-                            <label>Skill</label>
-                        </div>
-
-                        <div class="flexrow">
-                            <input style="min-height: 1em; flex: 0" type="radio" name="type" value="resist">
-                            <label>Resistance</label>
-                        </div>
-
-                        <div class="flexrow">
-                            <input style="min-height: 1em; flex: 0" type="radio" name="type" value="requirement">
-                            <label>Requirement</label>
-                        </div>
-                    </div>
-                `,
-            }).render(true);
-
+        console.log("Adding new item rule", this.document)
+        const newRules = [
+            ...this.document.system.rules,
+            {
+                name: 'New rule',
+                uuid: foundry.utils.randomID(),
+                active: true,
+                surpressed: false,
+                priority: 0,
+                type: 'stat',
+                keys: { stat: 'hp' },
+                method: 'add',
+                value: 0,
+                formula: ''
+            }]
+        this.document.update({
+            system: {
+                rules: newRules
+            }
         })
-
-        switch (result) {
-            case 'attribute': this.document.update({ system: { attributes: [...this.document.system.attributes, { attribute: "hp", value: 0, method: "add" }] } }); break;
-            case 'stat': this.document.update({ system: { stats: [...this.document.system.stats, { stat: "atk", value: 0, method: "add" }] } }); break;
-            case 'skill': this.document.update({ system: { skills: [...this.document.system.skills, { skill: "acrobatics", value: 0, method: "add" }] } }); break;
-            default: break;
-        }
     }
 
     static async _onRemoveRule(event, target) {
-        const ruleset = target.closest('[data-ruleset]').dataset?.ruleset;
         const index = target.closest('[data-rule-index').dataset?.ruleIndex;
 
-        if (!ruleset || !index) throw new Error("Failed to find rule to delete");
-        console.log("Removing rule from " + ruleset + " in position " + index, this.document.system[ruleset][index]);
-        
-        this.document.system[ruleset].splice(index, 1)
+        if (!index) throw new Error("Failed to find rule to delete");
+
+        this.document.system.rules.splice(index, 1)
         this.document.update({
             system: {
-                [ruleset]: this.document.system[ruleset]
+                rules: this.document.system.rules
             }
         })
     }
