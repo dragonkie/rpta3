@@ -1,70 +1,4 @@
 <div class="pta-tab flexcol flex-gap-l">
-  {{!-- Seperate the types of modifiers by type for clarity here --}}
-  <div class="flexrow">
-    <div class="flex"></div>
-    <button class="flexshrink" data-action="createModifier">
-      <i class="fas fa-plus"></i>
-    </button>
-  </div>
-  {{log this.system}}
-  {{#if (gt (arrayLength system.behaviours) 0)}}
-    {{#each system.behaviours as |mod key|}}
-
-    {{/each}}
-  {{/if}}
-
-  {{!-- each rule type has its own unique set up! --}}
-  <div class="flexcol flex-gap-m" data-ruleset="attributes">
-    <div class="flexrow flex-gap-m">
-      <div class="text-center flex">Rules</div>
-      <div class="text-center flex">Key</div>
-      <div class="text-center flex">Method</div>
-      <div class="text-center flexlarge">Value</div>
-    </div>
-    {{#each system.rules as |rule key|}}
-      <div class="flexrow flex-gap-m" data-rule-index="{{key}}">
-        <select name="system.rules.{{key}}.type">
-          <option value="stat" {{selected (eq rule.type "stat")}}>Stat</option>
-          <option value="skill" {{selected (eq rule.type "skill")}}>Skill</option>
-          <option value="resist" {{selected (eq rule.type "resist")}}>Resistance</option>
-          <option value="restrict" {{selected (eq rule.type "restrict")}}>Restriction</option>
-        </select>
-
-        {{#if (eq rule.type 'stat')}}
-          <select name="system.rules.{{key}}.keys.stat">
-            <option value="hp" {{selected (eq rule.keys.stat "hp")}}>Max Hp</option>
-            <option value="moveSpeed" {{selected (eq rule.keys.stat "moveSpeed")}}>Movement</option>
-            <option value="evasion" {{selected (eq rule.keys.stat "evasion")}}>Evasion</option>
-            <option value="evasionPh" {{selected (eq rule.keys.stat "evasionPh")}}>Evasion Ph.</option>
-            <option value="evasionSp" {{selected (eq rule.keys.stat "evasionSp")}}>Evasion Sp.</option>
-            <option value="evasionAl" {{selected (eq rule.keys.stat "evasionAl")}}>Evasion Al.</option>
-
-            {{#each @root.config.stats as |stat key|}}
-              <option value="{{key}}" {{selected (eq ../rule.keys.stat key)}}>{{localize stat}}</option>
-            {{/each}}
-          </select>
-        {{/if}}
-
-        {{#if (eq rule.type 'skill')}}
-          <select name="system.rules.{{key}}.keys.skill">
-            {{#each @root.config.skills as |skill key|}}
-              <option value="{{key}}" {{selected (eq ../rule.keys.skill key)}}>{{localize skill}}</option>
-            {{/each}}
-          </select>
-        {{/if}}
-
-        <select name="system.rules.{{key}}.method">
-          {{#each @root.config.modifierMethods as |method key|}}
-            <option value="{{key}}" {{selected (eq ../method key)}}>{{localize method}}</option>
-          {{/each}}
-        </select>
-
-        <input class="flexlarge" type="number" name="system.rules.{{key}}.value" value="{{rule.value}}">
-        <button class="flexshrink pta-clear-button" data-action="remove"><i class="fas fa-trash"></i></button>
-      </div>
-    {{/each}}
-  </div>
-
   <div class="pta-effect-list pta-item-list">
     <div class="pta-effect-list-header pta-item-list-header flexrow" data-effect-type="{{section.type}}" data-parent-id="{{@root.actor.id}}">
       <div class="pta-effect-name">
@@ -101,5 +35,65 @@
         </li>
       {{/each}}
     </ol>
+  </div>
+
+  {{!-- Seperate the types of modifiers by type for clarity here --}}
+  <div class="flexrow">
+    <div class="flex"></div>
+    <button class="flexshrink" data-action="createModifier">
+      <i class="fas fa-plus"></i>
+    </button>
+  </div>
+
+  {{!-- each rule type has its own unique set up! --}}
+  <div class="flexcol flex-gap-m" data-ruleset="attributes">
+    <div class="flexrow flex-gap-m">
+      <div class="text-center flex">Rules</div>
+      <div class="text-center flex">Key</div>
+      <div class="text-center flex">Method</div>
+      <div class="text-center flexlarge">Value</div>
+    </div>
+    {{#each system.rules as |rule key|}}
+      <div class="flexrow flex-gap-m" data-rule-index="{{key}}">
+        <select name="system.rules.{{key}}.type">
+          <option value="stat" {{selected (eq rule.type "stat")}}>Stat</option>
+          <option value="skill" {{selected (eq rule.type "skill")}}>Skill</option>
+          <option value="resist" {{selected (eq rule.type "resist")}}>Resistance</option>
+          <option value="restrict" {{selected (eq rule.type "restrict")}}>Restriction</option>
+        </select>
+
+        {{#if (eq rule.type 'stat')}}
+          <select name="system.rules.{{key}}.keys.stat">
+            <option value="hp" {{selected (eq rule.keys.stat "hp")}}>Max Hp</option>
+            <option value="moveSpeed" {{selected (eq rule.keys.stat "moveSpeed")}}>Movement</option>
+            <option value="evasion" {{selected (eq rule.keys.stat "evasion")}}>Evasion</option>
+            <option value="evasionPh" {{selected (eq rule.keys.stat "evasionPh")}}>Evasion Ph.</option>
+            <option value="evasionSp" {{selected (eq rule.keys.stat "evasionSp")}}>Evasion Sp.</option>
+            <option value="evasionAl" {{selected (eq rule.keys.stat "evasionAl")}}>Evasion Al.</option>
+
+            {{#each @root.config.stats as |stat key|}}
+              <option value="{{key}}" {{selected (eq ../this.keys.stat key)}}>{{localize stat}}</option>
+            {{/each}}
+          </select>
+        {{/if}}
+
+        {{#if (eq rule.type 'skill')}}
+          <select name="system.rules.{{key}}.keys.skill">
+            {{#each @root.config.skills as |skill key|}}
+              <option value="{{key}}" {{selected (eq ../rule.keys.skill key)}}>{{localize skill}}</option>
+            {{/each}}
+          </select>
+        {{/if}}
+
+        <select name="system.rules.{{key}}.method">
+          {{#each @root.config.modifierMethods as |method key|}}
+            <option value="{{key}}" {{selected (eq ../method key)}}>{{localize method}}</option>
+          {{/each}}
+        </select>
+
+        <input class="flexlarge" type="number" name="system.rules.{{key}}.value" value="{{rule.value}}">
+        <button class="flexshrink pta-clear-button" data-action="remove"><i class="fas fa-trash"></i></button>
+      </div>
+    {{/each}}
   </div>
 </div>

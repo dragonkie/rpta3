@@ -382,6 +382,11 @@ button.pta-clear-button:focus {
 .pta-search-container:focus-within {
   outline: 2px solid gold;
 }
+.pta-search-container ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
 
 /* Import utilities */
 .item-form {
@@ -507,6 +512,7 @@ button.pta-clear-button:focus {
   flex-direction: column;
   padding: 0;
   margin: 0;
+  list-style: none;
   box-shadow: 0 0 5px black;
 }
 .pta-item-list .pta-item-list-header {
@@ -528,6 +534,11 @@ button.pta-clear-button:focus {
 }
 .pta-item-list .collapsed .pta-item-list-header {
   border-radius: 5px;
+}
+.pta-item-list .pta-item-entries {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 .pta-item-list .pta-item-entries :last-child {
   border-radius: 0 0 5px 5px;
@@ -657,19 +668,21 @@ button.pta-clear-button:focus {
 
 /* Import utilities */
 /* Classes for creating pokemon type boxs and their effects */
-.pta-companion-tab .pta-companion-team {
+.pta-companion-tab ol.pta-companion-team {
   list-style: none;
   padding: 0.5em;
   margin: 0;
   flex: 0 0 225px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   background: linear-gradient(to right, #808080, #6d6d6d);
   border-radius: 5px;
 }
-.pta-companion-tab .pta-companion-team .pta-companion {
+.pta-companion-tab ol.pta-companion-team .pta-companion {
   --angle: 110deg;
   --scale: 60%;
   background-color: var(--color-cool-4);
-  margin-bottom: 5px;
   position: relative;
   width: 225px;
   height: 75px;
@@ -680,17 +693,17 @@ button.pta-clear-button:focus {
   --corner: 1em;
   clip-path: polygon(var(--corner) 0%, calc(100% - var(--corner)) 0%, 100% var(--corner), 100% calc(100% - var(--corner)), calc(100% - var(--corner)) 100%, var(--corner) 100%, 0% calc(100% - var(--corner)), 0% var(--corner));
 }
-.pta-companion-tab .pta-companion-team .pta-companion .pta-companion-portrait {
+.pta-companion-tab ol.pta-companion-team .pta-companion .pta-companion-portrait {
   flex: 0 0;
   background-repeat: no-repeat;
   background-size: contain;
   height: 100%;
   aspect-ratio: 1;
 }
-.pta-companion-tab .pta-companion-team .pta-companion .pta-companion-portrait img {
+.pta-companion-tab ol.pta-companion-team .pta-companion .pta-companion-portrait img {
   border: 0;
 }
-.pta-companion-tab .pta-companion-team .pta-companion .details {
+.pta-companion-tab ol.pta-companion-team .pta-companion .details {
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -698,16 +711,16 @@ button.pta-clear-button:focus {
   justify-content: center;
   text-align: center;
 }
-.pta-companion-tab .pta-companion-team .pta-companion .details > * {
+.pta-companion-tab ol.pta-companion-team .pta-companion .details > * {
   flex: 1;
   width: 100%;
 }
-.pta-companion-tab .pta-companion-team .pta-companion .details .pta-companion-nickname {
+.pta-companion-tab ol.pta-companion-team .pta-companion .details .pta-companion-nickname {
   text-align: left;
   font-weight: bold;
   font-size: calc(var(--pta-scale-em) * 0.8);
 }
-.pta-companion-tab .pta-companion-team .pta-companion .details .health {
+.pta-companion-tab ol.pta-companion-team .pta-companion .details .health {
   flex: 0;
 }
 
@@ -1153,13 +1166,6 @@ button.pta-clear-button:focus {
 }
 
 /* Styles limited to pta3 sheets */
-.pta.sheet ol,
-.pta.sheet ul,
-.pta.sheet li {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
 .pta input[type=text] {
   font-family: "DM Sans", serif;
   font-size: var(--pta-scale-rem);
