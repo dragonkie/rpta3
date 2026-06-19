@@ -327,7 +327,20 @@ export default class EquipmentData extends ItemData {
         // non rollable stats, add to flat values
         if (rule.keys.stat == 'hp') actorData.hp.max = methodMath(actorData.hp.max, rule.value, rule.method);
         if (rule.keys.stat == 'moveSpeed') actorData.moveSpeed = methodMath(actorData.moveSpeed, rule.value, rule.method);
+      }
 
+      if (rule.type == "skill") {
+        // core ability stats
+        for (const key of Object.keys(PTA.skills)) {
+          if (rule.keys.skill == key) {
+            // formulas are only added to rolls, and have a special field and handling as such
+            if (rule.method == 'formula') {
+
+            }
+            // added to stat totals, lets go!
+            else actorData.skills[key].total = methodMath(actorData.skills[key].total, rule.value, rule.method);
+          }
+        }
       }
     }
 

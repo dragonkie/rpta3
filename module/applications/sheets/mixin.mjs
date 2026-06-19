@@ -409,10 +409,7 @@ export default function PtaSheetMixin(Base) {
 
                         // add elements classes
                         const cBlacklist = ['collapsed', 'active', 'animating', 'obliterated', 'context'];
-                        for (const cssClass of ele.classList) {
-                            if (!cBlacklist.includes(cssClass)) s += `.${cssClass}`;
-                            else console.log('blacklisted a class', cssClass);
-                        }
+                        for (const cssClass of ele.classList) if (!cBlacklist.includes(cssClass)) s += `.${cssClass}`;
 
                         // add element attributes
                         const aBlacklist = ['class', 'style', 'draggable']
@@ -450,8 +447,8 @@ export default function PtaSheetMixin(Base) {
                 for (const { selector, collapsed } of this._collapsedElements) {
                     const ele = this.element.querySelector(selector);
                     if (!ele) {
-
                         /* DISABLED DIAGNOSTIC SCRIPT FOR CHECKING PERSISTENCY SELECTORS */
+                        /*
                         const savedHtml = document.createElement("DIV");
                         savedHtml.classList.add("preserved-element")
                         savedHtml.innerHTML = this.element.innerHTML;
@@ -475,6 +472,7 @@ export default function PtaSheetMixin(Base) {
                             }
                             chain.push(e);
                         }
+                        */
                         continue;
                     }
                     list.push({ ele: ele, sel: selector, collapsed: collapsed })
