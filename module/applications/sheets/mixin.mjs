@@ -65,6 +65,7 @@ export default function PtaSheetMixin(Base) {
             context.isEditable = this.isEditable;
             context.flags = this.document.flags;
             context.userSettings = game.user.getFlag(game.system.id, 'settings');
+            context.effects = this.document.effects;
 
             const enrichmentOptions = { rollData: context.rollData }
             context.gmNotes = {
@@ -305,7 +306,7 @@ export default function PtaSheetMixin(Base) {
          * @protected
          */
         async _preClose(options) {
-            this._setCollapsedElements();
+            this._getCollapsedElements();
         }
 
         // returns an element for rendering the sheets tabs as bookmarks along the side of a sheet
@@ -408,11 +409,14 @@ export default function PtaSheetMixin(Base) {
 
                         // add elements classes
                         const cBlacklist = ['collapsed', 'active', 'animating', 'obliterated', 'context'];
-                        for (const c of ele.classList) if (!cBlacklist.includes(c)) s += `.${c}`;
+                        for (const cssClass of ele.classList) {
+                            if (!cBlacklist.includes(cssClass)) s += `.${cssClass}`;
+                            else console.log('blacklisted a class', cssClass);
+                        }
 
                         // add element attributes
-                        const aBlacklist = ['class', 'style']
-                        for (const a of ele.attributes) if (!aBlacklist.includes(a.name)) s += `[${a.name}="${a.value}"]`;
+                        const aBlacklist = ['class', 'style', 'draggable']
+                        for (const attribute of ele.attributes) if (!aBlacklist.includes(attribute.name)) s += `[${attribute.name}="${attribute.value}"]`;
 
                         // add this elements selector to the unique selector
                         selector = s + ' ' + selector;
@@ -424,7 +428,7 @@ export default function PtaSheetMixin(Base) {
                         ele = ele.parentElement;
                     }
 
-                    this._collapsedElements.push({
+                    if (selector != "") this._collapsedElements.push({
                         collapsed: element.classList.contains('collapsed'),
                         selector: selector
                     });
@@ -434,7 +438,12 @@ export default function PtaSheetMixin(Base) {
             return [];
         }
 
+        /** 
+         * loads the collapsed element state to the element from saved list selectors
+         */
         _setCollapsedElements() {
+            if (!this.rendered) return;
+
             const list = [];
             if (this._collapsedElements.length > 0 && this.rendered) {
                 let c = 0;
@@ -443,24 +452,30 @@ export default function PtaSheetMixin(Base) {
                     if (!ele) {
 
                         /* DISABLED DIAGNOSTIC SCRIPT FOR CHECKING PERSISTENCY SELECTORS */
-                        console.error('Failed to get element with selector: ', { s: selector });
+                        const savedHtml = document.createElement("DIV");
+                        savedHtml.classList.add("preserved-element")
+                        savedHtml.innerHTML = this.element.innerHTML;
+                        console.error('Failed to get element with selector: ', { selector });
+                        console.log("Preserved HTML", savedHtml)
 
                         // run diagnostic sequential check element by element to figure out where the chain breaks
                         const sequence = selector.split(" ");
-                        var e = this.element;
+                        console.log('Sequenced selectors', { sequence })
+                        var e = savedHtml;
                         const chain = [e]
                         for (const s of sequence) {
                             e = e.querySelector(s);
                             if (!e) {
-                                console.log("broke on", { s: s });
+                                console.log("Element chain", chain);
+                                console.log("Last Element", chain[chain.length - 1])
+                                console.log("broke on", { selector: s });
+                                console.log("Attempting unique application search", this.element.querySelector(s));
+                                console.log("Attempting unique element search", chain[chain.length - 1].querySelector(s));
                                 break;
                             }
                             chain.push(e);
                         }
-                        console.log(chain);
-
-
-                        return;
+                        continue;
                     }
                     list.push({ ele: ele, sel: selector, collapsed: collapsed })
                     if (collapsed) ele.classList.add('collapsed');
