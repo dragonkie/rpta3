@@ -3,7 +3,7 @@ import ItemData from "../item.mjs";
 import utils from "../../helpers/utils.mjs";
 
 const {
-  ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField, HTMLField
+  ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField, HTMLField, TypedObjectField
 } = foundry.data.fields;
 
 
@@ -43,121 +43,26 @@ export default class EquipmentData extends ItemData {
      * This mostly boils down to how resistances are used, literally everything else could be 
      * an active effect, I'm just not sure how I'd set up other resistance types
      */
-    schema.rules = new ArrayField(new SchemaField({
+    schema.rules = new TypedObjectField(new SchemaField({
       name: new StringField({ initial: "New Rule" }),
-      uuid: new StringField({ initial: null, nullable: true }),
       active: new BooleanField({ initial: true }),// if this effect is active right now
       surpressed: new BooleanField({ initial: false }),// if something is limiting this effect
       priority: new NumberField({ initial: 0 }),
-      type: new StringField({
-        initial: "attribute",
-        choices: {
-          stat: "Stat",
-          resist: "Resistance",
-          skill: "Skill",
-          restrict: "Restriction"
-        }
-      }),
-      keys: new SchemaField({// holds the value of the different modifier types
-        stat: new StringField({
-          initial: "hp",
-          choices: {
-            ...PTA.stats,
-            hp: 'Max HP',
-            moveSpeed: 'Movement',
-            evasion: 'Evasion',
-            evasionPh: 'Evasion Ph.',
-            evasionSp: 'Evasion Sp.',
-            evasionAl: 'Evasion Al.',
-          }
-        }),
-        resist: new StringField({
-          initial: "normal",
-          choices: PTA.pokemonTypes
-        }),
-        skill: new StringField({
-          initial: "acrobatics",
-          choices: PTA.skills
-        }),
-        restrict: new StringField({})
+      stat: new StringField({
+        initial: "hp",
+        blank: false,
+        nullable: false,
+        choices: PTA.quickStatMods
       }),
       method: new StringField({ // have to manually add formula type for some of these
         initial: "add",
-        choices: { ...PTA.modifierMethods, formula: "Formula" }
+        blank: false,
+        nullable: false,
+        choices: PTA.modifierMethods
       }),// How the value of this rule is applied, different limitations apply based on type
-      value: new NumberField({}),// numeric methods + types are changed here
+      value: new NumberField({ initial: 0 }),// numeric methods + types are changed here
       formula: new StringField({ initial: "" }),// rollable types may use the formula field to specify their effects
-    }), { initial: [], nullable: false });
-
-    /**
-     * Similar to behaviours, modifiers are simple adjustments for stats
-     */
-    schema.stats = new ArrayField(new SchemaField({
-      stat: new StringField({
-        required: true,
-        nullable: false,
-        initial: 'atk',
-        label: PTA.generic.stat,
-        choices: PTA.stats
-      }),
-      value: new NumberField({ initial: 0 }),
-      method: new StringField({
-        required: true,
-        nullable: false,
-        initial: 'add',
-        label: PTA.generic.method,
-        choices: PTA.modifierMethods
-      })
-    }));
-
-    /**
-     * Allows adjustments to values outside of stats, any core value that isn't used for rolling is here
-     * Max hp, movement speed, evasion, damage reductions
-     */
-    schema.attributes = new ArrayField(new SchemaField({
-      attribute: new StringField({
-        initial: "hp",
-        choices: {
-          hp: 'Max HP',
-          moveSpeed: 'Movement',
-          evasion: 'Evasion',
-          evasionPh: 'Evasion Ph.',
-          evasionSp: 'Evasion Sp.',
-          evasionAl: 'Evasion Al.',
-        }
-      }),
-      value: new NumberField({ initial: 0 }),
-      method: new StringField({
-        required: true,
-        nullable: false,
-        initial: 'add',
-        label: PTA.generic.method,
-        choices: PTA.modifierMethods
-      })
-    }));
-
-    /**
-     * Modifiers to skills
-     * Allows a valid formula as it's entry, eg. "1d4 + 2" is a valid bonus
-     */
-    schema.skills = new ArrayField(new SchemaField({
-      skill: new StringField({
-        required: true,
-        nullable: false,
-        initial: "acrobatics",
-        label: PTA.generic.method,
-        choices: PTA.skills
-      }),
-      value: new StringField({ initial: 0 }),// numeric used outside of "formula" method
-      formula: new NumberField({ initial: "0" }),// used exclusivly for formula method
-      method: new StringField({
-        required: true,
-        nullable: false,
-        initial: 'add',
-        label: PTA.generic.method,
-        choices: PTA.modifierMethods
-      })
-    }));
+    }), { initial: {}, nullable: false });
 
     /**
      * Conditionals that an actor must meet to use / equip this item
@@ -181,11 +86,9 @@ export default class EquipmentData extends ItemData {
     return schema;
   }
 
-  /*
   static migrateData(source) {
-    console.log("Migrating rules...")
     // Converts previous version runes into new generic rules system
-    if (!source.rules) source.rules = [];
+    if (!source.rules) source.rules = {};
 
     function getRuleCopy(data) {
       return Object.assign({
@@ -201,8 +104,8 @@ export default class EquipmentData extends ItemData {
         formula: ''
       }, data)
     }
+
     if (Array.isArray(source.stats) && source.stats.length > 0) {
-      console.log("Migrating stats");
       for (const rule of source.stats) {
         source.rules.push(getRuleCopy({
           type: 'stat',
@@ -213,9 +116,7 @@ export default class EquipmentData extends ItemData {
       }
     }
 
-
     if (Array.isArray(source.attributes) && source.attributes.length > 0) {
-      console.log("Migrating attributes");
       for (const rule of source.attributes) {
         source.rules.push(getRuleCopy({
           type: 'stat',
@@ -227,7 +128,6 @@ export default class EquipmentData extends ItemData {
     }
 
     if (Array.isArray(source.skills) && source.skills.length > 0) {
-      console.log("Migrating skills");
       for (const rule of source.skills) {
         source.rules.push(getRuleCopy({
           type: 'skill',
@@ -238,23 +138,34 @@ export default class EquipmentData extends ItemData {
         }))
       }
     }
-    console.log("Deleting old system");
+
     delete source.skills;
     delete source.stats;
     delete source.attributes;
 
     // validate rules quickly
-    console.log("Validating new rules");
-    for (const rule of source.rules) {
-      if (typeof rule.value != "number") rule.value = 0;
-      if (typeof rule.formula != "string") rule.formula = "";
-    }
+    if (Array.isArray(source.rules)) {
+      for (const rule of source.rules) {
+        if (typeof rule.value != "number") rule.value = 0;
+        if (typeof rule.formula != "string") rule.formula = "";
+      }
 
-    console.log("Finished migrating rules", source);
+      // convert array of rules to TypedObjectField
+      const copy = utils.duplicate(source.rules);
+      source.rules = {};
+      for (const index of copy.keys()) {
+        source.rules[foundry.utils.randomID()] = {
+          priority: 0,
+          stat: copy[index].type == 'stat' ? copy[index].keys.stat : copy[index].keys.skill,
+          method: copy[index].method,
+          value: copy[index].value,
+          formula: copy[index].formula,
+        };
+      }
+    }
 
     return super.migrateData(source);
   }
-    */
 
   async use() {
     this.parent.update({ system: { equipped: !this.equipped } });
@@ -283,19 +194,6 @@ export default class EquipmentData extends ItemData {
   prepareActorData(actorData) {
     if (!this.equipped || !actorData) return;
 
-    const valid = [];
-    for (const rule of this.rules) {
-      // use blacklists to clear out invalid combinations for these options from parsing
-      const bl_formula = ['attribute', 'resist'];
-      if (rule.method == "formula" && bl_formula.includes(rule.type)) continue;
-
-      // Parse rules in order of priority by passing them to the valid list
-      valid.push(rule);
-    }
-
-    // sort the valid rules list
-    valid.sort((a, b) => a.priority - b.priority);
-
     function methodMath(base, value, method) {
       switch (method) {
         case 'add': base += value; break;
@@ -309,39 +207,28 @@ export default class EquipmentData extends ItemData {
       return base;
     }
 
-    for (const rule of valid) {
-      // stat type rule modifiers apply first
-      if (rule.type == "stat") {
-        // core ability stats
-        for (const key of Object.keys(PTA.stats)) {
-          if (rule.keys.stat == key) {
-            // formulas are only added to rolls, and have a special field and handling as such
-            if (rule.method == 'formula') {
+    for (const [index, rule] of Object.entries(this.rules)) {
 
-            }
-            // added to stat totals, lets go!
-            else actorData.stats[key].total = methodMath(actorData.stats[key].total, rule.value, rule.method);
-          }
-        }
-
-        // non rollable stats, add to flat values
-        if (rule.keys.stat == 'hp') actorData.hp.max = methodMath(actorData.hp.max, rule.value, rule.method);
-        if (rule.keys.stat == 'moveSpeed') actorData.moveSpeed = methodMath(actorData.moveSpeed, rule.value, rule.method);
-      }
-
-      if (rule.type == "skill") {
-        // core ability stats
-        for (const key of Object.keys(PTA.skills)) {
-          if (rule.keys.skill == key) {
-            // formulas are only added to rolls, and have a special field and handling as such
-            if (rule.method == 'formula') {
-
-            }
-            // added to stat totals, lets go!
-            else actorData.skills[key].total = methodMath(actorData.skills[key].total, rule.value, rule.method);
-          }
+      // core ability stats
+      for (const key of Object.keys(PTA.stats)) {
+        if (rule.stat == key) {
+          if (rule.method == 'formula') { }
+          else actorData.stats[key].total = methodMath(actorData.stats[key].total, rule.value, rule.method);
         }
       }
+
+      // check if its for a skill
+      for (const key of Object.keys(PTA.skills)) {
+        if (rule.stat == key) {
+          if (rule.method == 'formula') { }
+          else actorData.skills[key].total = methodMath(actorData.skills[key].total, rule.value, rule.method);
+        }
+      }
+
+      // non rollable stats, add to flat values
+      if (rule.stat == 'hp') actorData.hp.max = methodMath(actorData.hp.max, rule.value, rule.method);
+      if (rule.stat == 'moveSpeed') actorData.moveSpeed = methodMath(actorData.moveSpeed, rule.value, rule.method);
+
     }
 
   }
