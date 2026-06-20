@@ -147,10 +147,12 @@ PTA.moveClass = {
 //======================================================================
 PTA.modifierMethods = {
   add: 'PTA.Method.Add',
-  subtract: 'PTA.Method.Subtract',
   grow: 'PTA.Method.Grow',
-  shrink: 'PTA.Method.Shrink',
   multiply: 'PTA.Method.Multiply',
+  set: 'PTA.Method.Set',
+  shrink: 'PTA.Method.Shrink',
+  subtract: 'PTA.Method.Subtract',
+  formula: 'PTA.Method.Formula'
 }
 
 //======================================================================
@@ -752,4 +754,16 @@ PTA.contextMenu = {
   damage: 'PTA.ContextMenu.Damage',
   activate: 'PTA.ContextMenu.Activate',
   deactivate: 'PTA.ContextMenu.Deactivate',
+}
+
+// list used in the rules setup
+PTA.quickStatMods = {
+  ...PTA.stats,
+  hp: 'Max HP',
+  moveSpeed: 'Movement',
+  evasion: 'Evasion',
+  evasionPh: 'Evasion Ph.',
+  evasionSp: 'Evasion Sp.',
+  evasionAl: 'Evasion Al.',
+  ...PTA.skills,
 }
