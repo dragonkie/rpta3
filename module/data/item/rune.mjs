@@ -169,7 +169,7 @@ export default class RuneData extends ItemData {
                 if (actor.active) team.push(actor);
             }
 
-            let html = await foundry.applications.handlebars.renderTemplate(PTA.templates.dialog.runeTransfer, { team: team, name: this.name });
+            let html = await utils.renderTemplate(PTA.templates.dialog.runeTransfer, { team: team, name: this.name });
             const app = await new PtaDialog({
                 window: { title: "PTA.Title.TransferRune" },
                 content: html,

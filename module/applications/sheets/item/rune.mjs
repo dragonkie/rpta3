@@ -107,7 +107,7 @@ export default class PtaRuneSheet extends PtaItemSheet {
      * @param {Object} options 
      */
     async _configDialogRender(context, options) {
-        const template = await foundry.applications.handlebars.renderTemplate(PTA.templates.dialog.runeCombatFields, context);
+        const template = await utils.renderTemplate(PTA.templates.dialog.runeCombatFields, context);
         const app = await new PtaDialog({
             window: { title: utils.localize(options.title) },
             id: options.id,
