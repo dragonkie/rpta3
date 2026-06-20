@@ -631,6 +631,8 @@ button.pta-clear-button:focus {
 
 .pta-effect-list {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 .pta-effect-list .pta-effect-list-header .pta-effect-name * {
   padding-left: 30px;
