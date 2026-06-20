@@ -421,7 +421,7 @@ export default class utils {
     //============================================================
     //> Dom manipulation
     //============================================================
-    static async renderTemplate(path, data) {
-        return foundry.applications.handlebars.renderTemplate(path, data);
+    static async renderTemplate(path, context) {
+        return foundry.applications.handlebars.renderTemplate(path, context);
     }
 }
