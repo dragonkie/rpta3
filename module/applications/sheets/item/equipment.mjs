@@ -19,26 +19,14 @@ export default class PtaEquipmentSheet extends PtaItemSheet {
     }
 
     static async _onCreateRule() {
-        console.log("Adding new item rule", this.document)
-        const newRules = [
-            ...this.document.system.rules,
-            {
-                name: 'New rule',
-                uuid: foundry.utils.randomID(),
-                active: true,
-                surpressed: false,
-                priority: 0,
-                type: 'stat',
-                keys: { stat: 'hp' },
-                method: 'add',
-                value: 0,
-                formula: ''
-            }]
+        const id = foundry.utils.randomID();
+        const init = this.document.system.schema.fields.rules.element.getInitialValue();
+
         this.document.update({
             system: {
-                rules: newRules
+                rules: { [id]: init }
             }
-        })
+        }, { recursive: true })
     }
 
     static async _onRemoveRule(event, target) {
@@ -46,11 +34,16 @@ export default class PtaEquipmentSheet extends PtaItemSheet {
 
         if (!index) throw new Error("Failed to find rule to delete");
 
-        this.document.system.rules.splice(index, 1)
+        const copy = this.document.system.toObject().rules;
+        const modification = {
+            [index]: new foundry.data.operators.ForcedDeletion()
+        }
+        const merge = foundry.utils.mergeObject(copy, modification, { applyOperators: true });
+
         this.document.update({
             system: {
-                rules: this.document.system.rules
+                rules: merge
             }
-        })
+        }, { recursive: false })
     }
 }
