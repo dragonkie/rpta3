@@ -10,11 +10,10 @@ globalThis.pta = {
 // import document types
 import PtaActiveEffect from './documents/active-effect.mjs';
 import PtaActor from './documents/actor.mjs';
-import PtaChatMessage from './documents/message.mjs';
 import PtaItem from './documents/item.mjs';
 
 // Import sheet classes.
-import applications from "./applications/_module.mjs";
+import applications from "../lib/runic/applications/_module.mjs";
 
 // Import helper/utility classes and constants.
 import PtaUtils from './helpers/utils.mjs'
@@ -22,7 +21,7 @@ import { PTA } from './helpers/config.mjs';
 import PtaSocketManager from './helpers/socket.mjs';
 
 // Import DataModel classes
-import * as models from './data/_module.mjs';
+import * as models from '../lib/runic/data/_module.mjs';
 import registerPtaHandlebars from './helpers/handlebars.mjs';
 import registerSystemSettings from './helpers/settings.mjs';
 import registerHooks from './helpers/hooks.mjs';
@@ -73,12 +72,12 @@ Hooks.once('init', function () {
     foundry.documents.collections.Actors.unregisterSheet('core', foundry.appv1.sheets.ActorSheet);
     foundry.documents.collections.Items.unregisterSheet('core', foundry.appv1.sheets.ItemSheet);
 
-    for (const sheet of applications.sheets.actor.config) {
+    for (const [key, sheet] of Object.entries(applications.sheets.actor.config)) {
         if (!sheet.application) continue;
         foundry.documents.collections.Actors.registerSheet(game.system.id, sheet.application, sheet.options);
     }
 
-    for (const sheet of applications.sheets.item.config) {
+    for (const [key, sheet] of Object.entries(applications.sheets.item.config)) {
         if (!sheet.application) continue;
         foundry.documents.collections.Items.registerSheet(game.system.id, sheet.application, sheet.options);
     }
