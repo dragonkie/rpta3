@@ -23,6 +23,7 @@ export default function PtaSheetMixin(Base) {
                 toggle: this._onToggle,
                 clear: this._onClear,
                 roll: this._onRoll,
+                create: this._onCreateEmbedded,
 
                 collapse: this._onCollapse,
                 copyToClipboard: this._onCopyToClipboard,
@@ -237,6 +238,33 @@ export default function PtaSheetMixin(Base) {
             ele.classList.add('animating');
         }
 
+        /**
+         * Embedded documents can either be of 'Item' or 'ActiveEffect' type
+         * these have subtypes to be specifiede based on which they are
+         * @param {Event} event 
+         * @param {HTMLElement} target 
+         */
+        static async _onCreateEmbedded(event, target) {
+            const documentName = target.closest('[data-document-name]').dataset.documentName;
+            const documentType = target.closest('[data-document-type]').dataset.documentType;
+
+            if (documentName == Item.documentName) {
+                if (this.document.documentName != 'Actor') throw new Error("Can't add items to a non-actor");
+
+                const doc = Item.create({
+                    name: `New ${documentType}`,
+                    type: documentType,
+                }, { parent: this.document, renderSheet: true });
+            } else if (documentName == AcitiveEffect.documentName) {
+                const data = {
+                    name: `New ${documentType} Effect`,
+                    disabled: documentType == 'disabled',
+                }
+
+                Item.create(data, { parent: this.document, renderSheet: true });
+            }
+        }
+
         static async _onCreateEffect(event, target) {
             let effect = await ActiveEffect.create({
                 name: 'New Effect',
@@ -355,9 +383,16 @@ export default function PtaSheetMixin(Base) {
         //======================================================================================================
         _lastFocusElement = null;
 
+        /**
+         * Save the focused element to the _lastFocusElement variable
+         */
         _getFocusElement() {
             if (this.rendered && this.element.contains(document.activeElement)) {
                 const ele = document.activeElement;
+                if (ele.nodeName != 'INPUT') {
+                    this._lastFocusElement = null;
+                    return;
+                }
 
                 var cList = '';
                 ele.classList.forEach(c => cList += `.${c}`);
@@ -371,6 +406,9 @@ export default function PtaSheetMixin(Base) {
             }
         }
 
+        /**
+         * Set the _lastFocusElement to be focused properly
+         */
         _setFocusElement() {
             if (this._lastFocusElement !== null) {
                 let selector = this._lastFocusElement.tag + this._lastFocusElement.class;
