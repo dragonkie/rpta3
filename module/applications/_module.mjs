@@ -27,27 +27,29 @@ export default {
             PtaCharacterSheet,
             PtaPokemonSheet,
             PtaNpcSheet,
-            config: [
-                {
+            config: {
+                character: {
                     application: PtaCharacterSheet,
                     options: {
                         label: 'TYPES.Actor.character',
                         types: ['character']
                     }
-                }, {
+                },
+                companion: {
                     application: PtaPokemonSheet,
                     options: {
                         label: 'TYPES.Actor.pokemon',
                         types: ['pokemon']
                     }
-                }, {
+                },
+                npc: {
                     application: PtaNpcSheet,
                     options: {
                         label: 'TYPES.Actor.npc',
                         types: ['npc']
                     }
                 }
-            ]
+            }
         },
         item: {
             config: [
@@ -70,12 +72,6 @@ export default {
                         types: ['class']
                     }
                 }, {
-                    application: null,
-                    options: {
-                        label: 'TYPES.Item.subclass',
-                        types: ['subclass']
-                    }
-                }, {
                     application: PtaMoveSheet,
                     options: {
                         label: 'TYPES.Item.move',
@@ -92,12 +88,6 @@ export default {
                     options: {
                         label: 'TYPES.Item.equipment',
                         types: ['equipment']
-                    }
-                }, {
-                    application: PtaRuneSheet,
-                    options: {
-                        label: 'TYPES.Item.Rune',
-                        types: ['rune']
                     }
                 }
             ]
