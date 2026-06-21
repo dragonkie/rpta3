@@ -362,6 +362,8 @@ button.pta-clear-button:focus {
 .pta-search-container {
   background-color: #302831;
   border-radius: 5px;
+  transition: outline-color 0.5s;
+  outline: 2px solid transparent;
 }
 .pta-search-container .pta-search-wrap {
   display: flex;
@@ -378,9 +380,10 @@ button.pta-clear-button:focus {
 .pta-search-container input:focus {
   border: 0;
   outline: none;
+  outline-color: transparent;
 }
 .pta-search-container:focus-within {
-  outline: 2px solid gold;
+  outline: 2px solid #584a75;
 }
 .pta-search-container ul {
   padding: 0;
@@ -1190,7 +1193,6 @@ button.pta-clear-button:focus {
 .pta .pta-tab {
   height: 100%;
   width: 100%;
-  min-height: 300px;
   padding: 0.5rem;
 }
 .pta .pta-tab.pta-companion-tab {
