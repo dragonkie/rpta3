@@ -1,41 +1,4 @@
 <div class="pta-tab">
-
-
-
-
-
-    <div class="pta-tab-content flexcol flex-gap-l">
-        <div class="flexrow pta-ac flex-gap-m">
-            <div class="form-group stacked">
-                <label>AC: {{localize "PTA.Ac.Physical"}}</label>
-                <div class="form-inputs">
-                    <input type="number" disabled="disabled" value="{{multiply system.stats.def.mod 3}}">
-                </div>
-            </div>
-            <div class="form-group stacked">
-                <label>AC: {{localize "PTA.Ac.Special"}}</label>
-                <div class="form-inputs">
-                    <input type="number" disabled="disabled" value="{{multiply system.stats.sdef.mod 3}}">
-                </div>
-            </div>
-            <div class="form-group stacked">
-                <label>AC: {{localize "PTA.Ac.Status"}}</label>
-                <div class="form-inputs">
-                    <input type="number" disabled="disabled" value="{{multiply system.stats.spd.mod 3}}">
-                </div>
-            </div>
-            <div class="form-group stacked">
-                <label>{{localize "PTA.Generic.Movement"}}</label>
-                <div class="form-inputs">
-                    <input type="number" disabled="disabled" value="{{system.moveSpeed}}">
-                </div>
-            </div>
-        </div>
-
-
-
-
-
         <div class="pta-move-list pta-item-list">
             <span class="pta-item-list-header">
                 <div class="pta-header-name">
