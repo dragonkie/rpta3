@@ -46,13 +46,6 @@ export default class CharacterData extends TrainerData {
 
   prepareDerivedData() {
     super.prepareDerivedData();
-    
-    // RPTA3 customization
-    this.level = this.class_1.level = this.rank;
-
-    this.class_2.level = this.class_1.level >= 3 ? this.class_1.level - 2 : 0;
-    this.class_3.level = this.class_1.level >= 7 ? this.class_1.level - 6 : 0;
-    this.class_4.level = this.class_1.level >= 11 ? this.class_1.level - 10 : 0;
   }
 
   getRollData() {
