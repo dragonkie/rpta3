@@ -1,24 +1,27 @@
 /* Import utilities */
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Quicksand:wght@300..700&display=swap");
 :root {
-  --pta-c-type-normal: #A8A77A;
-  --pta-c-type-fire: #EE8130;
-  --pta-c-type-water: #6390F0;
-  --pta-c-type-electric: #F7D02C;
-  --pta-c-type-grass: #7AC74C;
-  --pta-c-type-ice: #96D9D6;
-  --pta-c-type-fighting: #C22E28;
-  --pta-c-type-poison: #A33EA1;
-  --pta-c-type-ground: #E2BF65;
-  --pta-c-type-flying: #A98FF3;
-  --pta-c-type-psychic: #F95587;
   --pta-c-type-bug: #A6B91A;
-  --pta-c-type-rock: #B6A136;
-  --pta-c-type-ghost: #735797;
-  --pta-c-type-dragon: #6F35FC;
+  --pta-c-type-cyber: #2CF5D4;
   --pta-c-type-dark: #705746;
-  --pta-c-type-steel: #B7B7CE;
+  --pta-c-type-dragon: #6F35FC;
+  --pta-c-type-electric: #F7D02C;
   --pta-c-type-fairy: #D685AD;
+  --pta-c-type-fighting: #C22E28;
+  --pta-c-type-fire: #EE8130;
+  --pta-c-type-flying: #A98FF3;
+  --pta-c-type-ghost: #735797;
+  --pta-c-type-grass: #7AC74C;
+  --pta-c-type-ground: #E2BF65;
+  --pta-c-type-ice: #96D9D6;
+  --pta-c-type-light: #FFF8AD;
+  --pta-c-type-normal: #A8A77A;
+  --pta-c-type-nuclear: #9BF52C;
+  --pta-c-type-poison: #A33EA1;
+  --pta-c-type-psychic: #F95587;
+  --pta-c-type-rock: #B6A136;
+  --pta-c-type-steel: #B7B7CE;
+  --pta-c-type-water: #6390F0;
   --pta-c-hp-red: red;
   --pta-c-hp-yellow: yellow;
   --pta-c-hp-green: green;
@@ -116,6 +119,11 @@
   --pta-scale-px: 20px;
 }
 
+@keyframes pta-scrolling-bg {
+  100% {
+    background-position: 128px 64px;
+  }
+}
 /* Global styles */
 .rollable:hover, .rollable:focus {
   color: #000;
@@ -577,8 +585,14 @@ button.pta-clear-button:focus {
   flex-wrap: nowrap;
   flex: 0;
 }
+.pta-item-list .pta-item .pta-item-description {
+  padding: 0 0.5em;
+}
 .pta-item-list .pta-item-controls {
-  flex: 0 0 30px;
+  flex: 0 1 30px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: center;
   justify-items: center;
 }
@@ -610,10 +624,11 @@ button.pta-clear-button:focus {
 .pta-header-detail.pta-damage {
   flex: 2 0;
 }
-.pta-item-detail.pta-category, .pta-item-detail.pta-type-tag,
+.pta-item-detail.pta-category, .pta-item-detail.pta-move-uses, .pta-item-detail.pta-type-tag,
 .pta-header-detail.pta-category,
+.pta-header-detail.pta-move-uses,
 .pta-header-detail.pta-type-tag {
-  flex: 1 0;
+  flex: 0 0 100px;
 }
 
 .effects .item .effect-source,
@@ -661,14 +676,23 @@ button.pta-clear-button:focus {
   flex: 0 0 2rem;
 }
 
+.pta prose-mirror button.toggle {
+  padding: 0;
+}
 .pta prose-mirror.inactive .editor-container {
   background: var(--color-cool-4);
   border-radius: 4px;
+}
+.pta prose-mirror.inactive .editor-container .editor-content {
+  padding: 4px;
 }
 .pta prose-mirror.active .editor-container {
   background: var(--color-cool-4);
   border-radius: 4px;
   min-height: 200px;
+}
+.pta prose-mirror.active .editor-container .editor-content {
+  padding: 4px;
 }
 
 /* Import utilities */
@@ -681,13 +705,39 @@ button.pta-clear-button:focus {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  background: linear-gradient(to right, #808080, #6d6d6d);
+  height: calc(450px + 2.5em + 1em);
+  background: linear-gradient(0deg, rgb(84, 84, 84) 1px, transparent 2px), linear-gradient(90deg, rgb(84, 84, 84) 1px, transparent 2px);
+  background-color: rgb(20, 20, 20);
+  background-size: 32px 32px;
   border-radius: 5px;
+  border: 2px solid rgb(112, 112, 112);
+  animation: pta-scrolling-bg 20s infinite;
+  animation-timing-function: linear;
+  animation-duration: 20s;
+  /* STOP SMOOTHING, GIVE ME SPEED  */
+  image-rendering: optimizeSpeed;
+  /* Firefox                        */
+  image-rendering: -moz-crisp-edges;
+  /* Opera                          */
+  image-rendering: -o-crisp-edges;
+  /* Chrome (and eventually Safari) */
+  image-rendering: -webkit-optimize-contrast;
+  /* Universal support since 2021   */
+  image-rendering: pixelated;
+  /* CSS3 Proposed                  */
+  image-rendering: optimize-contrast;
+  /* IE8+                           */
+  -ms-interpolation-mode: nearest-neighbor;
 }
 .pta-companion-tab ol.pta-companion-team .pta-companion {
-  --angle: 110deg;
   --scale: 60%;
-  background-color: var(--color-cool-4);
+  --c-one: rgba(22, 51, 86, 0.5);
+  --c-two: rgba(21, 118, 186, 0.8);
+  background: linear-gradient(45deg, var(--c-one) 45%, var(--c-two)) 0px 0px;
+  transition: all 0.2s;
+  background-size: 200% 100%;
+  box-sizing: border-box;
+  border: 2px solid #4eb3d4;
   position: relative;
   width: 225px;
   height: 75px;
@@ -695,8 +745,15 @@ button.pta-clear-button:focus {
   padding: var(--pta-scale-px);
   display: flex;
   flex-direction: row;
-  --corner: 1em;
-  clip-path: polygon(var(--corner) 0%, calc(100% - var(--corner)) 0%, 100% var(--corner), 100% calc(100% - var(--corner)), calc(100% - var(--corner)) 100%, var(--corner) 100%, 0% calc(100% - var(--corner)), 0% var(--corner));
+  border-radius: 5px;
+  margin: 0;
+}
+.pta-companion-tab ol.pta-companion-team .pta-companion:hover {
+  border: 2px solid #8ed3ea;
+  --w: -225px;
+  --p: 0.5em;
+  background-position: calc(var(--w) + var(--p));
+  background-repeat: no-repeat;
 }
 .pta-companion-tab ol.pta-companion-team .pta-companion .pta-companion-portrait {
   flex: 0 0;
@@ -706,6 +763,7 @@ button.pta-clear-button:focus {
   aspect-ratio: 1;
 }
 .pta-companion-tab ol.pta-companion-team .pta-companion .pta-companion-portrait img {
+  image-rendering: auto;
   border: 0;
 }
 .pta-companion-tab ol.pta-companion-team .pta-companion .details {
@@ -735,61 +793,69 @@ button.pta-clear-button:focus {
   border: 2px solid var(--pta-type-colour);
   text-align: center;
   min-width: 5em;
-  flex: 0 0;
-}
-.pta-type-tag.pta-type-normal {
-  --pta-type-colour: var(--pta-c-type-normal);
-}
-.pta-type-tag.pta-type-fire {
-  --pta-type-colour: var(--pta-c-type-fire);
-}
-.pta-type-tag.pta-type-water {
-  --pta-type-colour: var(--pta-c-type-water);
-}
-.pta-type-tag.pta-type-electric {
-  --pta-type-colour: var(--pta-c-type-electric);
-}
-.pta-type-tag.pta-type-grass {
-  --pta-type-colour: var(--pta-c-type-grass);
-}
-.pta-type-tag.pta-type-ice {
-  --pta-type-colour: var(--pta-c-type-ice);
-}
-.pta-type-tag.pta-type-fighting {
-  --pta-type-colour: var(--pta-c-type-fighting);
-}
-.pta-type-tag.pta-type-poison {
-  --pta-type-colour: var(--pta-c-type-poison);
-}
-.pta-type-tag.pta-type-ground {
-  --pta-type-colour: var(--pta-c-type-ground);
-}
-.pta-type-tag.pta-type-flying {
-  --pta-type-colour: var(--pta-c-type-flying);
-}
-.pta-type-tag.pta-type-psychic {
-  --pta-type-colour: var(--pta-c-type-psychic);
 }
 .pta-type-tag.pta-type-bug {
   --pta-type-colour: var(--pta-c-type-bug);
 }
-.pta-type-tag.pta-type-rock {
-  --pta-type-colour: var(--pta-c-type-rock);
-}
-.pta-type-tag.pta-type-ghost {
-  --pta-type-colour: var(--pta-c-type-ghost);
-}
-.pta-type-tag.pta-type-dragon {
-  --pta-type-colour: var(--pta-c-type-dragon);
+.pta-type-tag.pta-type-cyber {
+  --pta-type-colour: var(--pta-c-type-cyber);
 }
 .pta-type-tag.pta-type-dark {
   --pta-type-colour: var(--pta-c-type-dark);
 }
-.pta-type-tag.pta-type-steel {
-  --pta-type-colour: var(--pta-c-type-steel);
+.pta-type-tag.pta-type-dragon {
+  --pta-type-colour: var(--pta-c-type-dragon);
+}
+.pta-type-tag.pta-type-electric {
+  --pta-type-colour: var(--pta-c-type-electric);
 }
 .pta-type-tag.pta-type-fairy {
   --pta-type-colour: var(--pta-c-type-fairy);
+}
+.pta-type-tag.pta-type-fighting {
+  --pta-type-colour: var(--pta-c-type-fighting);
+}
+.pta-type-tag.pta-type-fire {
+  --pta-type-colour: var(--pta-c-type-fire);
+}
+.pta-type-tag.pta-type-flying {
+  --pta-type-colour: var(--pta-c-type-flying);
+}
+.pta-type-tag.pta-type-ghost {
+  --pta-type-colour: var(--pta-c-type-ghost);
+}
+.pta-type-tag.pta-type-grass {
+  --pta-type-colour: var(--pta-c-type-grass);
+}
+.pta-type-tag.pta-type-ground {
+  --pta-type-colour: var(--pta-c-type-ground);
+}
+.pta-type-tag.pta-type-ice {
+  --pta-type-colour: var(--pta-c-type-ice);
+}
+.pta-type-tag.pta-type-light {
+  --pta-type-colour: var(--pta-c-type-light);
+}
+.pta-type-tag.pta-type-normal {
+  --pta-type-colour: var(--pta-c-type-normal);
+}
+.pta-type-tag.pta-type-nuclear {
+  --pta-type-colour: var(--pta-c-type-nuclear);
+}
+.pta-type-tag.pta-type-poison {
+  --pta-type-colour: var(--pta-c-type-poison);
+}
+.pta-type-tag.pta-type-psychic {
+  --pta-type-colour: var(--pta-c-type-psychic);
+}
+.pta-type-tag.pta-type-rock {
+  --pta-type-colour: var(--pta-c-type-rock);
+}
+.pta-type-tag.pta-type-steel {
+  --pta-type-colour: var(--pta-c-type-steel);
+}
+.pta-type-tag.pta-type-water {
+  --pta-type-colour: var(--pta-c-type-water);
 }
 .pta-type-tag.pta-fill {
   background-color: var(--pta-type-colour);
@@ -881,7 +947,12 @@ button.pta-clear-button:focus {
 }
 
 .pta-pokebox {
-  height: 100%;
+  height: calc(450px + 2.5em + 1em);
+  padding: 0.5em;
+  border: 2px solid rgb(112, 112, 112);
+  background: radial-gradient(rgba(255, 255, 255, 0.1), transparent);
+  background-color: rgb(20, 20, 20);
+  border-radius: 5px;
 }
 
 .pta-pc-entries {
@@ -987,8 +1058,16 @@ button.pta-clear-button:focus {
   justify-content: center;
 }
 .pta-stats .pta-stat-wrap .pta-score-wrap {
+  display: flex;
+  flex-direction: column;
   flex: 0;
-  margin-right: var(--pta-scale-px);
+  gap: 0.5em;
+  padding: 0.5em;
+  box-shadow: 0px 10px 8px black;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), transparent 40%, rgba(255, 255, 255, 0.4) 50%, transparent 60%, rgba(0, 0, 0, 0.4));
+  background-color: var(--stat-border-c);
+  border-radius: 5px;
+  border: 2px solid var(--stat-border-c);
 }
 .pta-stats .pta-stat-wrap .pta-score {
   align-items: center;
@@ -999,7 +1078,11 @@ button.pta-clear-button:focus {
   width: 72px;
   overflow: hidden;
   text-align: center;
-  border: 2px solid var(--stat-border-c);
+  border: 2px solid rgb(144, 144, 144);
+  background-color: rgb(99, 99, 99);
+}
+.pta-stats .pta-stat-wrap .pta-score input {
+  background-color: rgb(62, 62, 62);
 }
 .pta-stats .pta-stat-wrap .pta-score > * {
   display: flex;
@@ -1011,6 +1094,13 @@ button.pta-clear-button:focus {
   border-left: none;
   border-right: none;
   border-top: none;
+}
+.pta-stats .pta-stat-wrap .pta-stat-label {
+  padding: 0.2em;
+  background: linear-gradient(0deg, rgb(77, 77, 77) 80%, rgb(27, 27, 27));
+  border-radius: 3px;
+  text-align: center;
+  width: 100%;
 }
 
 .pta-skills-wrap {
@@ -1139,9 +1229,6 @@ button.pta-clear-button:focus {
 .pta.sheet .window-content {
   padding: 0.5rem;
 }
-.pta.sheet .window-header, .pta.sheet .window-content {
-  border-radius: inherit;
-}
 .pta.sheet:hover .pta-bookmark {
   opacity: 100%;
 }
@@ -1152,15 +1239,238 @@ button.pta-clear-button:focus {
 }
 
 /* Sheet specific styles */
-.pta.sheet.actor .pta-sheet-header {
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--color-light-5);
+/* Import utilities */
+.pta.actor .pta-sheet-header {
+  --c-gradient-highlight: rgba(212, 212, 212, 0.7);
+  --c-gradient-shadow: rgba(36, 36, 36, 0.6);
+  --c-background: #686868;
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 2px solid #797c81;
+  box-shadow: 0px 4px 10px 6px black;
+  margin: 0.5em;
+  background: linear-gradient(130deg, transparent, var(--c-gradient-highlight) 26%, transparent 35%, transparent 70%, var(--c-gradient-shadow)), linear-gradient(90deg, var(--c-background-main) 66%, var(--c-background-extra) 85%);
+  background-color: var(--c-background);
+  background-blend-mode: overlay;
 }
+.pta.actor .pta-sheet-header .pta-actor-name {
+  height: 3rem;
+  font-size: 2rem;
+  font-weight: 600;
+  background-color: rgba(53, 53, 53, 0.8);
+}
+.pta.actor .pta-sheet-header input,
+.pta.actor .pta-sheet-header select {
+  background-color: rgba(53, 53, 53, 0.8);
+}
+
+.pta.actor [data-type-main=bug].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-bug);
+  --c-background-extra: var(--pta-c-type-bug);
+}
+
+.pta.actor [data-type-extra=bug].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-bug);
+}
+
+.pta.actor [data-type-main=cyber].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-cyber);
+  --c-background-extra: var(--pta-c-type-cyber);
+}
+
+.pta.actor [data-type-extra=cyber].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-cyber);
+}
+
+.pta.actor [data-type-main=dark].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-dark);
+  --c-background-extra: var(--pta-c-type-dark);
+}
+
+.pta.actor [data-type-extra=dark].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-dark);
+}
+
+.pta.actor [data-type-main=dragon].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-dragon);
+  --c-background-extra: var(--pta-c-type-dragon);
+}
+
+.pta.actor [data-type-extra=dragon].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-dragon);
+}
+
+.pta.actor [data-type-main=electric].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-electric);
+  --c-background-extra: var(--pta-c-type-electric);
+}
+
+.pta.actor [data-type-extra=electric].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-electric);
+}
+
+.pta.actor [data-type-main=fairy].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-fairy);
+  --c-background-extra: var(--pta-c-type-fairy);
+}
+
+.pta.actor [data-type-extra=fairy].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-fairy);
+}
+
+.pta.actor [data-type-main=fighting].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-fighting);
+  --c-background-extra: var(--pta-c-type-fighting);
+}
+
+.pta.actor [data-type-extra=fighting].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-fighting);
+}
+
+.pta.actor [data-type-main=fire].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-fire);
+  --c-background-extra: var(--pta-c-type-fire);
+}
+
+.pta.actor [data-type-extra=fire].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-fire);
+}
+
+.pta.actor [data-type-main=flying].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-flying);
+  --c-background-extra: var(--pta-c-type-flying);
+}
+
+.pta.actor [data-type-extra=flying].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-flying);
+}
+
+.pta.actor [data-type-main=ghost].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-ghost);
+  --c-background-extra: var(--pta-c-type-ghost);
+}
+
+.pta.actor [data-type-extra=ghost].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-ghost);
+}
+
+.pta.actor [data-type-main=grass].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-grass);
+  --c-background-extra: var(--pta-c-type-grass);
+}
+
+.pta.actor [data-type-extra=grass].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-grass);
+}
+
+.pta.actor [data-type-main=ground].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-ground);
+  --c-background-extra: var(--pta-c-type-ground);
+}
+
+.pta.actor [data-type-extra=ground].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-ground);
+}
+
+.pta.actor [data-type-main=ice].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-ice);
+  --c-background-extra: var(--pta-c-type-ice);
+}
+
+.pta.actor [data-type-extra=ice].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-ice);
+}
+
+.pta.actor [data-type-main=light].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-light);
+  --c-background-extra: var(--pta-c-type-light);
+}
+
+.pta.actor [data-type-extra=light].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-light);
+}
+
+.pta.actor [data-type-main=normal].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-normal);
+  --c-background-extra: var(--pta-c-type-normal);
+}
+
+.pta.actor [data-type-extra=normal].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-normal);
+}
+
+.pta.actor [data-type-main=nuclear].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-nuclear);
+  --c-background-extra: var(--pta-c-type-nuclear);
+}
+
+.pta.actor [data-type-extra=nuclear].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-nuclear);
+}
+
+.pta.actor [data-type-main=poison].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-poison);
+  --c-background-extra: var(--pta-c-type-poison);
+}
+
+.pta.actor [data-type-extra=poison].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-poison);
+}
+
+.pta.actor [data-type-main=psychic].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-psychic);
+  --c-background-extra: var(--pta-c-type-psychic);
+}
+
+.pta.actor [data-type-extra=psychic].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-psychic);
+}
+
+.pta.actor [data-type-main=rock].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-rock);
+  --c-background-extra: var(--pta-c-type-rock);
+}
+
+.pta.actor [data-type-extra=rock].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-rock);
+}
+
+.pta.actor [data-type-main=steel].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-steel);
+  --c-background-extra: var(--pta-c-type-steel);
+}
+
+.pta.actor [data-type-extra=steel].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-steel);
+}
+
+.pta.actor [data-type-main=water].pta-sheet-header {
+  --c-background-main: var(--pta-c-type-water);
+  --c-background-extra: var(--pta-c-type-water);
+}
+
+.pta.actor [data-type-extra=water].pta-sheet-header {
+  --c-background-extra: var(--pta-c-type-water);
+}
+
 .pta.sheet.actor .pta-sheet-header img {
   min-width: 128px;
   min-height: 128px;
   object-fit: cover;
   object-position: 50% 0%;
+  background: linear-gradient(90deg, #3d7385 2px, rgba(0, 0, 0, 0) 1px), linear-gradient(0deg, #3d7385 2px, rgba(0, 0, 0, 0) 1px);
+  background-size: 64px 64px;
+  background-color: #071831;
+  animation: pta-scrolling-bg 20s infinite;
+  animation-timing-function: linear;
+  border-radius: 5px;
+  border: 2px solid #499ab5;
+}
+.pta.sheet.actor .pta-sheet-header input:focus {
+  outline-color: #499ab5;
+}
+.pta.sheet.actor .window-content {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 60%, transparent), url("../assets/textures/slash_it.webp");
 }
 .pta.sheet.actor .window-content [data-tab=inventory] {
   overflow-y: auto;
@@ -1168,6 +1478,65 @@ button.pta-clear-button:focus {
 
 .pta-inventory {
   overflow: auto;
+}
+
+.pta-skill-bonus {
+  flex: 0 0 3em;
+  text-align: center;
+  height: 1.5em;
+}
+
+.pta-roll-form {
+  background: linear-gradient(to right, rgb(106, 106, 106), rgb(81, 81, 81));
+}
+.pta-roll-form .dialog-form {
+  gap: 0.5em;
+}
+.pta-roll-form .window-content {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5em;
+  width: 300px;
+  box-sizing: border-box;
+}
+.pta-roll-form .window-content .pta-roll-group {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  border-bottom: 1px solid rgb(159, 159, 159);
+}
+.pta-roll-form .window-content .pta-roll-group > label {
+  text-align: left;
+  flex: 1;
+  transition: all 0.2s;
+}
+.pta-roll-form .window-content .pta-roll-group > input {
+  flex: 1;
+}
+.pta-roll-form .window-content .pta-roll-group .pta-fields {
+  text-align: left;
+  flex: 1;
+  gap: 0.5rem;
+  display: flex;
+  flex-direction: row;
+}
+.pta-roll-form .window-content .pta-roll-group .pta-fields * {
+  flex: 1;
+}
+.pta-roll-form .window-content .pta-roll-group:hover {
+  color: white;
+}
+.pta-roll-form .window-content .pta-roll-group:hover input {
+  color: white;
+}
+.pta-roll-form .window-content .pta-roll-group input {
+  height: 1.5em;
+}
+.pta-roll-form .window-content .pta-roll-group input[disabled] {
+  background-color: transparent;
+  outline: 0px transparent;
+  border: 0px solid transparent;
 }
 
 /* Styles limited to pta3 sheets */
@@ -1196,7 +1565,7 @@ button.pta-clear-button:focus {
   padding: 0.5rem;
 }
 .pta .pta-tab.pta-companion-tab {
-  min-height: 525px;
+  min-height: 535px;
 }
 .pta .remote-image-browser .sprite-gallery {
   display: grid;

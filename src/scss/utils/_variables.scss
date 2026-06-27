@@ -19,24 +19,28 @@ $pokemon-stats: 'atk',
     'sdef',
     'spd';
 
-$pokemon-types: 'normal',
-    'fire',
-    'water',
-    'electric',
-    'grass',
-    'ice',
-    'fighting',
-    'poison',
-    'ground',
-    'flying',
-    'psychic',
+$pokemon-types: 
     'bug',
-    'rock',
-    'ghost',
-    'dragon',
+    'cyber',
     'dark',
+    'dragon',
+    'electric',
+    'fairy',
+    'fighting',
+    'fire',
+    'flying',
+    'ghost',
+    'grass',
+    'ground',
+    'ice',
+    'light',
+    'normal',
+    'nuclear',
+    'poison',
+    'psychic',
+    'rock',
     'steel',
-    'fairy';
+    'water';
 
 :root {
     --pta-scale-px: 8px;
