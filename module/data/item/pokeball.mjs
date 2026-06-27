@@ -112,16 +112,15 @@ export default class PokeballData extends ItemData {
 
     getMenuActions() {
         const group = "ball";
-        return [
-            ...super.getMenuActions(),
-            {
-                label: PTA.contextMenu.use,
-                visible: true,
-                group: group,
-                icon: "",
-                onClick: () => this.use()
-            }
-        ];
+        const actions = super.getMenuActions();
+        actions.splice(1, 0, {
+            label: PTA.contextMenu.use,
+            visible: true,
+            group: group,
+            icon: `<i class="fas fa-baseball"></i>`,
+            onClick: () => this.use()
+        })
+        return actions;
     }
 
     async use(event, options) {
@@ -133,7 +132,7 @@ export default class PokeballData extends ItemData {
         var acc = 0;
         var chn = 0;
         await new Promise(async (resolve, reject) => {
-            const template = await utils.renderTemplate(PTA.templates.dialog.rollCaptureSphere, { item: this.parent });
+            const template = await utils.renderTemplate(PTA.templates.dialog.rollCapture, { item: this.parent });
             const app = new PtaDialog({
                 content: template,
                 classes: ['pta'],

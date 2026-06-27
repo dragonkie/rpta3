@@ -158,6 +158,7 @@
       "Sweet": "Sweet"
     },
     "Generic": {
+      "Feature":"Feature",
       "Ability": "Ability",
       "Accuracy": "Accuracy",
       "Age": "Age",
@@ -201,6 +202,7 @@
       "Special": "Special",
       "Species": "Species",
       "Status": "Status",
+      "Level":"Level",
       "Sync": {
         "abbr": "sync",
         "long": "Synchronize"
@@ -394,7 +396,6 @@
       "consumable": "Consumable",
       "egg": "Pokémon Egg",
       "equipment": "Equipment",
-      "feature": "Feature",
       "move": "Move",
       "pokeball": "Pokéball",
       "potion": "Potion"

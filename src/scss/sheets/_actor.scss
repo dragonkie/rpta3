@@ -1,3 +1,48 @@
+@use '../module' as util;
+
+.pta.actor .pta-sheet-header {
+    --c-gradient-highlight: rgba(212, 212, 212, 0.7);
+    --c-gradient-shadow: rgba(36, 36, 36, 0.6);
+    --c-background: #686868;
+
+    padding: 0.5rem;
+    border-radius: 10px;
+    border: 2px solid #797c81;
+
+    box-shadow: 0px 4px 10px 6px black;
+    margin: 0.5em;
+
+    background:
+        //linear-gradient(180deg, rgba(52, 73, 142, 0.5), transparent),
+        linear-gradient(130deg, transparent, var(--c-gradient-highlight) 26%, transparent 35%, transparent 70%, var(--c-gradient-shadow)),
+        linear-gradient(90deg, var(--c-background-main) 66%, var(--c-background-extra) 85%);
+    background-color: var(--c-background);
+    background-blend-mode: overlay;
+
+    .pta-actor-name {
+        height: 3rem;
+        font-size: 2rem;
+        font-weight: 600;
+        background-color: rgba(53, 53, 53, 0.8);
+    }
+
+    input,
+    select {
+        background-color: rgba(53, 53, 53, 0.8);
+    }
+}
+
+@each $type in util.$pokemon-types {
+    .pta.actor [data-type-main=#{$type}].pta-sheet-header {
+        --c-background-main: var(--pta-c-type-#{$type});
+        --c-background-extra: var(--pta-c-type-#{$type});
+    }
+
+    .pta.actor [data-type-extra=#{$type}].pta-sheet-header {
+        --c-background-extra: var(--pta-c-type-#{$type});
+    }
+}
+
 .pta.sheet.actor {
     .pta-sheet-header {
         img {
@@ -5,21 +50,44 @@
             min-height: 128px;
             object-fit: cover;
             object-position: 50% 0%;
+
+            background:
+                linear-gradient(90deg, #3d7385 2px, rgba(0, 0, 0, 0) 1px),
+                linear-gradient(0deg, #3d7385 2px, rgba(0, 0, 0, 0) 1px);
+            background-size: 64px 64px;
+            background-color: #071831;
+            animation: pta-scrolling-bg 20s infinite;
+            animation-timing-function: linear;
+
+            border-radius: 5px;
+            border: 2px solid #499ab5;
         }
 
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid var(--color-light-5);
+        input {
+            &:focus {
+                outline-color: #499ab5;
+            }
+        }
     }
 
     .window-content {
+        background:
+            //radial-gradient(at top, rgba(68, 0, 255, 0.1) 30%, transparent),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 60%, transparent),
+            url("../assets/textures/slash_it.webp");
 
         [data-tab=inventory] {
             overflow-y: auto;
         }
     }
-
 }
 
 .pta-inventory {
     overflow: auto;
+}
+
+.pta-skill-bonus {
+    flex: 0 0 3em;
+    text-align: center;
+    height: 1.5em;
 }

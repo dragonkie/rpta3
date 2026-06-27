@@ -16,6 +16,7 @@ export default class ActorData extends DataModel {
       value: new NumberField({ ...requiredInteger, initial: 20, min: 0 }),
       base: new NumberField({ ...requiredInteger, initial: 20, min: 0 }),
       min: new NumberField({ ...requiredInteger, initial: 0, min: 0, max: 0 }),
+      max: new NumberField(),// Garbage field for letting the token use the resource bar on hp
     })
 
     // Iterate over stats names and create a new SchemaField for each.
@@ -158,7 +159,7 @@ export default class ActorData extends DataModel {
     // calculate skill totals
     for (const key in this.skills) {
       const stat = this.stats[this.skills[key].stat];
-      this.skills[key].total += stat.mod + this.skills[key].bonus;
+      this.skills[key].total += stat.mod;
     }
 
     // applys conditions relevant to token statuses

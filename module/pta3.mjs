@@ -10,6 +10,7 @@ globalThis.pta = {
 // import document types
 import PtaActiveEffect from './documents/active-effect.mjs';
 import PtaActor from './documents/actor.mjs';
+import PtaChatMessage from './documents/message.mjs';
 import PtaItem from './documents/item.mjs';
 
 // Import sheet classes.
@@ -43,7 +44,6 @@ Hooks.once('init', function () {
     PTA.loadPokedex();
     pta.config = PTA;
     CONFIG.PTA = PTA;
-
     CONFIG.statusEffects = PTA.statusEffects;
 
     /**

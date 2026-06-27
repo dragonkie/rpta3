@@ -52,6 +52,7 @@ $pta-button-size: 30px;
     list-style: none;
     padding: 0;
     margin: 0;
+
     :last-child {
       border-radius: 0 0 $pta-border-radius $pta-border-radius;
     }
@@ -93,11 +94,18 @@ $pta-button-size: 30px;
       flex-wrap: nowrap;
       flex: 0;
     }
+
+    .pta-item-description {
+      padding: 0 0.5em;
+    }
   }
 
   // list of controls in the item bar on the far right side
   .pta-item-controls {
-    flex: 0 0 $pta-button-size;
+    flex: 0 1 $pta-button-size;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     align-items: center;
     justify-items: center;
   }
@@ -137,7 +145,8 @@ $pta-button-size: 30px;
   }
 
   &.pta-category,
+  &.pta-move-uses,
   &.pta-type-tag {
-    flex: 1 0;
+    flex: 0 0 100px;
   }
 }

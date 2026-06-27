@@ -7,13 +7,12 @@ import PtaSheetMixin from "./mixin.mjs";
 export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sheets.ActorSheetV2) {
     static DEFAULT_OPTIONS = {
         classes: ["actor"],
-        position: { height: 'auto', width: 600, left: 120, top: 60 },
+        position: { height: 'auto', width: 700, left: 120, top: 60 },
         actions: {
+            use: this._onUseItem,
             itemQuantity: this._onChangeItemQuantity,
-            itemUse: this._onUseItem,
             itemSort: this._onSortItemMethod,
             trainTalent: this._onTrainTalent,
-            use: this._onUseItem,
             editResistance: this._onEditResistance,
             importMoves: this._onImportMoves,
         }
@@ -255,17 +254,17 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
 
         const effectData = effect.toObject();
         const modification = {
-            _id: foundry.data.operators.ForcedDeletion,
-            ownership: foundry.data.operators.ForcedDeletion,
-            folder: foundry.data.operators.ForcedDeletion,
-            sort: foundry.data.operators.ForcedDeletion,
+            _id: _del,
+            ownership: _del,
+            folder: _del,
+            sort: _del,
             duration: {
-                combat: foundry.data.operators.ForcedDeletion,
-                startRound: foundry.data.operators.ForcedDeletion,
-                startTime: foundry.data.operators.ForcedDeletion,
-                startTurn: foundry.data.operators.ForcedDeletion,
+                combat: _del,
+                startRound: _del,
+                startTime: _del,
+                startTurn: _del,
             },
-            system: { source: foundry.data.operators.ForcedDeletion }
+            system: { source: _del }
         };
 
         foundry.utils.applyDataOperators(effectData, modification, { performDeletions: true });
@@ -277,10 +276,10 @@ export default class PtaActorSheet extends PtaSheetMixin(foundry.applications.sh
         if (!Object.keys(this.document.constructor.metadata.embedded).includes(type)) return;
         const itemData = item.toObject();
         const modification = {
-            _id: foundry.data.operators.ForcedDeletion,
-            ownership: foundry.data.operators.ForcedDeletion,
-            folder: foundry.data.operators.ForcedDeletion,
-            sort: foundry.data.operators.ForcedDeletion
+            _id: _del,
+            ownership: _del,
+            folder: _del,
+            sort: _del
         };
         foundry.utils.applyDataOperators(itemData, modification, { performDeletions: true });
         getDocumentClass(type).create(itemData, { parent: this.document });

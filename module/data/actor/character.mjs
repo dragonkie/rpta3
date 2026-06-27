@@ -24,12 +24,6 @@ export default class CharacterData extends TrainerData {
       active: new BooleanField({ initial: false, required: true, nullable: false })
     }), { initial: [] });
 
-    // Character classes
-    schema.class_1 = new SchemaField({ label: new StringField({ initial: '' }) });
-    schema.class_2 = new SchemaField({ label: new StringField({ initial: '' }) });
-    schema.class_3 = new SchemaField({ label: new StringField({ initial: '' }) });
-    schema.class_4 = new SchemaField({ label: new StringField({ initial: '' }) });
-
     // Character descriptions
     schema.details = new SchemaField({
       age: new StringField({ label: PTA.generic.age, initial: '' }),

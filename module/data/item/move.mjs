@@ -17,12 +17,10 @@ export default class MoveData extends ItemData {
 
         // is this a physical, special, or effect move
         // moves that deal damage are still classified as physical / effect, such as ember
-        const MoveClasses = {};
-        for (const a in PTA.moveClass) MoveClasses[a] = utils.localize(PTA.moveClass[a]);
         schema.category = new StringField({
             ...isRequired,
             blank: false,
-            choices: { ...MoveClasses },
+            choices: PTA.moveClass,
             initial: 'physical'
         })
 
@@ -89,70 +87,70 @@ export default class MoveData extends ItemData {
 
         // special field for holding a ton of the pokeapi data, nothing here is restricted and is for archival and restoration purposes
         schema.api = new SchemaField({
-            id: new NumberField(),
-            name: new StringField(),
-            accuracy: new NumberField(),
-            effect_chance: new NumberField(),
-            pp: new NumberField(),
-            priority: new NumberField(),
-            power: new NumberField(),
+            id: new NumberField({ initial: 0 }),
+            name: new StringField({ initial: "" }),
+            accuracy: new NumberField({ initial: 0 }),
+            effect_chance: new NumberField({ initial: 0 }),
+            pp: new NumberField({ initial: 0 }),
+            priority: new NumberField({ initial: 0 }),
+            power: new NumberField({ initial: 0 }),
             contest_combos: new SchemaField({
                 normal: new SchemaField({
-                    use_before: new ArrayField(new StringField()),
-                    use_after: new ArrayField(new StringField())
+                    use_before: new ArrayField(new StringField({ initial: "" })),
+                    use_after: new ArrayField(new StringField({ initial: "" }))
                 }),
                 super: new SchemaField({
-                    use_before: new ArrayField(new StringField()),
-                    use_after: new ArrayField(new StringField())
+                    use_before: new ArrayField(new StringField({ initial: "" })),
+                    use_after: new ArrayField(new StringField({ initial: "" }))
                 })
             }),
-            contest_type: new StringField(),
+            contest_type: new StringField({ initial: "" }),
             contest_effect: new SchemaField({
-                appeal: new NumberField(),
-                id: new NumberField(),
-                jam: new NumberField(),
+                appeal: new NumberField({ initial: 0 }),
+                id: new NumberField({ initial: 0 }),
+                jam: new NumberField({ initial: 0 }),
             }),
-            damage_class: new StringField(),
-            effect_chance: new NumberField(),
+            damage_class: new StringField({ initial: "" }),
+            effect_chance: new NumberField({ initial: 0 }),
             effect_entries: new ArrayField(new SchemaField({
-                effect: new StringField(),
-                short_effect: new StringField(),
-                language: new StringField()
+                effect: new StringField({ initial: "" }),
+                short_effect: new StringField({ initial: "" }),
+                language: new StringField({ initial: "" })
             })),
             flavour_text_entries: new ArrayField(new SchemaField({
-                flavour_text: new StringField(),
-                language: new StringField(),
-                version_group: new StringField(),
+                flavour_text: new StringField({ initial: "" }),
+                language: new StringField({ initial: "" }),
+                version_group: new StringField({ initial: "" }),
             })),
-            generation: new StringField(),
+            generation: new StringField({ initial: "" }),
             meta: new SchemaField({
-                ailment: new StringField(),
-                ailment_chance: new NumberField(),
-                category: new StringField(),
-                crit_rate: new NumberField(),
-                drain: new NumberField(),
-                flinch_chance: new NumberField(),
-                healing: new NumberField(),
-                max_hits: new NumberField(),
-                max_turns: new NumberField(),
-                min_hits: new NumberField(),
-                min_turns: new NumberField(),
-                stat_chance: new NumberField()
+                ailment: new StringField({ initial: "" }),
+                ailment_chance: new NumberField({ initial: 0 }),
+                category: new StringField({ initial: "" }),
+                crit_rate: new NumberField({ initial: 0 }),
+                drain: new NumberField({ initial: 0 }),
+                flinch_chance: new NumberField({ initial: 0 }),
+                healing: new NumberField({ initial: 0 }),
+                max_hits: new NumberField({ initial: 0 }),
+                max_turns: new NumberField({ initial: 0 }),
+                min_hits: new NumberField({ initial: 0 }),
+                min_turns: new NumberField({ initial: 0 }),
+                stat_chance: new NumberField({ initial: 0 })
             }),
             names: new ArrayField(new SchemaField({
-                name: new StringField(),
-                language: new StringField()
+                name: new StringField({ initial: "" }),
+                language: new StringField({ initial: "" })
             })),
             stat_changes: new ArrayField(new SchemaField({
-                change: new NumberField(),
-                stat: new StringField()
+                change: new NumberField({ initial: 0 }),
+                stat: new StringField({ initial: "" })
             })),
             super_contest_effect: new SchemaField({
-                appeal: new NumberField(),
-                id: new NumberField()
+                appeal: new NumberField({ initial: 0 }),
+                id: new NumberField({ initial: 0 })
             }),
-            target: new StringField(),
-            type: new StringField(),
+            target: new StringField({ initial: "" }),
+            type: new StringField({ initial: "" }),
         })
 
         return schema;
@@ -173,22 +171,27 @@ export default class MoveData extends ItemData {
 
     getMenuActions() {
         const group = "attack";
-        return [
-            ...super.getMenuActions(),
-            {
-                label: PTA.contextMenu.attack,
-                visible: true,
-                group: group,
-                icon: "",
-                callback: () => this._onUseAttack()
-            }, {
-                label: PTA.contextMenu.damage,
-                visible: true,
-                group: group,
-                icon: "",
-                callback: () => this._onUseDamage()
-            }
-        ];
+        const actions = super.getMenuActions();
+        actions.splice(1, 0, {
+            label: PTA.contextMenu.attack,
+            visible: true,
+            group: group,
+            icon: `<i class="fas fa-sword"></i>`,
+            callback: () => this._onUseAttack()
+        }, {
+            label: PTA.contextMenu.damage,
+            visible: true,
+            group: group,
+            icon: `<i class="fas fa-heart-crack"></i>`,
+            callback: () => this._onUseDamage()
+        }, {
+            label: PTA.contextMenu.reload,
+            visible: this.uses.max > 0 && this.uses.value < this.uses.max,
+            group: group,
+            icon: `<i class="fas fa-arrow-rotate-right"></i>`,
+            callback: () => this._onUseReload()
+        })
+        return actions;
     }
 
     get isRanged() { return this.range > 5 };
@@ -206,6 +209,7 @@ export default class MoveData extends ItemData {
         }
         data.stat = {
             key: stat_key,
+            label: utils.localize(PTA.stats[stat_key]),
             ...data.actor.system.stats[stat_key]
         };
 
@@ -221,7 +225,6 @@ export default class MoveData extends ItemData {
     //=====================================================================================================
     //> Actions 
     //=====================================================================================================
-
     async use(event, target, action) {
         if (action == 'reload') return this._onUseReload(event, target);
         return this._onUseAttack(event, target);
@@ -275,8 +278,10 @@ export default class MoveData extends ItemData {
             let missed = false;
             let critical = false;
 
+            // calculates if this was a critical hit
             if (r_accuracy.dice.find(a => a.faces == 20).results[0].result >= 20 - this.critical_chance) critical = true;
-            else if (r_accuracy.total < game.settings.get(game.system.id, 'baseAc') + target_stat.mod) missed = true;
+            // Check if the roll hit
+            else if (r_accuracy.total < game.settings.get(game.system.id, 'baseAc') + target_stat.total) missed = true;
 
             // attack roll content
             message_data.content += `<p><b>${utils.localize(PTA.generic.accuracy)}</b></p>`
@@ -395,6 +400,30 @@ export default class MoveData extends ItemData {
             // if we reach this point, attack was successful so we expend a use
             if (this.uses.max > 0) this.parent.update({ 'system.uses.value': this.uses.value - 1 });
         }
+    }
+
+    async _onUseAttackV2(event, target) {
+        const context = {
+            ...this.getRollData(),
+            ...this
+        }
+
+        context.attackFormula = `1d20 + ${context.stat.mod}`;
+        console.log(context);
+        const content = await utils.renderTemplate(PTA.templates.dialog.rollAttack, context);
+
+        const confirmed = new Promise((resolve, reject) => {
+            new PtaDialog({
+                classes: ['pta', 'pta-roll-form'],
+                content: content,
+                position: {},
+                window: {},
+                buttons: [{
+                    label: "Roll",
+                    action: 'roll'
+                }]
+            }).render(true);
+        })
     }
 
     /**

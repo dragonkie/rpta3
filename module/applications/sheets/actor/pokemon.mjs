@@ -34,7 +34,7 @@ export default class PtaPokemonSheet extends PtaActorSheet {
 
     static PARTS = {
         body: { template: `${this.TEMPLATE_PATH}/actor/pokemon/body.hbs` },
-        features: { template: `${this.TEMPLATE_PATH}/actor/pokemon/features.hbs` },
+        features: { template: `${this.TEMPLATE_PATH}/actor/shared/features.hbs` },
         combat: { template: `${this.TEMPLATE_PATH}/actor/shared/combat.hbs` },
         effects: { template: `${this.TEMPLATE_PATH}/actor/parts/actor-effects.hbs` },
         pokedex: { template: `${this.TEMPLATE_PATH}/actor/pokemon/pokedex.hbs` },
@@ -99,11 +99,7 @@ export default class PtaPokemonSheet extends PtaActorSheet {
 
         // obtain and parse the pokemon data
         let pokemon = await utils.importPokemonData({ species: true, forms: true, name: search });
-        let update_data = utils.parsePokemonData(pokemon);
-
-        if (!set_species) delete update_data.species;
-
-        update_data.hp.value = Math.min(this.document.system.hp.value, update_data.hp.max);
+        let update_data = utils.parseCompanionData(pokemon);
 
         await this.document.update({ system: update_data })
         this.render(false);
@@ -186,6 +182,13 @@ export default class PtaPokemonSheet extends PtaActorSheet {
     //============================================================================================================
     //> Sheet rendering
     //============================================================================================================
+    async _preRender(context, options) {
+
+        console.log(this);
+        console.log({ context, options });
+        return super._preRender(context, options);
+    }
+
     async render(options = {}) {
         // register trainers sheet application as a dependency to be re rendered
         if (this.document.system.trainer != '') {

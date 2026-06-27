@@ -22,6 +22,7 @@
 
 /* Sheet specific styles */
 @use 'sheets/actor';
+@use 'sheets/roll';
 
 /* Styles limited to pta3 sheets */
 .pta {
@@ -56,7 +57,7 @@
         padding: 0.5rem;
 
         &.pta-companion-tab {
-            min-height: 525px;
+            min-height: 535px;
         }
     }
 
