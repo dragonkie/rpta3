@@ -30,7 +30,7 @@ export default class PtaEquipmentSheet extends PtaItemSheet {
     }
 
     static async _onRemoveRule(event, target) {
-        const index = target.closest('[data-rule-index').dataset?.ruleIndex;
+        const index = target.closest('[data-rule-index]').dataset?.ruleIndex;
         if (!index) throw new Error("Failed to find rule to delete");
 
         this.document.update({
@@ -39,6 +39,6 @@ export default class PtaEquipmentSheet extends PtaItemSheet {
                     [index]: _del
                 }
             }
-        }, { recursive: false, applyOperators: true})
+        }, { recursive: true, applyOperators: true })
     }
 }
